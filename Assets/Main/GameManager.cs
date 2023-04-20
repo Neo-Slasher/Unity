@@ -20,4 +20,18 @@ public class GameManager : MonoBehaviour
     public void OnClickStartButton() {
         SceneManager.LoadScene("IntroScene");
     }
+
+    public void OnClickContinueButton() {
+
+    }
+
+
+    public void OnClickSettingButton() {
+
+    }
+
+
+    public void OnClickExitButton() {
+        
+    }
 }
