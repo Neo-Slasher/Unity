@@ -31,6 +31,8 @@ public class NightManager : MonoBehaviour
     {
         normalEnemy = normalEnemyPrefab.GetComponent<NormalEnemy>();
         eliteEnemy = eliteEnemyPrefab.GetComponent<EliteEnemy>();
+        normalEnemy.SetCharacter(character);    
+        eliteEnemy.SetCharacter(character);
 
         //몬스터 생성 함수 넣을 예정
         InstantiateEnemy();
