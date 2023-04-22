@@ -9,7 +9,7 @@ public class EnemyStatus
     public int enemyMoveSpeed;
     public int enemyDamage;
 
-    public bool isUpgrade;  //ÀûÀÌ °­È­µÇ¾úÀ» ¶§
+    public bool isUpgrade;  //ì ì´ ê°•í™”ë˜ì—ˆì„ ë•Œ
 
     public EnemyStatus()
     {

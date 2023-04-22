@@ -16,13 +16,13 @@ public class EnemyParent : MonoBehaviour
 
     public void SetEnemyStatus()
     {
-        //Àû json µ¥ÀÌÅÍ ¹Ş¾Æ¿À±â
+        //ì  json ë°ì´í„° ë°›ì•„ì˜¤ê¸°
 
-        //³­ÀÌµµ ¹× ¾Ï»ì ´Ü°è¿¡ µû¸¥ ½ºÅ×ÀÌÅÍ½º º¯È­
+        //ë‚œì´ë„ ë° ì•”ì‚´ ë‹¨ê³„ì— ë”°ë¥¸ ìŠ¤í…Œì´í„°ìŠ¤ ë³€í™”
         SetLevelStatus(0);
         SetAssassinationStatus(0);
 
-        //¾²·¹±â°ª ³ÖÀ½
+        //ì“°ë ˆê¸°ê°’ ë„£ìŒ
         enemyStatus.enemyMoveSpeed = 1;
     }
 
@@ -32,7 +32,7 @@ public class EnemyParent : MonoBehaviour
         EnemyMove();
     }
 
-    //Ä³¸¯ÅÍ À§Ä¡¸¦ Ã£±â À§ÇØ¼­ NightManager¸¦ ÅëÇØ character ¿ÀºêÁ§Æ®¸¦ ¹Ş¾Æ¿È
+    //ìºë¦­í„° ìœ„ì¹˜ë¥¼ ì°¾ê¸° ìœ„í•´ì„œ NightManagerë¥¼ í†µí•´ character ì˜¤ë¸Œì íŠ¸ë¥¼ ë°›ì•„ì˜´
     public void SetCharacter(GameObject getCharacter)
     {
         character= getCharacter;
@@ -57,11 +57,11 @@ public class EnemyParent : MonoBehaviour
 
     void SetLevelStatus(int level)
     {
-        //¼±ÅÃÇÑ ³­ÀÌµµ¿¡ µû¶ó ½ºÅ×ÀÌÅÍ½º º¯°æ
+        //ì„ íƒí•œ ë‚œì´ë„ì— ë”°ë¼ ìŠ¤í…Œì´í„°ìŠ¤ ë³€ê²½
     }
 
     void SetAssassinationStatus(int assassinationLevel)
     {
-        //¼±ÅÃÇÑ ¾Ï»ì¿¡ µû¶ó ½ºÅ×ÀÌÅÍ½º º¯°æ
+        //ì„ íƒí•œ ì•”ì‚´ì— ë”°ë¼ ìŠ¤í…Œì´í„°ìŠ¤ ë³€ê²½
     }
 }
