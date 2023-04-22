@@ -7,6 +7,9 @@ using UnityEngine.UIElements;
 public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField]
+    NightManager nightManager;
+
+    [SerializeField]
     Character character;
     [SerializeField]
     RectTransform joystick;
@@ -23,33 +26,48 @@ public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Vector3 touchPos = eventData.position;
-        Vector3 joystickPos = rectTransform.anchoredPosition;
-        Vector3 currPos = touchPos - joystickPos;
+        if (!nightManager.isStageEnd)
+        {
+            Vector3 touchPos = eventData.position;
+            Vector3 joystickPos = rectTransform.anchoredPosition;
+            Vector3 currPos = touchPos - joystickPos;
 
-        Vector3 clampedPos = currPos.magnitude < joystickRange ?
-            currPos : currPos.normalized * joystickRange;
+            Vector3 clampedPos = currPos.magnitude < joystickRange ?
+                currPos : currPos.normalized * joystickRange;
 
-        joystick.anchoredPosition = clampedPos;
-        character.CharacterMove(joystick.anchoredPosition);
+            joystick.anchoredPosition = clampedPos;
+            character.CharacterMove(joystick.anchoredPosition);
+        }
+        else
+            joystick.anchoredPosition = Vector3.zero;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        Vector3 touchPos = eventData.position;
-        Vector3 joystickPos = rectTransform.anchoredPosition;
-        Vector3 currPos = touchPos - joystickPos;
+        if (!nightManager.isStageEnd)
+        {
+            Vector3 touchPos = eventData.position;
+            Vector3 joystickPos = rectTransform.anchoredPosition;
+            Vector3 currPos = touchPos - joystickPos;
 
-        Vector3 clampedPos = currPos.magnitude < joystickRange ?
-            currPos : currPos.normalized * joystickRange;
+            Vector3 clampedPos = currPos.magnitude < joystickRange ?
+                currPos : currPos.normalized * joystickRange;
 
-        joystick.anchoredPosition = clampedPos;
-        character.CharacterMove(joystick.anchoredPosition);
+            joystick.anchoredPosition = clampedPos;
+            character.CharacterMove(joystick.anchoredPosition);
+        }
+        else
+            joystick.anchoredPosition = Vector3.zero;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        character.CharacterStop(joystick.anchoredPosition);
-        joystick.anchoredPosition = Vector3.zero;
+        if (!nightManager.isStageEnd)
+        {
+            character.CharacterStop(joystick.anchoredPosition);
+            joystick.anchoredPosition = Vector3.zero;
+        }
+        else
+            joystick.anchoredPosition = Vector3.zero;
     }
 }

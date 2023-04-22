@@ -22,7 +22,7 @@ public class NightManager : MonoBehaviour
     Transform enemyCloneParent;
 
     //전투시 필요한 데이터
-    bool isStageEnd = false; //밤이 끝났는지 알아보는 변수
+    public bool isStageEnd = false; //밤이 끝났는지 알아보는 변수
 
     //tempData
     int monsterCount;
@@ -58,8 +58,24 @@ public class NightManager : MonoBehaviour
             normalEnemyClone.transform.SetParent(enemyCloneParent);
             yield return new WaitForSeconds(1f);
         }
+
+
+        //스테이지가 종료되었을 경우
+        int childCount = enemyCloneParent.childCount;
+
+        for(int i=0; i<childCount; i++)
+        {
+            //일반 적일때 
+            if (enemyCloneParent.GetChild(i).name == "NormalEnemyPrefab(Clone)")
+                enemyCloneParent.GetChild(i).GetComponent<NormalEnemy>().isStageEnd = true;
+
+            //엘리트 적일때
+            else if(enemyCloneParent.GetChild(i).name == "EliteEnemyPrefab(Clone)")
+                enemyCloneParent.GetChild(i).GetComponent<EliteEnemy>().isStageEnd = true;
+        }
     }
 
+    //적이 스폰되는 벡터 구하기
     Vector3 SetEnemyPos()
     {
         nowCharPos = character.transform.position;
@@ -76,5 +92,16 @@ public class NightManager : MonoBehaviour
         } while ((instantiatePos - nowCharPos).magnitude < 5);
 
         return instantiatePos;
+    }
+
+    public void SetStageEnd()
+    {
+        isStageEnd = true;
+
+        //플레이어 공격 정지
+        character.GetComponent<Character>().CharacterAttackStop();
+        character.GetComponent<Character>().CharacterStop(Vector3.zero);
+
+        //조이스틱 사용 정지
     }
 }

@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 public class Character : MonoBehaviour
 {
     [SerializeField]
+    NightManager nightManager;
+    [SerializeField]
     GameObject characterObject;
     [SerializeField]
     Rigidbody characterRigid;
@@ -24,10 +26,7 @@ public class Character : MonoBehaviour
     private void Start()
     {
         characterRigid = GetComponent<Rigidbody>();
-    }
-    private void Update()
-    {
-        //아마 공격함수가 들어갈 듯
+
         CharacterAttack();
     }
 
@@ -60,20 +59,31 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void CharacterAttackStop()
+    {
+        StopCoroutine(CharacterAttackCoroutine());
+    }
+
     IEnumerator CharacterAttackCoroutine()
     {
-        //Debug.Log("Attack");
-        //공격 애니메이션 진행
-        SetHitbox();
-        hitBox.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
+        while (!nightManager.isStageEnd)
+        {
+            //공격 애니메이션 진행
+
+            //히트박스 온오프
+            SetHitbox();
+            hitBox.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            hitBox.SetActive(false);
+
+            //공격한 뒤 데이터 정리
+
+            //다음 공격까지 대기
+            yield return new WaitForSeconds(1);
+            isAttack = false;
+        }
+
         hitBox.SetActive(false);
-
-        //공격한 뒤 데이터 정리
-
-        //다음 공격까지 대기
-        yield return new WaitForSeconds(1);
-        isAttack = false;
     }
 
     //이동 방향에 따라 히트박스 위치 조절하는 함수

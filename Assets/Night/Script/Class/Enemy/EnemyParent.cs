@@ -13,6 +13,7 @@ public class EnemyParent : MonoBehaviour
     Rigidbody enemyRigid;
 
     Vector3 moveDir;
+    public bool isStageEnd = false;
 
     public void SetEnemyStatus()
     {
@@ -46,13 +47,15 @@ public class EnemyParent : MonoBehaviour
     IEnumerator EnemyMoveCoroutine()
     {
         Vector3 nowCharPos;
-        while(true)
+        while(!isStageEnd)
         {
             nowCharPos = character.transform.position;
             moveDir = nowCharPos - this.transform.position;
             enemyRigid.velocity = moveDir.normalized * enemyStatus.enemyMoveSpeed;
             yield return new WaitForSeconds(1);
         }
+
+        enemyRigid.velocity = Vector3.zero;
     }
 
     void SetLevelStatus(int level)
