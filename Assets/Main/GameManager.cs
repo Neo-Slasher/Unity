@@ -1,37 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+
+public class Item {
+
+}
+
+public class Status {
+    public int hp;
+    public float speed;
+    public int offensePower;
+    public float attackRange;
+    public float attackSpeed;
+}
+
+public class PlayData {
+    public int level;
+    public float timeElapsed;
+    public int money;
+    public List<Item>[] inventory;
+    public Item[] itemSlot = new Item[3];
+    public int trait; // int -> ??? 나중에 수정
+    public int traitPoint;
+    public int combatPower; // 전투력
+    public Status status; 
+}
+
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        Debug.Log("Start Game");   
-    }
+    public static GameManager instance = null;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void OnClickStartButton() {
-        SceneManager.LoadScene("IntroScene");
-    }
-
-    public void OnClickContinueButton() {
-
-    }
+    public bool hasSavedData;
+    public PlayData myData;
 
 
-    public void OnClickSettingButton() {
+    void Awake() {
+        if (instance == null)  
+            instance = this;
+        else if (instance != this)
+            Destroy(this.gameObject);
 
-    }
+        DontDestroyOnLoad(this.gameObject);
 
 
-    public void OnClickExitButton() {
-        
+        if (!File.Exists(Application.dataPath + "/UserData.json")) {
+            hasSavedData = false;
+        } else {
+            hasSavedData = true;
+            string savedData = File.ReadAllText(Application.dataPath + "/UserData.json");
+            myData = JsonUtility.FromJson<PlayData>(savedData);
+        }
     }
 }
