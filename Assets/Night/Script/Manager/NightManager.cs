@@ -5,8 +5,14 @@ using UnityEngine;
 public class NightManager : MonoBehaviour
 {
     [SerializeField]
+    TimerManager timerManager;
+    [SerializeField]
     GameObject character;
     KillData killdata;  //죽인 몬스터 마리수 카운트
+
+    //UI
+    [SerializeField]
+    GameObject endPopup;
 
     //몬스터 출현 등에 사용할 예정
     [SerializeField]
@@ -51,27 +57,12 @@ public class NightManager : MonoBehaviour
 
     IEnumerator InstantiateEnemyCoroutine()
     {
-        while (!isStageEnd)
+        while (!isStageEnd && timerManager.timerCount >1)
         {
             //몬스터 스폰
             GameObject normalEnemyClone = Instantiate(normalEnemyPrefab, SetEnemyPos(), Quaternion.identity);
             normalEnemyClone.transform.SetParent(enemyCloneParent);
-            yield return new WaitForSeconds(1f);
-        }
-
-
-        //스테이지가 종료되었을 경우
-        int childCount = enemyCloneParent.childCount;
-
-        for(int i=0; i<childCount; i++)
-        {
-            //일반 적일때 
-            if (enemyCloneParent.GetChild(i).name == "NormalEnemyPrefab(Clone)")
-                enemyCloneParent.GetChild(i).GetComponent<NormalEnemy>().isStageEnd = true;
-
-            //엘리트 적일때
-            else if(enemyCloneParent.GetChild(i).name == "EliteEnemyPrefab(Clone)")
-                enemyCloneParent.GetChild(i).GetComponent<EliteEnemy>().isStageEnd = true;
+            yield return new WaitForSeconds(5f);
         }
     }
 
@@ -102,6 +93,27 @@ public class NightManager : MonoBehaviour
         character.GetComponent<Character>().CharacterAttackStop();
         character.GetComponent<Character>().CharacterStop(Vector3.zero);
 
-        //조이스틱 사용 정지
+        //조이스틱 사용 정지와는 nightManager.isStageEnd를 매번 받기 때문에 알아서 꺼짐
+
+        //적 오브젝트 정지
+        for (int i = 0; i < enemyCloneParent.childCount; i++)
+        {
+            //일반 적일때 
+            if (enemyCloneParent.GetChild(i).name == "NormalEnemyPrefab(Clone)")
+            {
+                enemyCloneParent.GetChild(i).GetComponent<NormalEnemy>().isStageEnd = true;
+                //해당 콜라이더 정지는 이후 오브젝트 형태에 따라 변경될 예정@@@@@@@@@@
+                enemyCloneParent.GetChild(i).GetComponent<CircleCollider2D>().enabled = false;
+            }
+
+            //엘리트 적일때
+            else if (enemyCloneParent.GetChild(i).name == "EliteEnemyPrefab(Clone)")
+            {
+                enemyCloneParent.GetChild(i).GetComponent<EliteEnemy>().isStageEnd = true;
+                enemyCloneParent.GetChild(i).GetComponent<CircleCollider2D>().enabled = false;
+            }
+        }
+
+        endPopup.SetActive(true);
     }
 }

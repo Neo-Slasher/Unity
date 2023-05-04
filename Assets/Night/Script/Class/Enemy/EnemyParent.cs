@@ -5,15 +5,31 @@ using UnityEngine;
 public class EnemyParent : MonoBehaviour
 {
     [SerializeField]
-    EnemyStatus enemyStatus;
+    EnemyTrashData enemyTrashData;
+
+    //적 데이터
+    public int nowHp;
 
     [SerializeField]
     GameObject character;
 
-    Rigidbody enemyRigid;
+    Rigidbody2D enemyRigid;
 
     Vector3 moveDir;
     public bool isStageEnd = false;
+
+    public bool isAttacked = false; //공격을 했다면 2초간 true로 변환
+
+    private void Start()
+    {
+        enemyRigid = GetComponent<Rigidbody2D>();
+        EnemyMove();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        EnemyDamaged(collision);
+    }
 
     public void SetEnemyStatus()
     {
@@ -23,14 +39,7 @@ public class EnemyParent : MonoBehaviour
         SetLevelStatus(0);
         SetAssassinationStatus(0);
 
-        //쓰레기값 넣음
-        enemyStatus.enemyMoveSpeed = 1;
-    }
-
-    private void Start()
-    {
-        enemyRigid = GetComponent<Rigidbody>();
-        EnemyMove();
+        nowHp = enemyTrashData.hitPoint;
     }
 
     //캐릭터 위치를 찾기 위해서 NightManager를 통해 character 오브젝트를 받아옴
@@ -51,11 +60,18 @@ public class EnemyParent : MonoBehaviour
         {
             nowCharPos = character.transform.position;
             moveDir = nowCharPos - this.transform.position;
-            enemyRigid.velocity = moveDir.normalized * enemyStatus.enemyMoveSpeed;
+            enemyRigid.velocity = moveDir.normalized * SetMoveSpeed(enemyTrashData.moveSpeed);
             yield return new WaitForSeconds(1);
         }
-
         enemyRigid.velocity = Vector3.zero;
+    }
+
+    float SetMoveSpeed(int getMoveSpeed)
+    {
+        float result = 0;
+        result = ((float)getMoveSpeed * 25) / 128;
+
+        return result;
     }
 
     void SetLevelStatus(int level)
@@ -66,5 +82,40 @@ public class EnemyParent : MonoBehaviour
     void SetAssassinationStatus(int assassinationLevel)
     {
         //선택한 암살에 따라 스테이터스 변경
+    }
+
+    //캐릭터와 충돌할 경우 해당 적의 공격력을 반환하는 함수
+    public int GetEnemyAttackPower()
+    {
+        if (isAttacked == false)
+            return enemyTrashData.attackPower;
+        else return 0;
+    }
+
+    //공격하고 2초동안 공격 무시
+    public void SetIsAttacked()
+    {
+        isAttacked = true;
+        StartCoroutine(SetIsAttackedCoroutine());
+    }
+
+    IEnumerator SetIsAttackedCoroutine()
+    {
+        yield return new WaitForSeconds(2f);
+        isAttacked = false;
+    }
+
+    void EnemyDamaged(Collider2D collision)
+    {
+        if (collision.name == "HitBox")
+        {
+            int getDamage = collision.gameObject.GetComponent<HitBox>().getOffensePower;
+            collision.gameObject.GetComponent<HitBox>().isAttacked = true;
+
+            if (nowHp > getDamage)
+                nowHp -= getDamage;
+            else
+                Destroy(this.gameObject);
+        }
     }
 }
