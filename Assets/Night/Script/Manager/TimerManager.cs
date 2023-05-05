@@ -16,8 +16,7 @@ public class TimerManager : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI timerText;
 
-    [SerializeField]
-    int timerCount = 60;
+    public int timerCount = 60;
 
     private void Start()
     {
@@ -33,12 +32,18 @@ public class TimerManager : MonoBehaviour
     {
         while (timerCount >= 0)
         {
-            Debug.Log(timerCount);
+            if (nightManager.isStageEnd) break;
+
             timerText.text = timerCount.ToString();
+
+            if (timerCount == 0)
+            {
+                nightManager.SetStageEnd();
+                break;
+            }
+
             yield return new WaitForSeconds(1f);
             timerCount--;
         }
-
-        nightManager.SetStageEnd();
     }
 }
