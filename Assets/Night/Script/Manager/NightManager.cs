@@ -45,7 +45,7 @@ public class NightManager : MonoBehaviour
     }
 
     
-
+    //오브젝트 풀링으로 함수 변경합시다.
     void InstantiateEnemy()
     {
         //적 데이터 정립
@@ -76,13 +76,23 @@ public class NightManager : MonoBehaviour
         Vector3 instantiatePos = new Vector3(xPos, yPos, 0);
         do
         {
-            xPos = Random.Range(-9f, 9f);
-            yPos = Random.Range(-9f, 9f);
+            xPos = Random.Range(-11f, 11f);
+            yPos = Random.Range(-11f, 11f);
             instantiatePos.x = xPos;
             instantiatePos.y = yPos;
-        } while ((instantiatePos - nowCharPos).magnitude < 5);
+        } while (!IsPosInGround(instantiatePos));
 
         return instantiatePos;
+    }
+
+    bool IsPosInGround(Vector3 getVector)
+    {
+        if (getVector.x < -10 || getVector.x > 10)
+            return true;
+        else if (getVector.y < -10 || getVector.y > 10)
+            return true;
+        else
+            return false;
     }
 
     public void SetStageEnd()

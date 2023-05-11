@@ -103,7 +103,7 @@ public class Character : MonoBehaviour
             hitBox.SetActive(false);
 
             //다음 공격까지 대기
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
             isAttack = false;
         }
 
