@@ -21,27 +21,21 @@ public class MainManager : MonoBehaviour
         exitPopup.SetActive(false);
     }
 
+    public void StartNewGame() {
+        GameManager.instance.InitPlayerData();
+        SceneManager.LoadScene("IntroScene"); 
+    }
 
     public void OnClickStartButton() {
         if (GameManager.instance.hasSavedData == true) {
             startPopup.SetActive(true);
         } else {
-            // init player data
-            // File.WriteAllText(Application.dataPath + "/UserData.json", JsonUtility.ToJson(myData));
-
-
-            SceneManager.LoadScene("IntroScene");   
+            StartNewGame(); 
         }
     }
 
     public void OnClickStartPopupYesButton() {
-        // TODO: OnClickStartButton의 else {} 코드와 겹침
-        Debug.Log("새 게임을 시작합니다.");
-
-        // init player data
-        // File.WriteAllText(Application.dataPath + "/UserData.json", JsonUtility.ToJson(myData));
-
-        SceneManager.LoadScene("IntroScene");
+        StartNewGame();
     }
 
     public void OnClickStartPopupNoButton() {
@@ -49,7 +43,7 @@ public class MainManager : MonoBehaviour
     }
 
     public void OnClickContinueButton() {
-        Debug.Log("게임을 이어합니다.");
+        GameManager.instance.LoadPlayerData();
         SceneManager.LoadScene("PreparationScene");
     }
 

@@ -10,14 +10,9 @@ public class Item {
 
 }
 
-public class Status {
-    public int hp;
-    public float speed;
-    public int offensePower;
-    public float attackRange;
-    public float attackSpeed;
-}
 
+// TODO: Character 클래스와 통합 예정
+// 죽은 클래스
 public class PlayData {
     public int level;
     public float timeElapsed;
@@ -27,7 +22,7 @@ public class PlayData {
     public int trait; // int -> ??? 나중에 수정
     public int traitPoint;
     public int combatPower; // 전투력
-    public Status status; 
+    // public Status status; 
 }
 
 
@@ -36,7 +31,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
 
     public bool hasSavedData;
-    public PlayData myData;
+    public Player player;
 
 
     void Awake() {
@@ -52,8 +47,17 @@ public class GameManager : MonoBehaviour
             hasSavedData = false;
         } else {
             hasSavedData = true;
-            string savedData = File.ReadAllText(Application.dataPath + "/UserData.json");
-            myData = JsonUtility.FromJson<PlayData>(savedData);
         }
+    }
+
+
+    public void InitPlayerData() {
+        this.player = new Player();
+        File.WriteAllText(Application.dataPath + "/UserData.json", JsonUtility.ToJson(this.player));
+    }
+
+    public void LoadPlayerData() {
+        string savedData = File.ReadAllText(Application.dataPath + "/UserData.json");
+        this.player = JsonUtility.FromJson<Player>(savedData);
     }
 }
