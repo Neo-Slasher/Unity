@@ -6,9 +6,10 @@ public class EnemyParent : MonoBehaviour
 {
     [SerializeField]
     EnemyTrashData enemyTrashData;
+    public LevelTrashData levelTrashData;
 
     //적 데이터
-    public int nowHp;
+    public double nowHp;
 
     [SerializeField]
     GameObject character;
@@ -23,6 +24,7 @@ public class EnemyParent : MonoBehaviour
     private void Start()
     {
         enemyRigid = GetComponent<Rigidbody2D>();
+
         EnemyMove();
     }
 
@@ -31,13 +33,10 @@ public class EnemyParent : MonoBehaviour
         EnemyDamaged(collision);
     }
 
-    public void SetEnemyStatus()
+    public void SetEnemyStatus(int getLevel = 1)
     {
-        //적 json 데이터 받아오기
-
-        //난이도 및 암살 단계에 따른 스테이터스 변화
-        SetLevelStatus(0);
-        SetAssassinationStatus(0);
+        //난이도에 따른 스테이터스 변화
+        SetLevelStatus(getLevel);
 
         nowHp = enemyTrashData.hitPoint;
     }
@@ -66,7 +65,7 @@ public class EnemyParent : MonoBehaviour
         enemyRigid.velocity = Vector3.zero;
     }
 
-    float SetMoveSpeed(int getMoveSpeed)
+    float SetMoveSpeed(double getMoveSpeed)
     {
         float result = 0;
         result = ((float)getMoveSpeed * 25) / 128;
@@ -77,15 +76,75 @@ public class EnemyParent : MonoBehaviour
     void SetLevelStatus(int level)
     {
         //선택한 난이도에 따라 스테이터스 변경
+        enemyTrashData.hitPointMax *= levelTrashData.diffStat;
+        enemyTrashData.hitPoint *= levelTrashData.diffStat;
+        enemyTrashData.attackPower *= levelTrashData.diffStat;
     }
 
-    void SetAssassinationStatus(int assassinationLevel)
+    public void SetNormalAssassinationType(int assassinationLevel)
     {
-        //선택한 암살에 따라 스테이터스 변경
+        //선택한 암살에 따라 나오는 몬스터 타입 변경
+        switch(assassinationLevel)
+        {
+            case 1:
+                enemyTrashData = new EnemyTrashData(EnemyType.BlackSuitMan);
+                break;
+            case 2:
+                enemyTrashData = new EnemyTrashData(EnemyType.WhiteSuitMan);
+                break;
+            case 3:
+                enemyTrashData = new EnemyTrashData(EnemyType.MachineArmorSoldier);
+                break;
+        }
+    }
+    public void SetEliteAssassinationType(int assassinationLevel)
+    {
+        //선택한 암살에 따라 나오는 몬스터 타입 변경
+        switch (assassinationLevel)
+        {
+            case 1:
+                enemyTrashData = new EnemyTrashData(EnemyType.Red3LegRobot);
+                break;
+            case 2:
+                enemyTrashData = new EnemyTrashData(EnemyType.Blue3LegRobot);
+                break;
+            case 3:
+                enemyTrashData = new EnemyTrashData(EnemyType.Big4LegRobot);
+                break;
+        }
+    }
+
+    //몬스터가 강화되었는지
+    public void SetEnforceData(int getLevel, bool isElite = false)
+    {
+        if(IsEnforce(getLevel,isElite))
+        {
+            enemyTrashData.monEnforce = true;
+            //강화되었으므로 스테이터스 변경
+            enemyTrashData.hitPointMax *= 2;
+            enemyTrashData.hitPoint *= 2;
+            enemyTrashData.attackPower *= 2;
+        }
+    }
+
+    bool IsEnforce(int getLevel, bool isElite = false)
+    {
+        double nowProb;
+        double randomProb = Random.value;
+
+        if (!isElite)
+            nowProb = levelTrashData.diffNormalEnforce;
+        else
+            nowProb = levelTrashData.diffEliteEnforce;
+
+        if (randomProb < nowProb)
+            return true;
+        else
+            return false;
     }
 
     //캐릭터와 충돌할 경우 해당 적의 공격력을 반환하는 함수
-    public int GetEnemyAttackPower()
+    public double GetEnemyAttackPower()
     {
         if (isAttacked == false)
             return enemyTrashData.attackPower;

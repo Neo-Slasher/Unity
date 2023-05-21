@@ -114,13 +114,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bef166540a4f3b341ad00cd8065cc449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyStatus:
-    enemyHP: 0
-    enemyMoveSpeed: 0
-    enemyDamage: 0
-    isUpgrade: 0
+  enemyTrashData:
+    monIdx: 0
+    monWidth: 0
+    monLength: 0
+    hitPointMax: 0
+    hitPoint: 0
+    moveSpeed: 0
+    attackPower: 0
+    dashAble: 0
+    dashFreq: 0
+    dashSpeed: 0
+    dashDuration: 0
+    monElite: 0
+    monEnforce: 0
+    monResist: 0
+    monKnockback: 0
+    monProj: 0
+  levelTrashData:
+    diff: 0
+    diffRecLvl: 0
+    diffExp: 0
+    diffGoal: 0
+    diffStat: 0
+    diffPop: 0
+    diffNormalEnforce: 0
+    diffEliteEnforce: 0
+    diffDropRank: 0
+    diffRecCP: 0
+  nowHp: 0
   character: {fileID: 0}
   isStageEnd: 0
+  isAttacked: 0
 --- !u!58 &3770914068062517101
 CircleCollider2D:
   m_ObjectHideFlags: 0

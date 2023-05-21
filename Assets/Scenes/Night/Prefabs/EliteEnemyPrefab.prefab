@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.4292453, b: 0.4292453, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -100,13 +100,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b61b9bab3f32de4b93a1f6a3685bd36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyStatus:
-    enemyHP: 0
-    enemyMoveSpeed: 0
-    enemyDamage: 0
-    isUpgrade: 0
+  enemyTrashData:
+    monIdx: 0
+    monWidth: 0
+    monLength: 0
+    hitPointMax: 0
+    hitPoint: 0
+    moveSpeed: 0
+    attackPower: 0
+    dashAble: 0
+    dashFreq: 0
+    dashSpeed: 0
+    dashDuration: 0
+    monElite: 0
+    monEnforce: 0
+    monResist: 0
+    monKnockback: 0
+    monProj: 0
+  levelTrashData:
+    diff: 0
+    diffRecLvl: 0
+    diffExp: 0
+    diffGoal: 0
+    diffStat: 0
+    diffPop: 0
+    diffNormalEnforce: 0
+    diffEliteEnforce: 0
+    diffDropRank: 0
+    diffRecCP: 0
+  nowHp: 0
   character: {fileID: 0}
   isStageEnd: 0
+  isAttacked: 0
 --- !u!50 &9000554287139158811
 Rigidbody2D:
   serializedVersion: 4
