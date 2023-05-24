@@ -18,7 +18,7 @@ public class SceneSwitch : MonoBehaviour
     }
     public void GoNight()
     {
-        SceneManager.LoadScene("NightSample");
+        SceneManager.LoadScene("NightScene");
     }
     public void GoDay()
     {
