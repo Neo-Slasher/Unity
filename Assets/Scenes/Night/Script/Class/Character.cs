@@ -24,7 +24,7 @@ public class Character : MonoBehaviour
     //캐릭터 임시 데이터
     [SerializeField]
     CharacterTrashData characterTrashData;
-    int nowHp;
+    double nowHp;
 
     //컨트롤 변수
     Vector3 nowDir;
@@ -142,7 +142,7 @@ public class Character : MonoBehaviour
 
         Debug.Log("Damaged!");
         GameObject nowCollision = collision.gameObject;
-        int nowAttackPower = 0;
+        double nowAttackPower = 0;
 
         //적 데미지 받아오기
         if (nowCollision.name == "NormalEnemyPrefab(Clone)")

@@ -31,38 +31,59 @@ public class NightManager : MonoBehaviour
     public bool isStageEnd = false; //밤이 끝났는지 알아보는 변수
 
     //tempData
-    int monsterCount;
+    public int nowLevel = 1;
+    public int nowAssassination = 1;
+    [SerializeField]
+    LevelTrashData leveltrashData;
 
     private void Start()
     {
+        leveltrashData = new LevelTrashData(nowLevel);
         normalEnemy = normalEnemyPrefab.GetComponent<NormalEnemy>();
         eliteEnemy = eliteEnemyPrefab.GetComponent<EliteEnemy>();
         normalEnemy.SetCharacter(character);    
         eliteEnemy.SetCharacter(character);
+        
+        //임시로 박아둠
+        normalEnemy.levelTrashData = leveltrashData;
+        eliteEnemy.levelTrashData = leveltrashData;
 
         //몬스터 생성 함수 넣을 예정
         InstantiateEnemy();
     }
 
-    
-    //오브젝트 풀링으로 함수 변경합시다.
     void InstantiateEnemy()
     {
-        //적 데이터 정립
-        normalEnemy.SetEnemyStatus();
-        eliteEnemy.SetEnemyStatus();
-        //선택 난이도에 따라 개체수 변경
-        StartCoroutine(InstantiateEnemyCoroutine());
+        //노멀 적과 엘리트 적 소환하는 함수
+        StartCoroutine(InstantiateNormalEnemyCoroutine());
+        StartCoroutine(InstantiateEliteEnemyCoroutine());
     }
 
-    IEnumerator InstantiateEnemyCoroutine()
+    IEnumerator InstantiateNormalEnemyCoroutine()
     {
-        while (!isStageEnd && timerManager.timerCount >1)
+        while (!isStageEnd && timerManager.timerCount > 1)
         {
             //몬스터 스폰
+            normalEnemy.SetNormalAssassinationType(nowAssassination);
+            normalEnemy.SetEnemyStatus(nowLevel);
+            normalEnemy.SetEnforceData(nowLevel, false);
             GameObject normalEnemyClone = Instantiate(normalEnemyPrefab, SetEnemyPos(), Quaternion.identity);
             normalEnemyClone.transform.SetParent(enemyCloneParent);
             yield return new WaitForSeconds(5f);
+        }
+    }
+
+    IEnumerator InstantiateEliteEnemyCoroutine()
+    {
+        while (!isStageEnd && timerManager.timerCount > 1)
+        {
+            //몬스터 스폰
+            eliteEnemy.SetEliteAssassinationType(nowAssassination);
+            eliteEnemy.SetEnemyStatus(nowLevel);
+            eliteEnemy.SetEnforceData(nowLevel, true);
+            GameObject eilteEnemyClone = Instantiate(eliteEnemyPrefab, SetEnemyPos(), Quaternion.identity);
+            eilteEnemyClone.transform.SetParent(enemyCloneParent);
+            yield return new WaitForSeconds(10f);
         }
     }
 

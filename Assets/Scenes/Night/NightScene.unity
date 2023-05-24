@@ -1297,6 +1297,19 @@ MonoBehaviour:
   eliteEnemyPrefab: {fileID: 5704455429035723747, guid: d209da7e8f3df0a4e964b059735bfa39, type: 3}
   enemyCloneParent: {fileID: 562037683}
   isStageEnd: 0
+  nowLevel: 8
+  nowAssassination: 1
+  leveltrashData:
+    diff: 0
+    diffRecLvl: 0
+    diffExp: 0
+    diffGoal: 0
+    diffStat: 0
+    diffPop: 0
+    diffNormalEnforce: 0
+    diffEliteEnforce: 0
+    diffDropRank: 0
+    diffRecCP: 0
 --- !u!1 &1624993041
 GameObject:
   m_ObjectHideFlags: 0
@@ -1876,6 +1889,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5704455429035723746, guid: d209da7e8f3df0a4e964b059735bfa39, type: 3}
+      propertyPath: m_Color.b
+      value: 0.48713955
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704455429035723746, guid: d209da7e8f3df0a4e964b059735bfa39, type: 3}
+      propertyPath: m_Color.g
+      value: 0.48713955
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704455429035723746, guid: d209da7e8f3df0a4e964b059735bfa39, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8396226
+      objectReference: {fileID: 0}
     - target: {fileID: 5704455429035723747, guid: d209da7e8f3df0a4e964b059735bfa39, type: 3}
       propertyPath: m_Name
       value: EliteEnemyPrefab
