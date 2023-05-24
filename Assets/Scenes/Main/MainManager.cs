@@ -23,7 +23,7 @@ public class MainManager : MonoBehaviour
 
     public void StartNewGame() {
         GameManager.instance.InitPlayerData();
-        SceneManager.LoadScene("IntroScene"); 
+        SceneManager.LoadScene("CutScene"); 
     }
 
     public void OnClickStartButton() {
