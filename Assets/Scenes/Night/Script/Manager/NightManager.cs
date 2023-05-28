@@ -35,15 +35,18 @@ public class NightManager : MonoBehaviour
     public int nowAssassination = 1;
     [SerializeField]
     LevelTrashData leveltrashData;
+    [SerializeField]
+    AssassinationTrashData assassinationTrashData;
 
     private void Start()
     {
         leveltrashData = new LevelTrashData(nowLevel);
+        assassinationTrashData = new AssassinationTrashData(nowAssassination);
         normalEnemy = normalEnemyPrefab.GetComponent<NormalEnemy>();
         eliteEnemy = eliteEnemyPrefab.GetComponent<EliteEnemy>();
-        normalEnemy.SetCharacter(character);    
+        normalEnemy.SetCharacter(character);
         eliteEnemy.SetCharacter(character);
-        
+
         //임시로 박아둠
         normalEnemy.levelTrashData = leveltrashData;
         eliteEnemy.levelTrashData = leveltrashData;
@@ -61,6 +64,7 @@ public class NightManager : MonoBehaviour
 
     IEnumerator InstantiateNormalEnemyCoroutine()
     {
+        yield return new WaitForSeconds(1);
         while (!isStageEnd && timerManager.timerCount > 1)
         {
             //몬스터 스폰
@@ -69,12 +73,13 @@ public class NightManager : MonoBehaviour
             normalEnemy.SetEnforceData(nowLevel, false);
             GameObject normalEnemyClone = Instantiate(normalEnemyPrefab, SetEnemyPos(), Quaternion.identity);
             normalEnemyClone.transform.SetParent(enemyCloneParent);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds((float)SpawnTIme(false));
         }
     }
 
     IEnumerator InstantiateEliteEnemyCoroutine()
     {
+        yield return new WaitForSeconds(1);
         while (!isStageEnd && timerManager.timerCount > 1)
         {
             //몬스터 스폰
@@ -83,8 +88,27 @@ public class NightManager : MonoBehaviour
             eliteEnemy.SetEnforceData(nowLevel, true);
             GameObject eilteEnemyClone = Instantiate(eliteEnemyPrefab, SetEnemyPos(), Quaternion.identity);
             eilteEnemyClone.transform.SetParent(enemyCloneParent);
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds((float)SpawnTIme(true));
         }
+    }
+
+    double SpawnTIme(bool isElite)
+    {
+        double nowSpawn = 0;
+        double totalSpawn = 0;
+        if (!isElite)
+        {
+            //임의로 한마리만 스폰되게 했음
+            nowSpawn = assassinationTrashData.normal1Spawn;
+        }
+        else
+        {
+            nowSpawn = assassinationTrashData.elite1Spawn;
+        }
+
+        //누적 오브젝트 수를 구하고 60초 안에 모든 오브젝트가 나오도록 구현
+        totalSpawn = nowSpawn * 60;
+        return (double)(60f / (int)totalSpawn);
     }
 
     //적이 스폰되는 벡터 구하기
