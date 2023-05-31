@@ -41,6 +41,12 @@ public class Player
     private int itemSlot = 1;
     
 
+    private int level = 1;
+    private int curExp = 0;
+    private int reqExp = 2;
+
+
+
     public double getMaxHp() {
         return maxHp;    
     }
@@ -140,4 +146,18 @@ public class Player
     public int getItemSlot() {
         return itemSlot;
     }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getCurExp() {
+        return curExp;
+    }
+
+    public int getReqExp() {
+        return reqExp;
+    }
+
+
 }

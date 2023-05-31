@@ -53,11 +53,11 @@ public class GameManager : MonoBehaviour
 
     public void InitPlayerData() {
         this.player = new Player();
-        File.WriteAllText(Application.dataPath + "/UserData.json", JsonUtility.ToJson(this.player));
+        File.WriteAllText(Application.persistentDataPath + "/UserData.json", JsonUtility.ToJson(this.player));
     }
 
     public void LoadPlayerData() {
-        string savedData = File.ReadAllText(Application.dataPath + "/UserData.json");
+        string savedData = File.ReadAllText(Application.persistentDataPath + "/UserData.json");
         this.player = JsonUtility.FromJson<Player>(savedData);
     }
 }
