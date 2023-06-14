@@ -11,7 +11,7 @@ public class AssassinationTrashData
     public int normalDropRate;      //일반 드랍 확률
     public int eliteDropRate;       //정예 드랍 확률
     public double normal1Spawn;        //일반 1 스폰수
-    public double normal2Spwan;        //일반 2 스폰수
+    public double normal2Spawn;        //일반 2 스폰수
     public double normal3Spawn;        //일반 3 스폰수
     public double elite1Spawn;         //정예 1 스폰수
     public double elite2Spawn;         //정예 2 스폰수
@@ -34,7 +34,7 @@ public class AssassinationTrashData
                 normalDropRate = 0;
                 eliteDropRate = 0;
                 normal1Spawn = 1.5f;
-                normal2Spwan = 0.3f;
+                normal2Spawn = 0.3f;
                 normal3Spawn = 0.0f;
                 elite1Spawn = 0.5f;
                 elite2Spawn = 0.1f;
@@ -49,7 +49,7 @@ public class AssassinationTrashData
                 normalDropRate = 0;
                 eliteDropRate = 0;
                 normal1Spawn = 1.5f;
-                normal2Spwan = 0.3f;
+                normal2Spawn = 0.3f;
                 normal3Spawn = 0.0f;
                 elite1Spawn = 0.5f;
                 elite2Spawn = 0.1f;
@@ -64,7 +64,7 @@ public class AssassinationTrashData
                 normalDropRate = 0;
                 eliteDropRate = 0;
                 normal1Spawn = 1.5f;
-                normal2Spwan = 0.3f;
+                normal2Spawn = 0.3f;
                 normal3Spawn = 0.0f;
                 elite1Spawn = 0.5f;
                 elite2Spawn = 0.1f;
@@ -79,7 +79,7 @@ public class AssassinationTrashData
                 normalDropRate = 0;
                 eliteDropRate = 0;
                 normal1Spawn = 1.5f;
-                normal2Spwan = 0.3f;
+                normal2Spawn = 0.3f;
                 normal3Spawn = 0.0f;
                 elite1Spawn = 0.5f;
                 elite2Spawn = 0.1f;

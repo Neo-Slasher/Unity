@@ -16,12 +16,14 @@ public class NightManager : MonoBehaviour
 
     //몬스터 출현 등에 사용할 예정
     [SerializeField]
-    GameObject normalEnemyPrefab;
+    GameObject[] normalEnemyPrefabArr;
     [SerializeField]
-    GameObject eliteEnemyPrefab;
+    GameObject[] eliteEnemyPrefabArr;
 
-    NormalEnemy normalEnemy;
-    EliteEnemy eliteEnemy;
+    NormalEnemy[] normalEnemyArr;
+    EliteEnemy[] eliteEnemyArr;
+    int normalEnemyCount = 3;
+    int eliteEnemyCount = 3;
 
     Vector3 nowCharPos;
     [SerializeField]
@@ -42,73 +44,132 @@ public class NightManager : MonoBehaviour
     {
         leveltrashData = new LevelTrashData(nowLevel);
         assassinationTrashData = new AssassinationTrashData(nowAssassination);
-        normalEnemy = normalEnemyPrefab.GetComponent<NormalEnemy>();
-        eliteEnemy = eliteEnemyPrefab.GetComponent<EliteEnemy>();
-        normalEnemy.SetCharacter(character);
-        eliteEnemy.SetCharacter(character);
 
-        //임시로 박아둠
-        normalEnemy.levelTrashData = leveltrashData;
-        eliteEnemy.levelTrashData = leveltrashData;
+        //적 배열 생성
+        normalEnemyArr = new NormalEnemy[normalEnemyCount];
+        eliteEnemyArr = new EliteEnemy[eliteEnemyCount];
 
-        //몬스터 생성 함수 넣을 예정
-        InstantiateEnemy();
+        SetEnemyArrData();
+
+        //몬스터 생성 함수
+        //InstantiateEnemy();
+        TestEnemy();
     }
 
+    void SetEnemyArrData()
+    {
+        for(int i =0; i<normalEnemyCount; i++)
+        {
+            normalEnemyArr[i] = normalEnemyPrefabArr[i].GetComponent<NormalEnemy>();
+            normalEnemyArr[i].SetCharacter(character);
+
+            //임시로 박아둠
+            normalEnemyArr[i].levelTrashData = leveltrashData;
+
+            normalEnemyArr[i].SetNormalEnemyType(i);    //적들의 기본데이터 불러오기
+            normalEnemyArr[i].SetEnemyStatus(nowLevel);
+        }
+
+        for (int i = 0; i < eliteEnemyCount; i++)
+        {
+            eliteEnemyArr[i] = eliteEnemyPrefabArr[i].GetComponent<EliteEnemy>();
+            eliteEnemyArr[i].SetCharacter(character);
+
+            //임시로 박아둠
+            eliteEnemyArr[i].levelTrashData = leveltrashData;
+
+            eliteEnemyArr[i].SetEliteEnemyType(i);  //적들의 기본데이터 불러오기
+            eliteEnemyArr[i].SetEnemyStatus(nowLevel);
+        }
+    }
+
+    //각 몬스터마다 소환 함수를 따로 두고 스폰율에 따라 차등 생성
     void InstantiateEnemy()
     {
         //노멀 적과 엘리트 적 소환하는 함수
-        StartCoroutine(InstantiateNormalEnemyCoroutine());
-        StartCoroutine(InstantiateEliteEnemyCoroutine());
+        for(int normalEnemyDataIndex =0; normalEnemyDataIndex<normalEnemyCount; normalEnemyDataIndex++)
+            StartCoroutine(InstantiateNormalEnemyCoroutine(normalEnemyDataIndex));
+        for (int eliteEnemyDataIndex = 0; eliteEnemyDataIndex < eliteEnemyCount; eliteEnemyDataIndex++)
+            StartCoroutine(InstantiateEliteEnemyCoroutine(eliteEnemyDataIndex));
     }
 
-    IEnumerator InstantiateNormalEnemyCoroutine()
+    void TestEnemy()
     {
-        yield return new WaitForSeconds(1);
-        while (!isStageEnd && timerManager.timerCount > 1)
+        GameObject eliteEnemyClone = Instantiate(eliteEnemyPrefabArr[1], SetEnemyPos(), Quaternion.identity);
+        eliteEnemyClone.transform.SetParent(enemyCloneParent);
+        eliteEnemyClone.SetActive(true);
+    }
+
+    IEnumerator InstantiateNormalEnemyCoroutine(int nowEnemyIndex)
+    {
+        //스폰률이 0이면 스폰 x
+        if (GetSpawn(false, nowEnemyIndex) != 0)
         {
-            //몬스터 스폰
-            normalEnemy.SetNormalAssassinationType(nowAssassination);
-            normalEnemy.SetEnemyStatus(nowLevel);
-            normalEnemy.SetEnforceData(nowLevel, false);
-            GameObject normalEnemyClone = Instantiate(normalEnemyPrefab, SetEnemyPos(), Quaternion.identity);
-            normalEnemyClone.transform.SetParent(enemyCloneParent);
-            yield return new WaitForSeconds((float)SpawnTIme(false));
+            yield return new WaitForSeconds((float)SpawnTIme(false, nowEnemyIndex));
+            while (!isStageEnd && timerManager.timerCount > 1)
+            {
+                //몬스터 스폰
+                normalEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, false);
+                GameObject normalEnemyClone = Instantiate(normalEnemyPrefabArr[nowEnemyIndex], SetEnemyPos(), Quaternion.identity);
+
+                normalEnemyClone.transform.SetParent(enemyCloneParent);
+                normalEnemyClone.SetActive(true);
+                yield return new WaitForSeconds((float)SpawnTIme(false, nowEnemyIndex));
+            }
         }
     }
 
-    IEnumerator InstantiateEliteEnemyCoroutine()
+    IEnumerator InstantiateEliteEnemyCoroutine(int nowEnemyIndex)
     {
-        yield return new WaitForSeconds(1);
-        while (!isStageEnd && timerManager.timerCount > 1)
+        if (GetSpawn(true, nowEnemyIndex) != 0)
         {
-            //몬스터 스폰
-            eliteEnemy.SetEliteAssassinationType(nowAssassination);
-            eliteEnemy.SetEnemyStatus(nowLevel);
-            eliteEnemy.SetEnforceData(nowLevel, true);
-            GameObject eilteEnemyClone = Instantiate(eliteEnemyPrefab, SetEnemyPos(), Quaternion.identity);
-            eilteEnemyClone.transform.SetParent(enemyCloneParent);
-            yield return new WaitForSeconds((float)SpawnTIme(true));
+            yield return new WaitForSeconds((float)SpawnTIme(true, nowEnemyIndex));
+            while (!isStageEnd && timerManager.timerCount > 1)
+            {
+                //몬스터 스폰
+                eliteEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, true);
+                GameObject eliteEnemyClone = Instantiate(eliteEnemyPrefabArr[nowEnemyIndex], SetEnemyPos(), Quaternion.identity);
+                eliteEnemyClone.transform.SetParent(enemyCloneParent);
+                eliteEnemyClone.SetActive(true);
+                yield return new WaitForSeconds((float)SpawnTIme(true, nowEnemyIndex));
+            }
         }
     }
 
-    double SpawnTIme(bool isElite)
+    double SpawnTIme(bool isElite, int nowEnemyIndex)
     {
         double nowSpawn = 0;
         double totalSpawn = 0;
-        if (!isElite)
-        {
-            //임의로 한마리만 스폰되게 했음
-            nowSpawn = assassinationTrashData.normal1Spawn;
-        }
-        else
-        {
-            nowSpawn = assassinationTrashData.elite1Spawn;
-        }
+
+        nowSpawn = GetSpawn(isElite, nowEnemyIndex);
 
         //누적 오브젝트 수를 구하고 60초 안에 모든 오브젝트가 나오도록 구현
         totalSpawn = nowSpawn * 60;
         return (double)(60f / (int)totalSpawn);
+    }
+
+    double GetSpawn(bool isElite, int getIndex)
+    {
+        switch(getIndex)
+        {
+            case 0:
+                if (isElite)
+                    return assassinationTrashData.elite1Spawn;
+                else
+                    return assassinationTrashData.normal1Spawn;
+            case 1:
+                if (isElite)
+                    return assassinationTrashData.elite2Spawn;
+                else
+                    return assassinationTrashData.normal2Spawn;
+            case 2:
+                if (isElite)
+                    return assassinationTrashData.elite3Spawn;
+                else
+                    return assassinationTrashData.normal3Spawn;
+            default:
+                return -1;
+        }
     }
 
     //적이 스폰되는 벡터 구하기
@@ -154,7 +215,7 @@ public class NightManager : MonoBehaviour
         for (int i = 0; i < enemyCloneParent.childCount; i++)
         {
             //일반 적일때 
-            if (enemyCloneParent.GetChild(i).name == "NormalEnemyPrefab(Clone)")
+            if (enemyCloneParent.GetChild(i).tag == "Normal")
             {
                 enemyCloneParent.GetChild(i).GetComponent<NormalEnemy>().isStageEnd = true;
                 //해당 콜라이더 정지는 이후 오브젝트 형태에 따라 변경될 예정@@@@@@@@@@
@@ -162,7 +223,7 @@ public class NightManager : MonoBehaviour
             }
 
             //엘리트 적일때
-            else if (enemyCloneParent.GetChild(i).name == "EliteEnemyPrefab(Clone)")
+            else if (enemyCloneParent.GetChild(i).tag == "Elite")
             {
                 enemyCloneParent.GetChild(i).GetComponent<EliteEnemy>().isStageEnd = true;
                 enemyCloneParent.GetChild(i).GetComponent<CircleCollider2D>().enabled = false;

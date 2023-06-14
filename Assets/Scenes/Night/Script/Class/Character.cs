@@ -24,6 +24,8 @@ public class Character : MonoBehaviour
     //캐릭터 임시 데이터
     [SerializeField]
     CharacterTrashData characterTrashData;
+    [SerializeField]
+    bool isCheat;
     double nowHp;
 
     //컨트롤 변수
@@ -33,14 +35,15 @@ public class Character : MonoBehaviour
 
     private void Start()
     {
+        characterTrashData = new CharacterTrashData(isCheat);
         characterRigid = GetComponent<Rigidbody2D>();
         characterSpriteRanderer = GetComponent<SpriteRenderer>();
 
         //캐릭터의 스테이터스를 장비 등 변화에 따라 변화시킨다.
-        hitBoxScript.getOffensePower = characterTrashData.offensePower;    //무기 공격력 임시로 줌
+        hitBoxScript.getAttackPower = characterTrashData.attackPower;    //무기 공격력 임시로 줌
 
         //기본 Hp값 설정
-        nowHp = characterTrashData.Hp;
+        nowHp = characterTrashData.hitPointMax;
 
         CharacterAttack();
     }
@@ -60,12 +63,12 @@ public class Character : MonoBehaviour
         characterRigid.velocity = joystickDir.normalized * SetMoveSpeed(characterTrashData.moveSpeed);
     }
 
-    float SetMoveSpeed(int getMoveSpeed)
+    float SetMoveSpeed(double getMoveSpeed)
     {
-        float result = 0;
-        result = ((float)getMoveSpeed * 25) / 128;
+        double result = 0;
+        result = (getMoveSpeed * 25) / 128;
 
-        return result;
+        return (float)result;
     }
 
     public void CharacterStop(Vector3 joystickDir)
@@ -145,15 +148,20 @@ public class Character : MonoBehaviour
         double nowAttackPower = 0;
 
         //적 데미지 받아오기
-        if (nowCollision.name == "NormalEnemyPrefab(Clone)")
+        if (nowCollision.tag == "Normal")
         {
             nowAttackPower = nowCollision.GetComponent<NormalEnemy>().GetEnemyAttackPower();
             nowCollision.GetComponent<NormalEnemy>().SetIsAttacked();
         }
-        else if (nowCollision.name == "EliteEnemyPrefab(Clone)")
+        else if (nowCollision.tag == "Elite")
         {
             nowAttackPower = nowCollision.GetComponent<EliteEnemy>().GetEnemyAttackPower();
             nowCollision.GetComponent<EliteEnemy>().SetIsAttacked();
+        }
+        else if(nowCollision.tag == "Projectile")
+        {
+            nowAttackPower = nowCollision.transform.parent.GetComponent<EliteEnemy>().GetEnemyAttackPower();
+            nowCollision.transform.parent.GetComponent<EliteEnemy>().SetIsAttacked();
         }
         else
         {
@@ -171,7 +179,7 @@ public class Character : MonoBehaviour
             //캐릭터 체력이 더 높으므로 체력 감소
             nowHp -= nowAttackPower;
             //감소한 만큼 플레이어 체력바 줄어들게
-            hpBarImage.fillAmount = (float)nowHp / (float)characterTrashData.Hp;
+            hpBarImage.fillAmount = (float)nowHp / (float)characterTrashData.hitPointMax;
             
         }
         else

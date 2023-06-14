@@ -5,22 +5,22 @@ using UnityEngine;
 [System.Serializable]
 public class TraitTrash
 {
-    public int traitIdx;            //Æ¯¼º ÀÎµ¦½º
-    public string traitName;        //Æ¯¼º ÀÌ¸§
-    public int traitReqLvl;         //Æ¯¼º ¿ä±¸ ·¹º§
-    public int traitRank;           //Æ¯¼º ·©Å©
-    public int traitImgIdx;         //ÀÌ¹ÌÁö ÀÎµ¦½º
-    public string traitScript;      //Æ¯¼º ¼³¸í¹®
-    public int traitEffectType1;    //Æ¯¼º1 È¿°ú Å¸ÀÔ
-    public int traitEffectValue1;   //Æ¯¼º1 È¿°ú ¼öÄ¡
-    public int traitEffectMulti1;   //È¿°ú1 °ö¿¬»ê
-    public int traitEffectType2;    //Æ¯¼º2 È¿°ú Å¸ÀÔ
-    public int traitEffectValue2;   //Æ¯¼º2 È¿°ú ¼öÄ¡
-    public int traitEffectMulti2;   //È¿°ú2 °ö¿¬»ê
-    public int traitEffectType3;    //Æ¯¼º3 È¿°ú Å¸ÀÔ
-    public int traitEffectValue3;   //Æ¯¼º3 È¿°ú ¼öÄ¡
-    public int traitEffectMulti3;   //È¿°ú3 °ö¿¬»ê
-    public int traitEffectType4;    //Æ¯¼º4 È¿°ú Å¸ÀÔ
-    public int traitEffectValue4;   //Æ¯¼º4 È¿°ú ¼öÄ¡
-    public int traitEffectMulti4;   //È¿°ú4 °ö¿¬»ê
+    public int traitIdx;            //íŠ¹ì„± ì¸ë±ìŠ¤
+    public string traitName;        //íŠ¹ì„± ì´ë¦„
+    public int traitReqLvl;         //íŠ¹ì„± ìš”êµ¬ ë ˆë²¨
+    public int traitRank;           //íŠ¹ì„± ë­í¬
+    public int traitImgIdx;         //ì´ë¯¸ì§€ ì¸ë±ìŠ¤
+    public string traitScript;      //íŠ¹ì„± ì„¤ëª…ë¬¸
+    public int traitEffectType1;    //íŠ¹ì„±1 íš¨ê³¼ íƒ€ì…
+    public int traitEffectValue1;   //íŠ¹ì„±1 íš¨ê³¼ ìˆ˜ì¹˜
+    public int traitEffectMulti1;   //íš¨ê³¼1 ê³±ì—°ì‚°
+    public int traitEffectType2;    //íŠ¹ì„±2 íš¨ê³¼ íƒ€ì…
+    public int traitEffectValue2;   //íŠ¹ì„±2 íš¨ê³¼ ìˆ˜ì¹˜
+    public int traitEffectMulti2;   //íš¨ê³¼2 ê³±ì—°ì‚°
+    public int traitEffectType3;    //íŠ¹ì„±3 íš¨ê³¼ íƒ€ì…
+    public int traitEffectValue3;   //íŠ¹ì„±3 íš¨ê³¼ ìˆ˜ì¹˜
+    public int traitEffectMulti3;   //íš¨ê³¼3 ê³±ì—°ì‚°
+    public int traitEffectType4;    //íŠ¹ì„±4 íš¨ê³¼ íƒ€ì…
+    public int traitEffectValue4;   //íŠ¹ì„±4 íš¨ê³¼ ìˆ˜ì¹˜
+    public int traitEffectMulti4;   //íš¨ê³¼4 ê³±ì—°ì‚°
 }

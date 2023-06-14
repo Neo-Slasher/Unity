@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//ÀÓ½Ã·Î ¸¸µé¾îÁø Àû Á¾·ù ³Ö¾îµ×À½
+//ì„ì‹œë¡œ ë§Œë“¤ì–´ì§„ ì  ì¢…ë¥˜ ë„£ì–´ë’€ìŒ
 public enum EnemyType
 {
     None, BlackSuitMan, WhiteSuitMan, MachineArmorSoldier
@@ -14,8 +14,8 @@ public class EnemyTrashData
 {
     public int monIdx;
 
-    public double monWidth;     //Àû È÷Æ®¹Ú½º °¡·Î
-    public double monLength;    //Àû È÷Æ®¹Ú½º ¼¼·Î
+    public double monWidth;     //ì  íˆíŠ¸ë°•ìŠ¤ ê°€ë¡œ
+    public double monLength;    //ì  íˆíŠ¸ë°•ìŠ¤ ì„¸ë¡œ
 
     //public int monImage;
     //public int monSound;
@@ -29,11 +29,11 @@ public class EnemyTrashData
     public double dashSpeed;
     public double dashDuration;
 
-    public bool monElite;       //¿¤¸®Æ® ÀûÀÎ°¡?
-    public bool monEnforce;     //°­È­µÇ¾ú´Â°¡?
-    public bool monResist;      //º»ÀÎÀÌ ¹Ğ·Á³ªÁö ¾Ê´Â°¡?
-    public bool monKnockback;   //ÇÃ·¹ÀÌ¾î¸¦ ³Ë¹éÇÏ´Â°¡?
-    public bool monProj;        //Åõ»çÃ¼ ¹ß»ç¿©ºÎ
+    public bool monElite;       //ì—˜ë¦¬íŠ¸ ì ì¸ê°€?
+    public bool monEnforce;     //ê°•í™”ë˜ì—ˆëŠ”ê°€?
+    public bool monResist;      //ë³¸ì¸ì´ ë°€ë ¤ë‚˜ì§€ ì•ŠëŠ”ê°€?
+    public bool monKnockback;   //í”Œë ˆì´ì–´ë¥¼ ë„‰ë°±í•˜ëŠ”ê°€?
+    public bool monProj;        //íˆ¬ì‚¬ì²´ ë°œì‚¬ì—¬ë¶€
 
 
     public EnemyTrashData(EnemyType getEnemyType = EnemyType.None)
@@ -47,8 +47,8 @@ public class EnemyTrashData
         {
             case EnemyType.None:
                 monIdx = -1;
-                monWidth = 125;     //Àû È÷Æ®¹Ú½º °¡·Î
-                monLength = 348;    //Àû È÷Æ®¹Ú½º ¼¼·Î
+                monWidth = 125;     //ì  íˆíŠ¸ë°•ìŠ¤ ê°€ë¡œ
+                monLength = 348;    //ì  íˆíŠ¸ë°•ìŠ¤ ì„¸ë¡œ
 
                 //monImage;
                 //monSound;
@@ -62,17 +62,17 @@ public class EnemyTrashData
                 dashSpeed = 0;
                 dashDuration = 0;
 
-                monElite = false;       //¿¤¸®Æ® ÀûÀÎ°¡?
-                monEnforce = false;     //°­È­µÇ¾ú´Â°¡?
-                monResist = false;      //º»ÀÎÀÌ ¹Ğ·Á³ªÁö ¾Ê´Â°¡?
-                monKnockback = false;   //ÇÃ·¹ÀÌ¾î¸¦ ³Ë¹éÇÏ´Â°¡?
-                monProj = false;        //Åõ»çÃ¼ ¹ß»ç¿©ºÎ
+                monElite = false;       //ì—˜ë¦¬íŠ¸ ì ì¸ê°€?
+                monEnforce = false;     //ê°•í™”ë˜ì—ˆëŠ”ê°€?
+                monResist = false;      //ë³¸ì¸ì´ ë°€ë ¤ë‚˜ì§€ ì•ŠëŠ”ê°€?
+                monKnockback = false;   //í”Œë ˆì´ì–´ë¥¼ ë„‰ë°±í•˜ëŠ”ê°€?
+                monProj = false;        //íˆ¬ì‚¬ì²´ ë°œì‚¬ì—¬ë¶€
                 break;
 
             case EnemyType.BlackSuitMan:
                 monIdx = 1;
-                monWidth = 125;     //Àû È÷Æ®¹Ú½º °¡·Î
-                monLength = 348;    //Àû È÷Æ®¹Ú½º ¼¼·Î
+                monWidth = 125;     //ì  íˆíŠ¸ë°•ìŠ¤ ê°€ë¡œ
+                monLength = 348;    //ì  íˆíŠ¸ë°•ìŠ¤ ì„¸ë¡œ
 
                 //monImage;
                 //monSound;
@@ -86,16 +86,16 @@ public class EnemyTrashData
                 dashSpeed = 0;
                 dashDuration = 0;
 
-                monElite = false;       //¿¤¸®Æ® ÀûÀÎ°¡?
-                monEnforce = false;     //°­È­µÇ¾ú´Â°¡?
-                monResist = false;      //º»ÀÎÀÌ ¹Ğ·Á³ªÁö ¾Ê´Â°¡?
-                monKnockback = false;   //ÇÃ·¹ÀÌ¾î¸¦ ³Ë¹éÇÏ´Â°¡?
-                monProj = false;        //Åõ»çÃ¼ ¹ß»ç¿©ºÎ
+                monElite = false;       //ì—˜ë¦¬íŠ¸ ì ì¸ê°€?
+                monEnforce = false;     //ê°•í™”ë˜ì—ˆëŠ”ê°€?
+                monResist = false;      //ë³¸ì¸ì´ ë°€ë ¤ë‚˜ì§€ ì•ŠëŠ”ê°€?
+                monKnockback = false;   //í”Œë ˆì´ì–´ë¥¼ ë„‰ë°±í•˜ëŠ”ê°€?
+                monProj = false;        //íˆ¬ì‚¬ì²´ ë°œì‚¬ì—¬ë¶€
                 break;
             case EnemyType.WhiteSuitMan:
                 monIdx = 2;
-                monWidth = 125;     //Àû È÷Æ®¹Ú½º °¡·Î
-                monLength = 348;    //Àû È÷Æ®¹Ú½º ¼¼·Î
+                monWidth = 125;     //ì  íˆíŠ¸ë°•ìŠ¤ ê°€ë¡œ
+                monLength = 348;    //ì  íˆíŠ¸ë°•ìŠ¤ ì„¸ë¡œ
 
                 //monImage;
                 //monSound;
@@ -109,17 +109,17 @@ public class EnemyTrashData
                 dashSpeed = 0;
                 dashDuration = 0;
 
-                monElite = false;       //¿¤¸®Æ® ÀûÀÎ°¡?
-                monEnforce = false;     //°­È­µÇ¾ú´Â°¡?
-                monResist = false;      //º»ÀÎÀÌ ¹Ğ·Á³ªÁö ¾Ê´Â°¡?
-                monKnockback = false;   //ÇÃ·¹ÀÌ¾î¸¦ ³Ë¹éÇÏ´Â°¡?
-                monProj = false;        //Åõ»çÃ¼ ¹ß»ç¿©ºÎ
+                monElite = false;       //ì—˜ë¦¬íŠ¸ ì ì¸ê°€?
+                monEnforce = false;     //ê°•í™”ë˜ì—ˆëŠ”ê°€?
+                monResist = false;      //ë³¸ì¸ì´ ë°€ë ¤ë‚˜ì§€ ì•ŠëŠ”ê°€?
+                monKnockback = false;   //í”Œë ˆì´ì–´ë¥¼ ë„‰ë°±í•˜ëŠ”ê°€?
+                monProj = false;        //íˆ¬ì‚¬ì²´ ë°œì‚¬ì—¬ë¶€
                 break;
 
             case EnemyType.MachineArmorSoldier:
                 monIdx = 3;
-                monWidth = 125;     //Àû È÷Æ®¹Ú½º °¡·Î
-                monLength = 348;    //Àû È÷Æ®¹Ú½º ¼¼·Î
+                monWidth = 125;     //ì  íˆíŠ¸ë°•ìŠ¤ ê°€ë¡œ
+                monLength = 348;    //ì  íˆíŠ¸ë°•ìŠ¤ ì„¸ë¡œ
 
                 //monImage;
                 //monSound;
@@ -133,17 +133,17 @@ public class EnemyTrashData
                 dashSpeed = 0;
                 dashDuration = 0;
 
-                monElite = false;       //¿¤¸®Æ® ÀûÀÎ°¡?
-                monEnforce = false;     //°­È­µÇ¾ú´Â°¡?
-                monResist = true;      //º»ÀÎÀÌ ¹Ğ·Á³ªÁö ¾Ê´Â°¡?
-                monKnockback = true;   //ÇÃ·¹ÀÌ¾î¸¦ ³Ë¹éÇÏ´Â°¡?
-                monProj = false;        //Åõ»çÃ¼ ¹ß»ç¿©ºÎ
+                monElite = false;       //ì—˜ë¦¬íŠ¸ ì ì¸ê°€?
+                monEnforce = false;     //ê°•í™”ë˜ì—ˆëŠ”ê°€?
+                monResist = true;      //ë³¸ì¸ì´ ë°€ë ¤ë‚˜ì§€ ì•ŠëŠ”ê°€?
+                monKnockback = true;   //í”Œë ˆì´ì–´ë¥¼ ë„‰ë°±í•˜ëŠ”ê°€?
+                monProj = false;        //íˆ¬ì‚¬ì²´ ë°œì‚¬ì—¬ë¶€
                 break;
 
             case EnemyType.Red3LegRobot:
                 monIdx = 4;
-                monWidth = 125;     //Àû È÷Æ®¹Ú½º °¡·Î
-                monLength = 348;    //Àû È÷Æ®¹Ú½º ¼¼·Î
+                monWidth = 125;     //ì  íˆíŠ¸ë°•ìŠ¤ ê°€ë¡œ
+                monLength = 348;    //ì  íˆíŠ¸ë°•ìŠ¤ ì„¸ë¡œ
 
                 //monImage;
                 //monSound;
@@ -157,17 +157,17 @@ public class EnemyTrashData
                 dashSpeed = 0;
                 dashDuration = 0;
 
-                monElite = true;       //¿¤¸®Æ® ÀûÀÎ°¡?
-                monEnforce = false;     //°­È­µÇ¾ú´Â°¡?
-                monResist = false;      //º»ÀÎÀÌ ¹Ğ·Á³ªÁö ¾Ê´Â°¡?
-                monKnockback = false;   //ÇÃ·¹ÀÌ¾î¸¦ ³Ë¹éÇÏ´Â°¡?
-                monProj = false;        //Åõ»çÃ¼ ¹ß»ç¿©ºÎ
+                monElite = true;       //ì—˜ë¦¬íŠ¸ ì ì¸ê°€?
+                monEnforce = false;     //ê°•í™”ë˜ì—ˆëŠ”ê°€?
+                monResist = false;      //ë³¸ì¸ì´ ë°€ë ¤ë‚˜ì§€ ì•ŠëŠ”ê°€?
+                monKnockback = false;   //í”Œë ˆì´ì–´ë¥¼ ë„‰ë°±í•˜ëŠ”ê°€?
+                monProj = false;        //íˆ¬ì‚¬ì²´ ë°œì‚¬ì—¬ë¶€
                 break;
 
             case EnemyType.Blue3LegRobot:
                 monIdx = 5;
-                monWidth = 125;     //Àû È÷Æ®¹Ú½º °¡·Î
-                monLength = 348;    //Àû È÷Æ®¹Ú½º ¼¼·Î
+                monWidth = 125;     //ì  íˆíŠ¸ë°•ìŠ¤ ê°€ë¡œ
+                monLength = 348;    //ì  íˆíŠ¸ë°•ìŠ¤ ì„¸ë¡œ
 
                 //monImage;
                 //monSound;
@@ -181,17 +181,17 @@ public class EnemyTrashData
                 dashSpeed = 0;
                 dashDuration = 0;
 
-                monElite = true;       //¿¤¸®Æ® ÀûÀÎ°¡?
-                monEnforce = false;     //°­È­µÇ¾ú´Â°¡?
-                monResist = false;      //º»ÀÎÀÌ ¹Ğ·Á³ªÁö ¾Ê´Â°¡?
-                monKnockback = false;   //ÇÃ·¹ÀÌ¾î¸¦ ³Ë¹éÇÏ´Â°¡?
-                monProj = true;        //Åõ»çÃ¼ ¹ß»ç¿©ºÎ
+                monElite = true;       //ì—˜ë¦¬íŠ¸ ì ì¸ê°€?
+                monEnforce = false;     //ê°•í™”ë˜ì—ˆëŠ”ê°€?
+                monResist = false;      //ë³¸ì¸ì´ ë°€ë ¤ë‚˜ì§€ ì•ŠëŠ”ê°€?
+                monKnockback = false;   //í”Œë ˆì´ì–´ë¥¼ ë„‰ë°±í•˜ëŠ”ê°€?
+                monProj = true;        //íˆ¬ì‚¬ì²´ ë°œì‚¬ì—¬ë¶€
                 break;
 
             case EnemyType.Big4LegRobot:
                 monIdx = 6;
-                monWidth = 125;     //Àû È÷Æ®¹Ú½º °¡·Î
-                monLength = 348;    //Àû È÷Æ®¹Ú½º ¼¼·Î
+                monWidth = 125;     //ì  íˆíŠ¸ë°•ìŠ¤ ê°€ë¡œ
+                monLength = 348;    //ì  íˆíŠ¸ë°•ìŠ¤ ì„¸ë¡œ
 
                 //monImage;
                 //monSound;
@@ -205,11 +205,11 @@ public class EnemyTrashData
                 dashSpeed = 0;
                 dashDuration = 0;
 
-                monElite = true;       //¿¤¸®Æ® ÀûÀÎ°¡?
-                monEnforce = false;     //°­È­µÇ¾ú´Â°¡?
-                monResist = false;      //º»ÀÎÀÌ ¹Ğ·Á³ªÁö ¾Ê´Â°¡?
-                monKnockback = false;   //ÇÃ·¹ÀÌ¾î¸¦ ³Ë¹éÇÏ´Â°¡?
-                monProj = true;        //Åõ»çÃ¼ ¹ß»ç¿©ºÎ
+                monElite = true;       //ì—˜ë¦¬íŠ¸ ì ì¸ê°€?
+                monEnforce = false;     //ê°•í™”ë˜ì—ˆëŠ”ê°€?
+                monResist = false;      //ë³¸ì¸ì´ ë°€ë ¤ë‚˜ì§€ ì•ŠëŠ”ê°€?
+                monKnockback = false;   //í”Œë ˆì´ì–´ë¥¼ ë„‰ë°±í•˜ëŠ”ê°€?
+                monProj = true;        //íˆ¬ì‚¬ì²´ ë°œì‚¬ì—¬ë¶€
                 break;
         }
     }

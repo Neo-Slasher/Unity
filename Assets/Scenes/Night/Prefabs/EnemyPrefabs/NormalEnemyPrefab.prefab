@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8276696553215602102}
   m_Layer: 0
   m_Name: NormalEnemyPrefab
-  m_TagString: Untagged
+  m_TagString: Normal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,6 +146,7 @@ MonoBehaviour:
   character: {fileID: 0}
   isStageEnd: 0
   isAttacked: 0
+  tempEnemyName: {fileID: 1063014538193848070}
 --- !u!58 &3770914068062517101
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -292,8 +293,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

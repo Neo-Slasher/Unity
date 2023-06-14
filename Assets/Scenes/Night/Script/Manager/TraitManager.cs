@@ -10,7 +10,7 @@ public class TraitManager : MonoBehaviour
     string traitJsonName;
 
     [SerializeField]
-    int nowLevel;       //ÀÓ½Ã·Î ·¹º§À» ¼³Á¤ÇÔ
+    int nowLevel;       //ì„ì‹œë¡œ ë ˆë²¨ì„ ì„¤ì •í•¨
     [SerializeField]
     List<int> traitIndexList;
     [SerializeField]
@@ -24,7 +24,7 @@ public class TraitManager : MonoBehaviour
         SetTraitIndexListTemp();
     }
 
-    //ÀÓ½Ã·Î °¢ ·¹º§´ç Ã¹¹øÂ° Æ¯¼ºÀ» °¡Áöµµ·Ï ¼³Á¤(¸¸·¾±âÁØ)
+    //ì„ì‹œë¡œ ê° ë ˆë²¨ë‹¹ ì²«ë²ˆì§¸ íŠ¹ì„±ì„ ê°€ì§€ë„ë¡ ì„¤ì •(ë§Œë ™ê¸°ì¤€)
     void SetTraitIndexListTemp()
     {
         int nowLevel = 1;

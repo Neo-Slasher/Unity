@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class HitBox : MonoBehaviour
 {
-    public int getOffensePower;
+    public double getAttackPower;
     public bool isAttacked;
 }
