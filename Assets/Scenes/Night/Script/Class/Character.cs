@@ -26,14 +26,13 @@ public class Character : MonoBehaviour
     CharacterTrashData characterTrashData;
     [SerializeField]
     bool isCheat;
-    double nowHp;
 
     //컨트롤 변수
     Vector3 nowDir;
     float hitboxDistance = 1.75f; //히트박스와 캐릭터와의 거리
     bool isAttack;
 
-    private void Start()
+    private void Awake()
     {
         characterTrashData = new CharacterTrashData(isCheat);
         characterRigid = GetComponent<Rigidbody2D>();
@@ -41,10 +40,10 @@ public class Character : MonoBehaviour
 
         //캐릭터의 스테이터스를 장비 등 변화에 따라 변화시킨다.
         hitBoxScript.getAttackPower = characterTrashData.attackPower;    //무기 공격력 임시로 줌
+    }
 
-        //기본 Hp값 설정
-        nowHp = characterTrashData.hitPointMax;
-
+    private void Start()
+    {
         CharacterAttack();
     }
 
@@ -52,6 +51,106 @@ public class Character : MonoBehaviour
     {
         //캐릭터 데미지 먹을 때
         CharacterDamaged(collision);
+    }
+
+    public void SetCharacterTrashData(EffectType getEffectType, float getEffectValue, bool getEffectMulti)
+    {
+        switch (getEffectType)
+        {
+            case EffectType.none:
+                break;
+            case EffectType.hp:
+                if(!getEffectMulti)
+                {
+                    characterTrashData.hitPoint += getEffectValue;
+                    characterTrashData.hitPointMax += getEffectValue;
+                }
+                break;
+            case EffectType.moveSpeed:
+                if(!getEffectMulti)
+                    characterTrashData.moveSpeed += getEffectValue;
+                else
+                    characterTrashData.moveSpeed *= (1 + getEffectValue);
+                break;
+            case EffectType.attackPower:
+                if (!getEffectMulti)
+                    characterTrashData.attackPower += getEffectValue;
+                else
+                    characterTrashData.attackPower *= (1 + getEffectValue);
+                break;
+            case EffectType.attackSpeed:
+                if (!getEffectMulti)
+                    characterTrashData.attackSpeed += getEffectValue;
+                else
+                    characterTrashData.attackSpeed *= (1 + getEffectValue);
+                break;
+            case EffectType.attackRange:
+                if (!getEffectMulti)
+                    characterTrashData.attackRange += getEffectValue;
+                else
+                    characterTrashData.attackRange *= (1 + getEffectValue);
+                break;
+            case EffectType.startMoney:
+                if (!getEffectMulti)
+                    characterTrashData.startMoney += (int)getEffectValue;
+                break;
+            case EffectType.earnMoney:
+                if (!getEffectMulti)
+                    characterTrashData.earnMoney += getEffectValue;
+                else
+                    characterTrashData.earnMoney *= (1 + getEffectValue);
+                break;
+            case EffectType.shopSlot:
+                if (!getEffectMulti)
+                    characterTrashData.shopSlot += (int)getEffectValue;
+                break;
+            case EffectType.itemSlot:
+                if (!getEffectMulti)
+                    characterTrashData.itemSlot += (int)getEffectValue;
+                break;
+            case EffectType.shopMinRank:
+                if (!getEffectMulti)
+                    characterTrashData.shopMinRank += (int)getEffectValue;
+                break;
+            case EffectType.shopMaxRank:
+                if (!getEffectMulti)
+                    characterTrashData.shopMaxRank += (int)getEffectValue;
+                break;
+            case EffectType.dropRank:
+                if (!getEffectMulti)
+                    characterTrashData.dropRank += (int)getEffectValue;
+                break;
+            case EffectType.dropRate:
+                if (!getEffectMulti)
+                    characterTrashData.dropRate += getEffectValue;
+                else
+                    characterTrashData.dropRate *= (1 + getEffectValue);
+                break;
+            case EffectType.healByHit:
+                if (!getEffectMulti)
+                    characterTrashData.healByHit += getEffectValue;
+                else
+                    characterTrashData.healByHit *= (1 + getEffectValue);
+                break;
+            case EffectType.hpRegen:
+                if (!getEffectMulti)
+                    characterTrashData.hpRegen += getEffectValue;
+                else
+                    characterTrashData.hpRegen *= (1 + getEffectValue);
+                break;
+            case EffectType.dealOnMax:
+                if (!getEffectMulti)
+                    characterTrashData.dealOnMax += getEffectValue;
+                else
+                    characterTrashData.dealOnMax *= (1 + getEffectValue);
+                break;
+            case EffectType.dealOnHp:
+                if (!getEffectMulti)
+                    characterTrashData.dealOnHp += getEffectValue;
+                else
+                    characterTrashData.dealOnHp *= (1 + getEffectValue);
+                break;
+        }
     }
 
     public void CharacterMove(Vector3 joystickDir)
@@ -174,18 +273,18 @@ public class Character : MonoBehaviour
             SetDamagedAnim();
 
         //Hp - 적 데미지 계산
-        if (nowHp > nowAttackPower)
+        if (characterTrashData.hitPoint > nowAttackPower)
         {
             //캐릭터 체력이 더 높으므로 체력 감소
-            nowHp -= nowAttackPower;
+            characterTrashData.hitPoint -= nowAttackPower;
             //감소한 만큼 플레이어 체력바 줄어들게
-            hpBarImage.fillAmount = (float)nowHp / (float)characterTrashData.hitPointMax;
+            hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
             
         }
         else
         {
             //체력이 다 떨어졌으므로 사망
-            nowHp = 0;
+            characterTrashData.hitPoint = 0;
             hpBarImage.fillAmount = 0;
             nightManager.SetStageEnd();
         }

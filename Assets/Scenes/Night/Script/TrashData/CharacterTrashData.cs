@@ -34,7 +34,7 @@ public class CharacterTrashData
 
     public int currentMoney;                //보유 재화
     public int startMoney;                  //시작 재화
-    public int earnMoney;                   //획득 재화
+    public float earnMoney;                   //획득 재화
 
     public int shopSlot;                    //상점 슬롯
     public int shopMinRank;                 //상점 최소 랭크

@@ -6,4 +6,13 @@ using UnityEngine;
 public class TraitTrashWrapper
 {
     public TraitTrash[] traitTrashArr;
+
+    public void Parse()
+    {
+        for(int i =0; i<traitTrashArr.Length; i++)
+        {
+            traitTrashArr[i].Parse();
+        }
+    }
+
 }
