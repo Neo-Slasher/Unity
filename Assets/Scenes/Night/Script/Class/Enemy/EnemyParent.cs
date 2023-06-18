@@ -188,6 +188,29 @@ public class EnemyParent : MonoBehaviour
         }
     }
 
+    public Vector3 GetMoveDir()
+    {
+        return moveDir;
+    }
+
+    public void DrugEnemy()
+    {
+        Vector3 dest;
+        dest = this.transform.position + moveDir.normalized;
+        StartCoroutine(DrugEnemyCoroutine(dest));
+    }
+
+    IEnumerator DrugEnemyCoroutine(Vector3 dest)
+    {
+        Vector3 nowVelocity = enemyRigid.velocity;
+        while((dest - this.transform.position).magnitude >= 0.1f)
+        {
+            enemyRigid.AddForceAtPosition(moveDir, this.transform.position);
+            yield return null;
+        }
+        enemyRigid.velocity = nowVelocity;
+    }
+
     public void DebuggingFunc()
     {
         Debug.Log("HitPoint: " + enemyTrashData.hitPoint);

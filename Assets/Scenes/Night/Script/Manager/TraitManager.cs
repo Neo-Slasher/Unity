@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TraitManager : MonoBehaviour
 {
+    [SerializeField]
+    NightManager nightManager;
     [SerializeField]
     TraitTrashWrapper traitTrashWrapper;
     [SerializeField]
@@ -18,6 +21,9 @@ public class TraitManager : MonoBehaviour
     List<int> traitIndexList;
     [SerializeField]
     List<TraitTrash> traitTrashList;
+
+    [SerializeField]
+    int testTraitIndex;
     
 
     private void Start()
@@ -25,7 +31,8 @@ public class TraitManager : MonoBehaviour
         traitTrashWrapper = JsonManager.LoadJsonData<TraitTrashWrapper>(traitJsonName);
         traitTrashWrapper.Parse();
 
-        SetTraitIndexListTemp();
+        //SetTraitIndexListTemp();
+        TestActiveTrait(testTraitIndex);
         SetTrait();
     }
 
@@ -42,6 +49,12 @@ public class TraitManager : MonoBehaviour
                 traitTrashList.Add(traitTrashWrapper.traitTrashArr[i]);
             }
         }
+    }
+
+    //특성을 테스트하기 위해서 만들어둔 함수
+    void TestActiveTrait(int testIndex)
+    {
+        traitTrashList.Add(traitTrashWrapper.traitTrashArr[testIndex]);
     }
 
     //선택한 특성을 실행하는 함수
@@ -81,6 +94,50 @@ public class TraitManager : MonoBehaviour
 
     void SetActiveTrait(TraitTrash getTrait)
     {
+        //index = 28, 42, 43, 44, 45, 61, 62 총 7개의 액티브가 존재.
+        ActiveTrait nowActive;
+        nowActive = (ActiveTrait)getTrait.traitIdx;
+        StartActive(nowActive, getTrait);
+    }
 
+    void StartActive(ActiveTrait getActiveTrait, TraitTrash getTrait)
+    {
+        switch (getActiveTrait)
+        {
+            case ActiveTrait.startShield:
+                break;
+            case ActiveTrait.dragEnemy:
+                StartCoroutine(DragEnemyCoroutine(getTrait));
+                break;
+            case ActiveTrait.thrustEnemy:
+                break;
+            case ActiveTrait.getMoveSpeed:
+                break;
+            case ActiveTrait.getAttackPower:
+                break;
+            case ActiveTrait.stopEnemy:
+                break;
+            case ActiveTrait.absorbDamage:
+                break;
+            default:
+                break;
+        }
+    }
+
+    IEnumerator DragEnemyCoroutine(TraitTrash getTrait)
+    {
+        while (!nightManager.isStageEnd)
+        {
+            yield return new WaitForSeconds(getTrait.traitEffectValue1);    //n초의 대기시간을 갖는 코드
+            Collider2D[] getCols =
+                character.ReturnOverLapColliders(getTrait.traitEffectValue3 / 128, getTrait.traitEffectValue2 / 128);
+
+            
+            //이제 당겨
+            for(int i =0; i< getCols.Length; i++)
+            {
+                getCols[i].GetComponent<EnemyParent>().DrugEnemy();
+            }
+        }
     }
 }

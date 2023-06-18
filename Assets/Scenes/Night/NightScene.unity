@@ -1176,6 +1176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dde9e9fbced5d34c9f3ecc786146b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nightManager: {fileID: 1563751325}
   traitTrashWrapper:
     traitTrashArr: []
   traitJsonName: TraitTrashJsonData
@@ -1183,6 +1184,7 @@ MonoBehaviour:
   nowLevel: 0
   traitIndexList: 
   traitTrashList: []
+  testTraitIndex: 41
 --- !u!1 &799972125
 GameObject:
   m_ObjectHideFlags: 0

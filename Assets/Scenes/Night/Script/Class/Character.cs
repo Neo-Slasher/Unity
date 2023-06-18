@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,45 +61,27 @@ public class Character : MonoBehaviour
             case EffectType.none:
                 break;
             case EffectType.hp:
-                if(!getEffectMulti)
-                {
                     characterTrashData.hitPoint += getEffectValue;
                     characterTrashData.hitPointMax += getEffectValue;
-                }
                 break;
             case EffectType.moveSpeed:
-                if(!getEffectMulti)
-                    characterTrashData.moveSpeed += getEffectValue;
-                else
-                    characterTrashData.moveSpeed *= (1 + getEffectValue);
+                characterTrashData.moveSpeed += getEffectValue;
                 break;
             case EffectType.attackPower:
-                if (!getEffectMulti)
-                    characterTrashData.attackPower += getEffectValue;
-                else
-                    characterTrashData.attackPower *= (1 + getEffectValue);
+                characterTrashData.attackPower += getEffectValue;
                 break;
             case EffectType.attackSpeed:
-                if (!getEffectMulti)
-                    characterTrashData.attackSpeed += getEffectValue;
-                else
-                    characterTrashData.attackSpeed *= (1 + getEffectValue);
+                characterTrashData.attackSpeed += getEffectValue;
                 break;
             case EffectType.attackRange:
-                if (!getEffectMulti)
-                    characterTrashData.attackRange += getEffectValue;
-                else
-                    characterTrashData.attackRange *= (1 + getEffectValue);
+                characterTrashData.attackRange += getEffectValue;
                 break;
             case EffectType.startMoney:
                 if (!getEffectMulti)
                     characterTrashData.startMoney += (int)getEffectValue;
                 break;
             case EffectType.earnMoney:
-                if (!getEffectMulti)
-                    characterTrashData.earnMoney += getEffectValue;
-                else
-                    characterTrashData.earnMoney *= (1 + getEffectValue);
+                characterTrashData.earnMoney += getEffectValue;
                 break;
             case EffectType.shopSlot:
                 if (!getEffectMulti)
@@ -121,34 +104,19 @@ public class Character : MonoBehaviour
                     characterTrashData.dropRank += (int)getEffectValue;
                 break;
             case EffectType.dropRate:
-                if (!getEffectMulti)
-                    characterTrashData.dropRate += getEffectValue;
-                else
-                    characterTrashData.dropRate *= (1 + getEffectValue);
+                characterTrashData.dropRate += getEffectValue;
                 break;
             case EffectType.healByHit:
-                if (!getEffectMulti)
-                    characterTrashData.healByHit += getEffectValue;
-                else
-                    characterTrashData.healByHit *= (1 + getEffectValue);
+                characterTrashData.healByHit += getEffectValue;
                 break;
             case EffectType.hpRegen:
-                if (!getEffectMulti)
-                    characterTrashData.hpRegen += getEffectValue;
-                else
-                    characterTrashData.hpRegen *= (1 + getEffectValue);
+                characterTrashData.hpRegen += getEffectValue;
                 break;
             case EffectType.dealOnMax:
-                if (!getEffectMulti)
                     characterTrashData.dealOnMax += getEffectValue;
-                else
-                    characterTrashData.dealOnMax *= (1 + getEffectValue);
                 break;
             case EffectType.dealOnHp:
-                if (!getEffectMulti)
                     characterTrashData.dealOnHp += getEffectValue;
-                else
-                    characterTrashData.dealOnHp *= (1 + getEffectValue);
                 break;
         }
     }
@@ -309,5 +277,15 @@ public class Character : MonoBehaviour
             characterSpriteRanderer.color = nowColor;
             yield return new WaitForSeconds(0.3f);
         }
+    }
+
+    //특성에서 주변을 탐색하고 싶을 때 사용할 함수()
+    public Collider2D[] ReturnOverLapColliders(float maxRadius, float minRadius)
+    {
+        Collider2D[] overLapMaxColArr = Physics2D.OverlapCircleAll(this.transform.position, maxRadius);
+        Collider2D[] overLapMinColArr = Physics2D.OverlapCircleAll(this.transform.position, minRadius);
+        Collider2D[] overLapColArr = overLapMaxColArr.Except(overLapMinColArr).ToArray();
+
+        return overLapColArr;
     }
 }

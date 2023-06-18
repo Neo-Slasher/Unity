@@ -12,6 +12,18 @@ public enum EffectType
     active
 }
 
+public enum ActiveTrait
+{
+    none = 0,
+    startShield = 28,       //전투 시작시 최대체력 25%의 반 영구 보호막 획득
+    dragEnemy = 42,         //매 6초마다 적 끌어당김
+    thrustEnemy = 43,       //매 8초마다 적 밀쳐냄
+    getMoveSpeed = 44,      //전투 시작 6초 끝나기전 6초 이속 증가
+    getAttackPower = 45,    //체력이 일정 이하되면 공격력 증가
+    stopEnemy = 61,         //20초마다 2초 적 이동속도 0
+    absorbDamage = 62       //일반 공격 적중당 체력 회복 -> 풀피면 보호막 만듬
+}
+
 [System.Serializable]
 public class TraitTrash
 {
