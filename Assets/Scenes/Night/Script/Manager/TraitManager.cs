@@ -112,6 +112,7 @@ public class TraitManager : MonoBehaviour
                 StartCoroutine(DragEnemyCoroutine(getTrait));
                 break;
             case ActiveTrait.thrustEnemy:
+                StartCoroutine(ThrustEnemyCoroutine(getTrait));
                 break;
             case ActiveTrait.getMoveSpeed:
                 break;
@@ -146,8 +147,31 @@ public class TraitManager : MonoBehaviour
                 //이제 당겨
                 for (int i =0; i< getCols.Length; i++)
                 {
-                
-                    getCols[i].GetComponent<EnemyParent>().DrugEnemy();
+                    if (getCols[i].tag == "Normal" || getCols[i].tag == "Elite")
+                        getCols[i].GetComponent<EnemyParent>().DrugEnemy();
+                }
+        }
+    }
+
+    //특성 인덱스 43번 n초마다 주변 적 밀어내기 코드
+    IEnumerator ThrustEnemyCoroutine(TraitTrash getTrait)
+    {
+        while (!nightManager.isStageEnd)
+        {
+            yield return new WaitForSeconds(getTrait.traitEffectValue1);    //n초의 대기시간을 갖는 코드
+            Debug.Log("ThrustEnemy");
+            Collider2D[] getCols =
+                character.ReturnOverLapColliders(getTrait.traitEffectValue2 / 128, 0);
+            
+            if (getCols.Length != 0)
+                //이제 당겨
+                for (int i = 0; i < getCols.Length; i++)
+                {
+                    if (getCols[i].tag == "Normal" || getCols[i].tag == "Elite")
+                    {
+                        getCols[i].GetComponent<EnemyParent>().ThrustEnemy();
+                        Debug.Log(getCols[i].name);
+                    }
                 }
         }
     }

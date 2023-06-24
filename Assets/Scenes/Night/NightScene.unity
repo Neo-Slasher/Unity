@@ -1184,7 +1184,7 @@ MonoBehaviour:
   nowLevel: 0
   traitIndexList: 
   traitTrashList: []
-  testTraitIndex: 27
+  testTraitIndex: 42
 --- !u!1 &799972125
 GameObject:
   m_ObjectHideFlags: 0
@@ -2214,7 +2214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7248576, g: 0.75036013, b: 0.8584906, a: 1}
+  m_Color: {r: 0.8486403, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

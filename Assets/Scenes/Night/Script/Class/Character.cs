@@ -328,7 +328,9 @@ public class Character : MonoBehaviour
     {
         Collider2D[] overLapMaxColArr = Physics2D.OverlapCircleAll(this.transform.position, maxRadius);
         Collider2D[] overLapMinColArr = Physics2D.OverlapCircleAll(this.transform.position, minRadius);
-        Collider2D[] overLapColArr = overLapMaxColArr.Except(overLapMinColArr).ToArray();
+        Collider2D[] overLapColArr = null;
+        if (overLapMinColArr.Length != 0)
+            overLapColArr = overLapMaxColArr.Except(overLapMinColArr).ToArray();
 
         return overLapColArr;
     }

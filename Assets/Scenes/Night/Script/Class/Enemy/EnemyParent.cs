@@ -203,9 +203,37 @@ public class EnemyParent : MonoBehaviour
     IEnumerator DrugEnemyCoroutine(Vector3 start)
     {
         Vector3 nowVelocity = enemyRigid.velocity;
-        while((character.transform.position - this.transform.position).magnitude >= 2f)
+        //캐릭터 위치 기준으로 반경 256px안까지 끌어당김
+        //while((character.transform.position - this.transform.position).magnitude >= 2f)
+        //{
+        //    enemyRigid.AddForceAtPosition(moveDir, this.transform.position);
+        //    yield return null;
+        //}
+
+        //본인 초기 위치 기준 128px 앞으로 당겨짐
+        while ((start - this.transform.position).magnitude <= 1f)
         {
             enemyRigid.AddForceAtPosition(moveDir, this.transform.position);
+            yield return null;
+        }
+        enemyRigid.velocity = nowVelocity;
+    }
+
+    public void ThrustEnemy()
+    {
+        Vector3 start;
+        start = this.transform.position;
+        StartCoroutine(ThrustEnemyCoroutine(start));
+    }
+
+    IEnumerator ThrustEnemyCoroutine(Vector3 start)
+    {
+        Vector3 nowVelocity = enemyRigid.velocity;
+        enemyRigid.velocity = moveDir.normalized * -2;
+
+        //적 초기 위치 기준 256px 튕김
+        while ((start - this.transform.position).magnitude <= 2f)
+        {
             yield return null;
         }
         enemyRigid.velocity = nowVelocity;
