@@ -18,6 +18,8 @@ public class Character : MonoBehaviour
     [SerializeField]
     Image hpBarImage;
     [SerializeField]
+    Image shieldBarImage;
+    [SerializeField]
     GameObject hitBox;
     [SerializeField]
     HitBox hitBoxScript;
@@ -29,6 +31,7 @@ public class Character : MonoBehaviour
     bool isCheat;
 
     //컨트롤 변수
+    double maxShield;
     Vector3 nowDir;
     float hitboxDistance = 1.75f; //히트박스와 캐릭터와의 거리
     bool isAttack;
@@ -240,21 +243,54 @@ public class Character : MonoBehaviour
         if(nowAttackPower != 0)
             SetDamagedAnim();
 
-        //Hp - 적 데미지 계산
-        if (characterTrashData.hitPoint > nowAttackPower)
+
+        SetDamageData(nowAttackPower);
+    }
+
+    void SetDamageData(double getAttackData)
+    {
+        //쉴드로 데미지 받을 때
+        if (characterTrashData.shieldPoint > 0)
         {
-            //캐릭터 체력이 더 높으므로 체력 감소
-            characterTrashData.hitPoint -= nowAttackPower;
-            //감소한 만큼 플레이어 체력바 줄어들게
-            hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
             
+            if(characterTrashData.shieldPoint >= getAttackData)
+            {
+                characterTrashData.shieldPoint -= getAttackData;
+                shieldBarImage.fillAmount = (float)characterTrashData.shieldPoint / (float)maxShield;
+            }
+            else
+            {
+                double nowAttactDamage = getAttackData - (float)characterTrashData.shieldPoint;
+                characterTrashData.shieldPoint = 0;
+                shieldBarImage.fillAmount = (float)characterTrashData.shieldPoint / (float)maxShield;
+                shieldBarImage.gameObject.SetActive(false);
+
+                characterTrashData.hitPoint -= nowAttactDamage;
+                //감소한 만큼 플레이어 체력바 줄어들게
+                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+            }
         }
+
+        //체력으로 데미지 받을 때
         else
         {
-            //체력이 다 떨어졌으므로 사망
-            characterTrashData.hitPoint = 0;
-            hpBarImage.fillAmount = 0;
-            nightManager.SetStageEnd();
+            //Hp - 적 데미지 계산
+            if (characterTrashData.hitPoint > getAttackData)
+            {
+                //캐릭터 체력이 더 높으므로 체력 감소
+                characterTrashData.hitPoint -= getAttackData;
+                //감소한 만큼 플레이어 체력바 줄어들게
+                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+
+            }
+            else
+            {
+                Debug.Log("GameEnd");
+                //체력이 다 떨어졌으므로 사망
+                characterTrashData.hitPoint = 0;
+                hpBarImage.fillAmount = 0;
+                nightManager.SetStageEnd();
+            }
         }
     }
 
@@ -279,7 +315,15 @@ public class Character : MonoBehaviour
         }
     }
 
-    //특성에서 주변을 탐색하고 싶을 때 사용할 함수()
+    public void SetStartShieldPointData(float getShieldPoint)
+    {
+        float shieldData = (float)characterTrashData.hitPoint * getShieldPoint;
+        maxShield = shieldData;
+        characterTrashData.shieldPoint = shieldData;
+        shieldBarImage.gameObject.SetActive(true);
+    }
+
+    //특성에서 주변을 탐색하고 싶을 때 사용할 함수
     public Collider2D[] ReturnOverLapColliders(float maxRadius, float minRadius)
     {
         Collider2D[] overLapMaxColArr = Physics2D.OverlapCircleAll(this.transform.position, maxRadius);

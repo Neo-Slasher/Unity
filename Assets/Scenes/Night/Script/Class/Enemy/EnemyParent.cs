@@ -195,15 +195,15 @@ public class EnemyParent : MonoBehaviour
 
     public void DrugEnemy()
     {
-        Vector3 dest;
-        dest = this.transform.position + moveDir.normalized;
-        StartCoroutine(DrugEnemyCoroutine(dest));
+        Vector3 start;
+        start = this.transform.position;
+        StartCoroutine(DrugEnemyCoroutine(start));
     }
 
-    IEnumerator DrugEnemyCoroutine(Vector3 dest)
+    IEnumerator DrugEnemyCoroutine(Vector3 start)
     {
         Vector3 nowVelocity = enemyRigid.velocity;
-        while((dest - this.transform.position).magnitude >= 0.1f)
+        while((character.transform.position - this.transform.position).magnitude >= 2f)
         {
             enemyRigid.AddForceAtPosition(moveDir, this.transform.position);
             yield return null;

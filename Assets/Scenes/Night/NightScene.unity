@@ -1184,7 +1184,7 @@ MonoBehaviour:
   nowLevel: 0
   traitIndexList: 
   traitTrashList: []
-  testTraitIndex: 41
+  testTraitIndex: 27
 --- !u!1 &799972125
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,6 +1389,7 @@ MonoBehaviour:
   characterRigid: {fileID: 0}
   characterSpriteRanderer: {fileID: 0}
   hpBarImage: {fileID: 233021013}
+  shieldBarImage: {fileID: 1406309405}
   hitBox: {fileID: 1410340655}
   hitBoxScript: {fileID: 1410340659}
   characterTrashData:
@@ -2213,7 +2214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.16862746, g: 0.2784314, b: 0.74509805, a: 1}
+  m_Color: {r: 0.7248576, g: 0.75036013, b: 0.8584906, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

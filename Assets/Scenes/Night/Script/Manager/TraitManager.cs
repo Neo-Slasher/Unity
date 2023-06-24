@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
 
 public class TraitManager : MonoBehaviour
@@ -105,6 +106,7 @@ public class TraitManager : MonoBehaviour
         switch (getActiveTrait)
         {
             case ActiveTrait.startShield:
+                SetStartShield(getTrait);
                 break;
             case ActiveTrait.dragEnemy:
                 StartCoroutine(DragEnemyCoroutine(getTrait));
@@ -124,20 +126,29 @@ public class TraitManager : MonoBehaviour
         }
     }
 
+    //특성 인덱스 28번 게임 시작시 쉴드 생성 코드
+    void SetStartShield(TraitTrash getTrait)
+    {
+        character.SetStartShieldPointData(getTrait.traitEffectValue1);
+    }
+
+    //특성 인덱스 42번 n초마다 주변 적 끌어당기기 코드
     IEnumerator DragEnemyCoroutine(TraitTrash getTrait)
     {
         while (!nightManager.isStageEnd)
         {
             yield return new WaitForSeconds(getTrait.traitEffectValue1);    //n초의 대기시간을 갖는 코드
+            Debug.Log("DrugEnemy");
             Collider2D[] getCols =
                 character.ReturnOverLapColliders(getTrait.traitEffectValue3 / 128, getTrait.traitEffectValue2 / 128);
 
-            
-            //이제 당겨
-            for(int i =0; i< getCols.Length; i++)
-            {
-                getCols[i].GetComponent<EnemyParent>().DrugEnemy();
-            }
+            if (getCols.Length != 0)
+                //이제 당겨
+                for (int i =0; i< getCols.Length; i++)
+                {
+                
+                    getCols[i].GetComponent<EnemyParent>().DrugEnemy();
+                }
         }
     }
 }

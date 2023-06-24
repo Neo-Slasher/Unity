@@ -84,7 +84,6 @@ public class EliteEnemy : EnemyParent
             
             if(collider != null)
             {
-                Debug.Log(collider.name);
                 //투사체 발사
                 ShootProjectile();
             }
