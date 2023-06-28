@@ -12,6 +12,9 @@ public class MainManager : MonoBehaviour
 
     public Button continueButton;
 
+
+
+
     void Start() {
         if (GameManager.instance.hasSavedData == false) {
             continueButton.interactable = false;

@@ -6,26 +6,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-public class Item {
-
-}
-
-
-// TODO: Character 클래스와 통합 예정
-// 죽은 클래스
-public class PlayData {
-    public int level;
-    public float timeElapsed;
-    public int money;
-    public List<Item>[] inventory;
-    public Item[] itemSlot = new Item[3];
-    public int trait; // int -> ??? 나중에 수정
-    public int traitPoint;
-    public int combatPower; // 전투력
-    // public Status status; 
-}
-
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
@@ -34,6 +14,11 @@ public class GameManager : MonoBehaviour
     public Player player;
 
 
+    public DifficultyList difficultyList;
+    public TraitList traitList;
+    public EquipmentList equipmentList;
+
+    
     void Awake() {
         if (instance == null)  
             instance = this;
@@ -48,16 +33,38 @@ public class GameManager : MonoBehaviour
         } else {
             hasSavedData = true;
         }
+
+
+        // init difficulty data
+        string DifficultyData = File.ReadAllText(Application.dataPath + "/Json/Difficulty.json");
+        difficultyList = JsonUtility.FromJson<DifficultyList>(DifficultyData);
+
+        // init Equipment data
+        string EquipmentData = File.ReadAllText(Application.dataPath + "/Json/Equipment.json");
+        equipmentList = JsonUtility.FromJson<EquipmentList>(EquipmentData);
+
+        // init trait data
+        string TraitData = File.ReadAllText(Application.dataPath + "/Json/Trait.json");
+        traitList = JsonUtility.FromJson<TraitList>(TraitData);
+
     }
 
 
     public void InitPlayerData() {
+        // init player
         this.player = new Player();
-        File.WriteAllText(Application.persistentDataPath + "/UserData.json", JsonUtility.ToJson(this.player));
+        string initData = File.ReadAllText(Application.dataPath + "/Json/InitPlayer.json");
+        this.player =  JsonUtility.FromJson<Player>(initData);
+
+        // save player
+        string json = JsonUtility.ToJson(this.player);
+        File.WriteAllText(Application.dataPath + "/UserData.json", json);
+        // File.WriteAllText(Application.persistentDataPath + "/UserData.json", json);
     }
 
     public void LoadPlayerData() {
-        string savedData = File.ReadAllText(Application.persistentDataPath + "/UserData.json");
+        string savedData = File.ReadAllText(Application.dataPath + "/UserData.json");
+        //string savedData = File.ReadAllText(Application.persistentDataPath + "/UserData.json");
         this.player = JsonUtility.FromJson<Player>(savedData);
     }
 }
