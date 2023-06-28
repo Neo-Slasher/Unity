@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyParent : MonoBehaviour
 {
     [SerializeField]
-    EnemyTrashData enemyTrashData;
+    protected EnemyTrashData enemyTrashData;
     public LevelTrashData levelTrashData;
 
     //적 데이터
@@ -16,12 +18,14 @@ public class EnemyParent : MonoBehaviour
 
     Rigidbody2D enemyRigid;
 
-    Vector3 moveDir;
+    protected Vector3 moveDir;
     public bool isStageEnd = false;
 
     public bool isAttacked = false; //공격을 했다면 2초간 true로 변환
 
-    private void Start()
+    public TextMeshPro tempEnemyName;
+
+    protected void Start()
     {
         enemyRigid = GetComponent<Rigidbody2D>();
 
@@ -65,7 +69,7 @@ public class EnemyParent : MonoBehaviour
         enemyRigid.velocity = Vector3.zero;
     }
 
-    float SetMoveSpeed(double getMoveSpeed)
+    protected float SetMoveSpeed(double getMoveSpeed)
     {
         float result = 0;
         result = ((float)getMoveSpeed * 25) / 128;
@@ -81,35 +85,41 @@ public class EnemyParent : MonoBehaviour
         enemyTrashData.attackPower *= levelTrashData.diffStat;
     }
 
-    public void SetNormalAssassinationType(int assassinationLevel)
+    public void SetNormalEnemyType(int nowIndex)
     {
         //선택한 암살에 따라 나오는 몬스터 타입 변경
-        switch(assassinationLevel)
+        switch(nowIndex)
         {
-            case 1:
+            case 0:
                 enemyTrashData = new EnemyTrashData(EnemyType.BlackSuitMan);
+                tempEnemyName.text = "Black Suit";
+                break;
+            case 1:
+                enemyTrashData = new EnemyTrashData(EnemyType.WhiteSuitMan);
+                tempEnemyName.text = "White Suit";
                 break;
             case 2:
-                enemyTrashData = new EnemyTrashData(EnemyType.WhiteSuitMan);
-                break;
-            case 3:
                 enemyTrashData = new EnemyTrashData(EnemyType.MachineArmorSoldier);
+                tempEnemyName.text = "Machine Armor";
                 break;
         }
     }
-    public void SetEliteAssassinationType(int assassinationLevel)
+    public void SetEliteEnemyType(int nowIndex)
     {
         //선택한 암살에 따라 나오는 몬스터 타입 변경
-        switch (assassinationLevel)
+        switch (nowIndex)
         {
-            case 1:
+            case 0:
                 enemyTrashData = new EnemyTrashData(EnemyType.Red3LegRobot);
+                tempEnemyName.text = "Red 3Leg";
+                break;
+            case 1:
+                enemyTrashData = new EnemyTrashData(EnemyType.Blue3LegRobot);
+                tempEnemyName.text = "Blue 3Leg";
                 break;
             case 2:
-                enemyTrashData = new EnemyTrashData(EnemyType.Blue3LegRobot);
-                break;
-            case 3:
                 enemyTrashData = new EnemyTrashData(EnemyType.Big4LegRobot);
+                tempEnemyName.text = "Big 4Leg";
                 break;
         }
     }
@@ -168,7 +178,7 @@ public class EnemyParent : MonoBehaviour
     {
         if (collision.name == "HitBox")
         {
-            int getDamage = collision.gameObject.GetComponent<HitBox>().getOffensePower;
+            double getDamage = collision.gameObject.GetComponent<HitBox>().getAttackPower;
             collision.gameObject.GetComponent<HitBox>().isAttacked = true;
 
             if (nowHp > getDamage)
@@ -176,5 +186,61 @@ public class EnemyParent : MonoBehaviour
             else
                 Destroy(this.gameObject);
         }
+    }
+
+    public Vector3 GetMoveDir()
+    {
+        return moveDir;
+    }
+
+    public void DrugEnemy()
+    {
+        Vector3 start;
+        start = this.transform.position;
+        StartCoroutine(DrugEnemyCoroutine(start));
+    }
+
+    IEnumerator DrugEnemyCoroutine(Vector3 start)
+    {
+        Vector3 nowVelocity = enemyRigid.velocity;
+        //캐릭터 위치 기준으로 반경 256px안까지 끌어당김
+        //while((character.transform.position - this.transform.position).magnitude >= 2f)
+        //{
+        //    enemyRigid.AddForceAtPosition(moveDir, this.transform.position);
+        //    yield return null;
+        //}
+
+        //본인 초기 위치 기준 128px 앞으로 당겨짐
+        while ((start - this.transform.position).magnitude <= 1f)
+        {
+            enemyRigid.AddForceAtPosition(moveDir, this.transform.position);
+            yield return null;
+        }
+        enemyRigid.velocity = nowVelocity;
+    }
+
+    public void ThrustEnemy()
+    {
+        Vector3 start;
+        start = this.transform.position;
+        StartCoroutine(ThrustEnemyCoroutine(start));
+    }
+
+    IEnumerator ThrustEnemyCoroutine(Vector3 start)
+    {
+        Vector3 nowVelocity = enemyRigid.velocity;
+        enemyRigid.velocity = moveDir.normalized * -2;
+
+        //적 초기 위치 기준 256px 튕김
+        while ((start - this.transform.position).magnitude <= 2f)
+        {
+            yield return null;
+        }
+        enemyRigid.velocity = nowVelocity;
+    }
+
+    public void DebuggingFunc()
+    {
+        Debug.Log("HitPoint: " + enemyTrashData.hitPoint);
     }
 }

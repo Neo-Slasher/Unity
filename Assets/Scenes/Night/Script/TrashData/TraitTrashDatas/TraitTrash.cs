@@ -1,26 +1,68 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
+public enum EffectType
+{
+    none, hp, moveSpeed, attackPower, attackSpeed, 
+    attackRange, startMoney, earnMoney, shopSlot, 
+    itemSlot, shopMinRank, shopMaxRank, dropRank, 
+    dropRate, healByHit, hpRegen, dealOnMax, dealOnHp, 
+    active
+}
+
+public enum ActiveTrait
+{
+    none = 0,
+    startShield = 28,       //ì „íˆ¬ ì‹œì‘ì‹œ ìµœëŒ€ì²´ë ¥ 25%ì˜ ë°˜ ì˜êµ¬ ë³´í˜¸ë§‰ íšë“
+    dragEnemy = 42,         //ë§¤ 6ì´ˆë§ˆë‹¤ ì  ëŒì–´ë‹¹ê¹€
+    thrustEnemy = 43,       //ë§¤ 8ì´ˆë§ˆë‹¤ ì  ë°€ì³ëƒ„
+    getMoveSpeed = 44,      //ì „íˆ¬ ì‹œì‘ 6ì´ˆ ëë‚˜ê¸°ì „ 6ì´ˆ ì´ì† ì¦ê°€
+    getAttackPower = 45,    //ì²´ë ¥ì´ ì¼ì • ì´í•˜ë˜ë©´ ê³µê²©ë ¥ ì¦ê°€
+    stopEnemy = 61,         //20ì´ˆë§ˆë‹¤ 2ì´ˆ ì  ì´ë™ì†ë„ 0
+    absorbDamage = 62       //ì¼ë°˜ ê³µê²© ì ì¤‘ë‹¹ ì²´ë ¥ íšŒë³µ -> í’€í”¼ë©´ ë³´í˜¸ë§‰ ë§Œë“¬
+}
 
 [System.Serializable]
 public class TraitTrash
 {
-    public int traitIdx;            //Æ¯¼º ÀÎµ¦½º
-    public string traitName;        //Æ¯¼º ÀÌ¸§
-    public int traitReqLvl;         //Æ¯¼º ¿ä±¸ ·¹º§
-    public int traitRank;           //Æ¯¼º ·©Å©
-    public int traitImgIdx;         //ÀÌ¹ÌÁö ÀÎµ¦½º
-    public string traitScript;      //Æ¯¼º ¼³¸í¹®
-    public int traitEffectType1;    //Æ¯¼º1 È¿°ú Å¸ÀÔ
-    public int traitEffectValue1;   //Æ¯¼º1 È¿°ú ¼öÄ¡
-    public int traitEffectMulti1;   //È¿°ú1 °ö¿¬»ê
-    public int traitEffectType2;    //Æ¯¼º2 È¿°ú Å¸ÀÔ
-    public int traitEffectValue2;   //Æ¯¼º2 È¿°ú ¼öÄ¡
-    public int traitEffectMulti2;   //È¿°ú2 °ö¿¬»ê
-    public int traitEffectType3;    //Æ¯¼º3 È¿°ú Å¸ÀÔ
-    public int traitEffectValue3;   //Æ¯¼º3 È¿°ú ¼öÄ¡
-    public int traitEffectMulti3;   //È¿°ú3 °ö¿¬»ê
-    public int traitEffectType4;    //Æ¯¼º4 È¿°ú Å¸ÀÔ
-    public int traitEffectValue4;   //Æ¯¼º4 È¿°ú ¼öÄ¡
-    public int traitEffectMulti4;   //È¿°ú4 °ö¿¬»ê
+    public int traitIdx;            //íŠ¹ì„± ì¸ë±ìŠ¤
+    public string traitName;        //íŠ¹ì„± ì´ë¦„
+    public int traitReqLvl;         //íŠ¹ì„± ìš”êµ¬ ë ˆë²¨
+    public int traitRank;           //íŠ¹ì„± ë­í¬
+    public int traitImgIdx;         //ì´ë¯¸ì§€ ì¸ë±ìŠ¤
+    public string traitScript;      //íŠ¹ì„± ì„¤ëª…ë¬¸
+
+    public int traitEffectType1;    //íŠ¹ì„±1 íš¨ê³¼ íƒ€ì…
+    public EffectType effectType1;
+    public float traitEffectValue1;   //íŠ¹ì„±1 íš¨ê³¼ ìˆ˜ì¹˜
+    public bool traitEffectMulti1;   //íš¨ê³¼1 ê³±ì—°ì‚°
+
+    public int traitEffectType2;    //íŠ¹ì„±2 íš¨ê³¼ íƒ€ì…
+    public EffectType effectType2;
+    public float traitEffectValue2;   //íŠ¹ì„±2 íš¨ê³¼ ìˆ˜ì¹˜
+    public bool traitEffectMulti2;   //íš¨ê³¼2 ê³±ì—°ì‚°
+
+    public int traitEffectType3;    //íŠ¹ì„±3 íš¨ê³¼ íƒ€ì…
+    public EffectType effectType3;
+    public float traitEffectValue3;   //íŠ¹ì„±3 íš¨ê³¼ ìˆ˜ì¹˜
+    public bool traitEffectMulti3;   //íš¨ê³¼3 ê³±ì—°ì‚°
+
+    public int traitEffectType4;    //íŠ¹ì„±4 íš¨ê³¼ íƒ€ì…
+    public EffectType effectType4;
+    public float traitEffectValue4;   //íŠ¹ì„±4 íš¨ê³¼ ìˆ˜ì¹˜
+    public bool traitEffectMulti4;   //íš¨ê³¼4 ê³±ì—°ì‚°
+
+    public void Parse()
+    {
+        if (traitEffectType1 != 0)
+            effectType1 = (EffectType)traitEffectType1;
+        if (traitEffectType2 != 0)
+            effectType2 = (EffectType)traitEffectType2;
+        if (traitEffectType3 != 0)
+            effectType3 = (EffectType)traitEffectType3;
+        if (traitEffectType4 != 0)
+            effectType4 = (EffectType)traitEffectType4;
+    }
 }

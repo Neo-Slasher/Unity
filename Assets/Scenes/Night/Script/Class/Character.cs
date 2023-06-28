@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +18,8 @@ public class Character : MonoBehaviour
     [SerializeField]
     Image hpBarImage;
     [SerializeField]
+    Image shieldBarImage;
+    [SerializeField]
     GameObject hitBox;
     [SerializeField]
     HitBox hitBoxScript;
@@ -24,24 +27,27 @@ public class Character : MonoBehaviour
     //캐릭터 임시 데이터
     [SerializeField]
     CharacterTrashData characterTrashData;
-    double nowHp;
+    [SerializeField]
+    bool isCheat;
 
     //컨트롤 변수
+    double maxShield;
     Vector3 nowDir;
     float hitboxDistance = 1.75f; //히트박스와 캐릭터와의 거리
     bool isAttack;
 
-    private void Start()
+    private void Awake()
     {
+        characterTrashData = new CharacterTrashData(isCheat);
         characterRigid = GetComponent<Rigidbody2D>();
         characterSpriteRanderer = GetComponent<SpriteRenderer>();
 
         //캐릭터의 스테이터스를 장비 등 변화에 따라 변화시킨다.
-        hitBoxScript.getOffensePower = characterTrashData.offensePower;    //무기 공격력 임시로 줌
+        hitBoxScript.getAttackPower = characterTrashData.attackPower;    //무기 공격력 임시로 줌
+    }
 
-        //기본 Hp값 설정
-        nowHp = characterTrashData.Hp;
-
+    private void Start()
+    {
         CharacterAttack();
     }
 
@@ -49,6 +55,73 @@ public class Character : MonoBehaviour
     {
         //캐릭터 데미지 먹을 때
         CharacterDamaged(collision);
+    }
+
+    public void SetCharacterTrashData(EffectType getEffectType, float getEffectValue, bool getEffectMulti)
+    {
+        switch (getEffectType)
+        {
+            case EffectType.none:
+                break;
+            case EffectType.hp:
+                    characterTrashData.hitPoint += getEffectValue;
+                    characterTrashData.hitPointMax += getEffectValue;
+                break;
+            case EffectType.moveSpeed:
+                characterTrashData.moveSpeed += getEffectValue;
+                break;
+            case EffectType.attackPower:
+                characterTrashData.attackPower += getEffectValue;
+                break;
+            case EffectType.attackSpeed:
+                characterTrashData.attackSpeed += getEffectValue;
+                break;
+            case EffectType.attackRange:
+                characterTrashData.attackRange += getEffectValue;
+                break;
+            case EffectType.startMoney:
+                if (!getEffectMulti)
+                    characterTrashData.startMoney += (int)getEffectValue;
+                break;
+            case EffectType.earnMoney:
+                characterTrashData.earnMoney += getEffectValue;
+                break;
+            case EffectType.shopSlot:
+                if (!getEffectMulti)
+                    characterTrashData.shopSlot += (int)getEffectValue;
+                break;
+            case EffectType.itemSlot:
+                if (!getEffectMulti)
+                    characterTrashData.itemSlot += (int)getEffectValue;
+                break;
+            case EffectType.shopMinRank:
+                if (!getEffectMulti)
+                    characterTrashData.shopMinRank += (int)getEffectValue;
+                break;
+            case EffectType.shopMaxRank:
+                if (!getEffectMulti)
+                    characterTrashData.shopMaxRank += (int)getEffectValue;
+                break;
+            case EffectType.dropRank:
+                if (!getEffectMulti)
+                    characterTrashData.dropRank += (int)getEffectValue;
+                break;
+            case EffectType.dropRate:
+                characterTrashData.dropRate += getEffectValue;
+                break;
+            case EffectType.healByHit:
+                characterTrashData.healByHit += getEffectValue;
+                break;
+            case EffectType.hpRegen:
+                characterTrashData.hpRegen += getEffectValue;
+                break;
+            case EffectType.dealOnMax:
+                    characterTrashData.dealOnMax += getEffectValue;
+                break;
+            case EffectType.dealOnHp:
+                    characterTrashData.dealOnHp += getEffectValue;
+                break;
+        }
     }
 
     public void CharacterMove(Vector3 joystickDir)
@@ -60,12 +133,12 @@ public class Character : MonoBehaviour
         characterRigid.velocity = joystickDir.normalized * SetMoveSpeed(characterTrashData.moveSpeed);
     }
 
-    float SetMoveSpeed(int getMoveSpeed)
+    float SetMoveSpeed(double getMoveSpeed)
     {
-        float result = 0;
-        result = ((float)getMoveSpeed * 25) / 128;
+        double result = 0;
+        result = (getMoveSpeed * 25) / 128;
 
-        return result;
+        return (float)result;
     }
 
     public void CharacterStop(Vector3 joystickDir)
@@ -145,15 +218,20 @@ public class Character : MonoBehaviour
         double nowAttackPower = 0;
 
         //적 데미지 받아오기
-        if (nowCollision.name == "NormalEnemyPrefab(Clone)")
+        if (nowCollision.tag == "Normal")
         {
             nowAttackPower = nowCollision.GetComponent<NormalEnemy>().GetEnemyAttackPower();
             nowCollision.GetComponent<NormalEnemy>().SetIsAttacked();
         }
-        else if (nowCollision.name == "EliteEnemyPrefab(Clone)")
+        else if (nowCollision.tag == "Elite")
         {
             nowAttackPower = nowCollision.GetComponent<EliteEnemy>().GetEnemyAttackPower();
             nowCollision.GetComponent<EliteEnemy>().SetIsAttacked();
+        }
+        else if(nowCollision.tag == "Projectile")
+        {
+            nowAttackPower = nowCollision.transform.parent.GetComponent<EliteEnemy>().GetEnemyAttackPower();
+            nowCollision.transform.parent.GetComponent<EliteEnemy>().SetIsAttacked();
         }
         else
         {
@@ -165,21 +243,54 @@ public class Character : MonoBehaviour
         if(nowAttackPower != 0)
             SetDamagedAnim();
 
-        //Hp - 적 데미지 계산
-        if (nowHp > nowAttackPower)
+
+        SetDamageData(nowAttackPower);
+    }
+
+    void SetDamageData(double getAttackData)
+    {
+        //쉴드로 데미지 받을 때
+        if (characterTrashData.shieldPoint > 0)
         {
-            //캐릭터 체력이 더 높으므로 체력 감소
-            nowHp -= nowAttackPower;
-            //감소한 만큼 플레이어 체력바 줄어들게
-            hpBarImage.fillAmount = (float)nowHp / (float)characterTrashData.Hp;
             
+            if(characterTrashData.shieldPoint >= getAttackData)
+            {
+                characterTrashData.shieldPoint -= getAttackData;
+                shieldBarImage.fillAmount = (float)characterTrashData.shieldPoint / (float)maxShield;
+            }
+            else
+            {
+                double nowAttactDamage = getAttackData - (float)characterTrashData.shieldPoint;
+                characterTrashData.shieldPoint = 0;
+                shieldBarImage.fillAmount = (float)characterTrashData.shieldPoint / (float)maxShield;
+                shieldBarImage.gameObject.SetActive(false);
+
+                characterTrashData.hitPoint -= nowAttactDamage;
+                //감소한 만큼 플레이어 체력바 줄어들게
+                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+            }
         }
+
+        //체력으로 데미지 받을 때
         else
         {
-            //체력이 다 떨어졌으므로 사망
-            nowHp = 0;
-            hpBarImage.fillAmount = 0;
-            nightManager.SetStageEnd();
+            //Hp - 적 데미지 계산
+            if (characterTrashData.hitPoint > getAttackData)
+            {
+                //캐릭터 체력이 더 높으므로 체력 감소
+                characterTrashData.hitPoint -= getAttackData;
+                //감소한 만큼 플레이어 체력바 줄어들게
+                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+
+            }
+            else
+            {
+                Debug.Log("GameEnd");
+                //체력이 다 떨어졌으므로 사망
+                characterTrashData.hitPoint = 0;
+                hpBarImage.fillAmount = 0;
+                nightManager.SetStageEnd();
+            }
         }
     }
 
@@ -202,5 +313,25 @@ public class Character : MonoBehaviour
             characterSpriteRanderer.color = nowColor;
             yield return new WaitForSeconds(0.3f);
         }
+    }
+
+    public void SetStartShieldPointData(float getShieldPoint)
+    {
+        float shieldData = (float)characterTrashData.hitPoint * getShieldPoint;
+        maxShield = shieldData;
+        characterTrashData.shieldPoint = shieldData;
+        shieldBarImage.gameObject.SetActive(true);
+    }
+
+    //특성에서 주변을 탐색하고 싶을 때 사용할 함수
+    public Collider2D[] ReturnOverLapColliders(float maxRadius, float minRadius)
+    {
+        Collider2D[] overLapMaxColArr = Physics2D.OverlapCircleAll(this.transform.position, maxRadius);
+        Collider2D[] overLapMinColArr = Physics2D.OverlapCircleAll(this.transform.position, minRadius);
+        Collider2D[] overLapColArr = null;
+        if (overLapMinColArr.Length != 0)
+            overLapColArr = overLapMaxColArr.Except(overLapMinColArr).ToArray();
+
+        return overLapColArr;
     }
 }

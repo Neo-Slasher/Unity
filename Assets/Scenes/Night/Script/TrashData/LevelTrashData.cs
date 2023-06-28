@@ -5,16 +5,16 @@ using UnityEngine;
 [System.Serializable]
 public class LevelTrashData
 {
-    public int diff;                    //³­ÀÌµµ 
-    public int diffRecLvl;              //±ÇÀå·¹º§  
-    public int diffExp;                 //º¸»ó Exp
-    public int diffGoal;                //¸ñÇ¥ ¾ËÆÄ
-    public double diffStat;             //Àû ½ºÅİ ¹è¼ö
-    public double diffPop;              //Àû °³Ã¼ ¹è¼ö
-    public double diffNormalEnforce;    //ÀÏ¹İ °­È­ È®·ü
-    public double diffEliteEnforce;     //¿¤¸®Æ® °­È­ È®·ü
-    public int diffDropRank;            //³­ÀÌµµ µå¶ø ·©Å©
-    public double diffRecCP;            //±ÇÀå CP ·©Å©
+    public int diff;                    //ë‚œì´ë„ 
+    public int diffRecLvl;              //ê¶Œì¥ë ˆë²¨  
+    public int diffExp;                 //ë³´ìƒ Exp
+    public int diffGoal;                //ëª©í‘œ ì•ŒíŒŒ
+    public double diffStat;             //ì  ìŠ¤í…Ÿ ë°°ìˆ˜
+    public double diffPop;              //ì  ê°œì²´ ë°°ìˆ˜
+    public double diffNormalEnforce;    //ì¼ë°˜ ê°•í™” í™•ë¥ 
+    public double diffEliteEnforce;     //ì—˜ë¦¬íŠ¸ ê°•í™” í™•ë¥ 
+    public int diffDropRank;            //ë‚œì´ë„ ë“œë ë­í¬
+    public double diffRecCP;            //ê¶Œì¥ CP ë­í¬
 
     public LevelTrashData(int getLevel = 1) 
     { 
