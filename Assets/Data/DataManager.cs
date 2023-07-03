@@ -42,6 +42,8 @@ public class DataManager : MonoBehaviour
 
         // assassination stage data
         string AssassinationStageData = File.ReadAllText(Application.dataPath + "/Data/Json/AssassinationStage.json");
-        assassinationStageList = JsonUtility.FromJson<AssassinationStageList>(AssassinationStageData);
+        assassinationStageList = JsonUtility.FromJson<AssassinationStageList>(AssassinationStageData);   
     }
+
+
 }
