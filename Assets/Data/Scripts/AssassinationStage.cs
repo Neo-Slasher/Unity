@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class AssassinationStageList
 {
-    List<AssassinationStage> assassinationStage;
+    public List<AssassinationStage> assassinationStage;
 }
 
 

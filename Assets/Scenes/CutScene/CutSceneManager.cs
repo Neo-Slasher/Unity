@@ -21,4 +21,16 @@ public class CutSceneManager : MonoBehaviour
     public void OnClickSkipButton() {
         SceneManager.LoadScene("PreparationScene");
     }
+
+
+    public void OnClickAutoButton()
+    {
+        Debug.Log(DataManager.instance.difficultyList.difficulty[0].goalMoney);
+        Debug.Log(DataManager.instance.traitList.trait[0].index);
+        Debug.Log(DataManager.instance.equipmentList.equipment[0].index);
+        Debug.Log(DataManager.instance.assassinationStageList.assassinationStage[0].stageNo);
+
+    }
 }
+
+
