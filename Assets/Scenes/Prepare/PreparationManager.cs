@@ -38,18 +38,10 @@ public class PreparationManager : MonoBehaviour
     public TextMeshProUGUI fifthText;
 
 
-
-
-    void Awake()
-    {
-        choiceDifficulty = 0;
-
-    }
-
-    // Start is called before the first frame update
     void Start()
     {
         LoadStatus();
+        choiceDifficulty = 0;
         LoadDifficulty();
         ActivateDifficultyButton();
     }
@@ -90,14 +82,14 @@ public class PreparationManager : MonoBehaviour
     private void LoadDifficulty()
     {
         difficultyLevelText.text = (choiceDifficulty + 1).ToString();
-        recommandLvText.text = "권장 Lv." + GameManager.instance.difficultyList.difficulties[choiceDifficulty].recommandLv.ToString();
-        rewardExpText.text = "보상 EXP " + GameManager.instance.difficultyList.difficulties[choiceDifficulty].rewardExp.ToString();
-        goalMoneyText.text = "- 목표금액 " + GameManager.instance.difficultyList.difficulties[choiceDifficulty].goalMoney.ToString();
-        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 +" + GameManager.instance.difficultyList.difficulties[choiceDifficulty].enemyStatus.ToString() + "%";
-        normalEnhanceText.text = "- 일반 적이 " + GameManager.instance.difficultyList.difficulties[choiceDifficulty].normalEnhance.ToString() + "% 확률로 강화";
-        eliteEnhanceText.text = "- 정예 적이 " + GameManager.instance.difficultyList.difficulties[choiceDifficulty].eliteEnhance.ToString() + "% 확률로 강화";
-        dropRankText.text = "- 아이템 드롭률 +" + GameManager.instance.difficultyList.difficulties[choiceDifficulty].dropRank.ToString() + "%";
-        enemyRespawnText.text = "- 적 개체수 +" + GameManager.instance.difficultyList.difficulties[choiceDifficulty].enemyRespawn.ToString() + "%";
+        recommandLvText.text = "권장 Lv." + DataManager.instance.difficultyList.difficulty[choiceDifficulty].recommandLv.ToString();
+        rewardExpText.text = "보상 EXP " + DataManager.instance.difficultyList.difficulty[choiceDifficulty].rewardExp.ToString();
+        goalMoneyText.text = "- 목표금액 " + DataManager.instance.difficultyList.difficulty[choiceDifficulty].goalMoney.ToString();
+        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 +" + DataManager.instance.difficultyList.difficulty[choiceDifficulty].enemyStatus.ToString() + "%";
+        normalEnhanceText.text = "- 일반 적이 " + DataManager.instance.difficultyList.difficulty[choiceDifficulty].normalEnhance.ToString() + "% 확률로 강화";
+        eliteEnhanceText.text = "- 정예 적이 " + DataManager.instance.difficultyList.difficulty[choiceDifficulty].eliteEnhance.ToString() + "% 확률로 강화";
+        dropRankText.text = "- 아이템 드롭률 +" + DataManager.instance.difficultyList.difficulty[choiceDifficulty].dropRank.ToString() + "%";
+        enemyRespawnText.text = "- 적 개체수 +" + DataManager.instance.difficultyList.difficulty[choiceDifficulty].enemyRespawn.ToString() + "%";
     }
 
     public void OnClickStartButton() {
