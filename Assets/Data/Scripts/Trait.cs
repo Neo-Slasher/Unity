@@ -7,7 +7,7 @@ using UnityEngine;
 [Serializable]
 public class TraitList
 {
-    public List<Trait> traits;
+    public List<Trait> trait;
 }
 
 

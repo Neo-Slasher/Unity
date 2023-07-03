@@ -14,10 +14,6 @@ public class GameManager : MonoBehaviour
     public Player player;
 
 
-    public DifficultyList difficultyList;
-    public TraitList traitList;
-    public EquipmentList equipmentList;
-
     
     void Awake() {
         if (instance == null)  
@@ -33,19 +29,6 @@ public class GameManager : MonoBehaviour
         } else {
             hasSavedData = true;
         }
-
-
-        // init difficulty data
-        string DifficultyData = File.ReadAllText(Application.dataPath + "/Json/Difficulty.json");
-        difficultyList = JsonUtility.FromJson<DifficultyList>(DifficultyData);
-
-        // init Equipment data
-        string EquipmentData = File.ReadAllText(Application.dataPath + "/Json/Equipment.json");
-        equipmentList = JsonUtility.FromJson<EquipmentList>(EquipmentData);
-
-        // init trait data
-        string TraitData = File.ReadAllText(Application.dataPath + "/Json/Trait.json");
-        traitList = JsonUtility.FromJson<TraitList>(TraitData);
 
     }
 

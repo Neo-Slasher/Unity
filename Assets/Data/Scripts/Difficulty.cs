@@ -7,7 +7,7 @@ using UnityEngine;
 [Serializable]
 public class DifficultyList
 {
-    public List<Difficulty> difficulties;
+    public List<Difficulty> difficulty;
 }
 
 [Serializable]
