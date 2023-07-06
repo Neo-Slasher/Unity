@@ -20,14 +20,20 @@ public class EnemyParent : MonoBehaviour
 
     protected Vector3 moveDir;
     public bool isStageEnd = false;
-
-    public bool isAttacked = false; //공격을 했다면 2초간 true로 변환
+    
+    public bool isStop = false;         //오브젝트 움직임을 컨트롤하기 위해 만듦
+    public bool isAttacked = false;     //공격을 했다면 2초간 true로 변환
+    Coroutine moveCoroutine = null;
 
     public TextMeshPro tempEnemyName;
+
+    //테스트용
+    SpriteRenderer enemyRenderer;
 
     protected void Start()
     {
         enemyRigid = GetComponent<Rigidbody2D>();
+        enemyRenderer = GetComponent<SpriteRenderer>();
 
         EnemyMove();
     }
@@ -51,9 +57,10 @@ public class EnemyParent : MonoBehaviour
         character= getCharacter;
     }
 
-    void EnemyMove()
+    public void EnemyMove()
     {
-        StartCoroutine(EnemyMoveCoroutine());
+        if(moveCoroutine == null)
+            moveCoroutine = StartCoroutine(EnemyMoveCoroutine());
     }
 
     IEnumerator EnemyMoveCoroutine()
@@ -61,6 +68,9 @@ public class EnemyParent : MonoBehaviour
         Vector3 nowCharPos;
         while(!isStageEnd)
         {
+            while (isStop)
+                yield return new WaitForSeconds(1);
+
             nowCharPos = character.transform.position;
             moveDir = nowCharPos - this.transform.position;
             enemyRigid.velocity = moveDir.normalized * SetMoveSpeed(enemyTrashData.moveSpeed);
@@ -72,7 +82,7 @@ public class EnemyParent : MonoBehaviour
     protected float SetMoveSpeed(double getMoveSpeed)
     {
         float result = 0;
-        result = ((float)getMoveSpeed * 25) / 128;
+        result = ((float)getMoveSpeed * 25) / 100;
 
         return result;
     }
@@ -221,6 +231,7 @@ public class EnemyParent : MonoBehaviour
 
     public void ThrustEnemy()
     {
+        isStop = true;
         Vector3 start;
         start = this.transform.position;
         StartCoroutine(ThrustEnemyCoroutine(start));
@@ -229,14 +240,36 @@ public class EnemyParent : MonoBehaviour
     IEnumerator ThrustEnemyCoroutine(Vector3 start)
     {
         Vector3 nowVelocity = enemyRigid.velocity;
-        enemyRigid.velocity = moveDir.normalized * -2;
+        moveDir = start - character.transform.position;
+        enemyRigid.velocity = moveDir.normalized * 5;
+
+        //투명도로 확인하려고 임시로 만들어둠
+        Color nowColor = enemyRenderer.color;
+        nowColor.a = 0.5f;
+        enemyRenderer.color = nowColor;
 
         //적 초기 위치 기준 256px 튕김
-        while ((start - this.transform.position).magnitude <= 2f)
+        while ((character.transform.position - this.transform.position).magnitude <= 2f)
         {
+            //enemyRigid.AddForceAtPosition(moveDir, this.transform.position);
             yield return null;
         }
+        nowColor.a = 1f;
+        enemyRenderer.color = nowColor;
         enemyRigid.velocity = nowVelocity;
+        isStop = false;
+    }
+
+    public double ReturnEnemyMoveSpeed()
+    {
+        return enemyTrashData.moveSpeed;
+    }
+
+    public void EnemyStop()
+    {
+        enemyRigid.velocity = Vector3.zero;
+        StopCoroutine(moveCoroutine);
+        moveCoroutine = null;
     }
 
     public void DebuggingFunc()

@@ -1177,14 +1177,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nightManager: {fileID: 1563751325}
+  timerManager: {fileID: 1924763514}
   traitTrashWrapper:
     traitTrashArr: []
   traitJsonName: TraitTrashJsonData
   character: {fileID: 889106807}
+  enemyCloneParent: {fileID: 562037683}
   nowLevel: 0
   traitIndexList: 
   traitTrashList: []
-  testTraitIndex: 42
+  testTraitIndex: 60
+  arr: []
 --- !u!1 &799972125
 GameObject:
   m_ObjectHideFlags: 0
@@ -1422,6 +1425,7 @@ MonoBehaviour:
     dropRate: 0
     itemSlot: 0
   isCheat: 1
+  nowMoveSpeed: 0
 --- !u!4 &889106808
 Transform:
   m_ObjectHideFlags: 0
@@ -2617,7 +2621,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

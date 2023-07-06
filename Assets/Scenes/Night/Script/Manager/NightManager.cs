@@ -95,6 +95,7 @@ public class NightManager : MonoBehaviour
 
     void TestEnemy()
     {
+        eliteEnemyArr[1].SetEnforceData(nowLevel, true);
         GameObject eliteEnemyClone = Instantiate(eliteEnemyPrefabArr[1], SetEnemyPos(), Quaternion.identity);
         eliteEnemyClone.transform.SetParent(enemyCloneParent);
         eliteEnemyClone.SetActive(true);

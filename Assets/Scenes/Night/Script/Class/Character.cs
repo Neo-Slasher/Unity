@@ -35,6 +35,7 @@ public class Character : MonoBehaviour
     Vector3 nowDir;
     float hitboxDistance = 1.75f; //히트박스와 캐릭터와의 거리
     bool isAttack;
+    public double nowMoveSpeed;
 
     private void Awake()
     {
@@ -44,6 +45,7 @@ public class Character : MonoBehaviour
 
         //캐릭터의 스테이터스를 장비 등 변화에 따라 변화시킨다.
         hitBoxScript.getAttackPower = characterTrashData.attackPower;    //무기 공격력 임시로 줌
+        nowMoveSpeed = characterTrashData.moveSpeed;
     }
 
     private void Start()
@@ -136,9 +138,15 @@ public class Character : MonoBehaviour
     float SetMoveSpeed(double getMoveSpeed)
     {
         double result = 0;
-        result = (getMoveSpeed * 25) / 128;
+        result = (getMoveSpeed * 25) / 100;
 
         return (float)result;
+    }
+
+    //이동속도 컨트롤할때 이 함수 쓸 예정
+    public void SetMoveSpeendData(double getMoveSpeed)
+    {
+        characterTrashData.moveSpeed = getMoveSpeed;
     }
 
     public void CharacterStop(Vector3 joystickDir)
@@ -213,7 +221,7 @@ public class Character : MonoBehaviour
             return;
         }
 
-        Debug.Log("Damaged!");
+        //Debug.Log("Damaged!");
         GameObject nowCollision = collision.gameObject;
         double nowAttackPower = 0;
 
@@ -333,5 +341,33 @@ public class Character : MonoBehaviour
             overLapColArr = overLapMaxColArr.Except(overLapMinColArr).ToArray();
 
         return overLapColArr;
+    }
+
+    public Collider2D[] ReturnOverLapColliders(float radius)
+    {
+        Collider2D[] overLapColArr = Physics2D.OverlapCircleAll(this.transform.position, radius);
+
+        return overLapColArr;
+    }
+
+    public double ReturnCharacterHitPoint()
+    {
+        return characterTrashData.hitPoint;
+    }
+
+    public double ReturnCharacterHitPointMax()
+    {
+        return characterTrashData.hitPointMax;
+    }
+
+    public double ReturnCharacterAttackPower() 
+    { 
+        return characterTrashData.attackPower;
+    }
+
+    public void SetCharacterAttackPower(double getAttackPower)
+    {
+        characterTrashData.attackPower = getAttackPower;
+        hitBoxScript.getAttackPower = characterTrashData.attackPower;
     }
 }
