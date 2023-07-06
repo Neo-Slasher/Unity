@@ -128,7 +128,7 @@ public class TraitManager : MonoBehaviour
                 StartCoroutine(StopEnemy(getTrait));
                 break;
             case ActiveTrait.absorbDamage:
-                AbsorbDamage();
+                AbsorbDamage(getTrait);
                 break;
             default:
                 break;
@@ -253,8 +253,10 @@ public class TraitManager : MonoBehaviour
         }
     }
 
-    void AbsorbDamage()
+    void AbsorbDamage(TraitTrash getTrait)
     {
-
+        Debug.Log("AbsorbDamage");
+        character.SetAbsorbAttackData(getTrait.traitEffectValue2 * 200);
+        character.canChange = true;
     }
 }

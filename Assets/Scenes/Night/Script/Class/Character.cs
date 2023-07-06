@@ -35,6 +35,8 @@ public class Character : MonoBehaviour
     Vector3 nowDir;
     float hitboxDistance = 1.75f; //히트박스와 캐릭터와의 거리
     bool isAttack;
+    public bool canChange = false;
+    public bool isAbsorb = false;
     public double nowMoveSpeed;
 
     private void Awake()
@@ -180,11 +182,13 @@ public class Character : MonoBehaviour
             //히트박스 온오프
             SetHitbox();
             hitBox.SetActive(true);
+
             yield return new WaitForSeconds(0.5f);
             hitBox.SetActive(false);
 
             //다음 공격까지 대기
             yield return new WaitForSeconds(0.5f);
+            isAbsorb = false;
             isAttack = false;
         }
 
@@ -209,6 +213,46 @@ public class Character : MonoBehaviour
         {
             hitBox.transform.localPosition = new Vector3(hitboxDistance, 0, 0);
             hitBox.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+
+    public void AbsorbAttack()   //canChange가 참이면 최대 체력일때 쉴드로 전환 가능
+    {
+        if(characterTrashData.healByHit > 0 && !isAbsorb)
+        {
+            isAbsorb = true;
+
+            if (characterTrashData.hitPoint + characterTrashData.healByHit < characterTrashData.hitPointMax)
+            {
+                characterTrashData.hitPoint += characterTrashData.healByHit;
+                SetShieldImage();
+            }
+            else
+            {
+                //초과량 쉴드로 전환
+                if(canChange)
+                {
+                    //쉴드가 최대 체력 초과면 리턴
+                    if (characterTrashData.shieldPoint >= characterTrashData.hitPointMax)
+                        return;    
+
+                    double excessHeal = characterTrashData.hitPoint + characterTrashData.healByHit
+                                                                            - characterTrashData.hitPointMax;
+
+                    //쉴드가 최대 체력을 넘지 못하게 제어
+                    if (characterTrashData.shieldPoint + excessHeal >= characterTrashData.hitPointMax)
+                    {
+                        characterTrashData.shieldPoint = characterTrashData.hitPointMax;
+                    }
+
+                    //그냥 보호막 회복
+                    else
+                        characterTrashData.shieldPoint += excessHeal;
+                }
+
+                characterTrashData.hitPoint = characterTrashData.hitPointMax;
+                SetShieldImage();
+            }    
         }
     }
 
@@ -260,18 +304,20 @@ public class Character : MonoBehaviour
         //쉴드로 데미지 받을 때
         if (characterTrashData.shieldPoint > 0)
         {
-            
+            //어차피 체력 100%에서 쉴드가 생기므로 
+            //1. 체력바를 쉴드 비율만큼 옆으로 민다
+            //2. 해당 체력바 위치에 쉴드 이미지를 놓는다.
+            //3. 쉴드의 fillamount를 설정한다.
             if(characterTrashData.shieldPoint >= getAttackData)
             {
                 characterTrashData.shieldPoint -= getAttackData;
-                shieldBarImage.fillAmount = (float)characterTrashData.shieldPoint / (float)maxShield;
+                SetShieldImage();
             }
             else
             {
                 double nowAttactDamage = getAttackData - (float)characterTrashData.shieldPoint;
                 characterTrashData.shieldPoint = 0;
-                shieldBarImage.fillAmount = (float)characterTrashData.shieldPoint / (float)maxShield;
-                shieldBarImage.gameObject.SetActive(false);
+                SetShieldImage();
 
                 characterTrashData.hitPoint -= nowAttactDamage;
                 //감소한 만큼 플레이어 체력바 줄어들게
@@ -326,9 +372,22 @@ public class Character : MonoBehaviour
     public void SetStartShieldPointData(float getShieldPoint)
     {
         float shieldData = (float)characterTrashData.hitPoint * getShieldPoint;
-        maxShield = shieldData;
         characterTrashData.shieldPoint = shieldData;
-        shieldBarImage.gameObject.SetActive(true);
+        SetShieldImage();
+    }
+
+    void SetShieldImage()
+    {
+        Vector3 fixShieldPos = shieldBarImage.transform.localPosition;
+
+        hpBarImage.fillAmount = (float)characterTrashData.hitPoint /
+                        ((float)characterTrashData.shieldPoint + (float)characterTrashData.hitPoint);
+
+        fixShieldPos.x = hpBarImage.rectTransform.sizeDelta.x * hpBarImage.fillAmount;
+
+        shieldBarImage.transform.localPosition = fixShieldPos;
+        shieldBarImage.fillAmount = (float)characterTrashData.shieldPoint /
+                        ((float)characterTrashData.shieldPoint + (float)characterTrashData.hitPoint);
     }
 
     //특성에서 주변을 탐색하고 싶을 때 사용할 함수
@@ -369,5 +428,10 @@ public class Character : MonoBehaviour
     {
         characterTrashData.attackPower = getAttackPower;
         hitBoxScript.getAttackPower = characterTrashData.attackPower;
+    }
+
+    public void SetAbsorbAttackData(float getHealByHit)
+    {
+        characterTrashData.healByHit += getHealByHit;
     }
 }

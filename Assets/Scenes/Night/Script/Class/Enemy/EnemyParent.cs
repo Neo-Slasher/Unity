@@ -190,6 +190,8 @@ public class EnemyParent : MonoBehaviour
         {
             double getDamage = collision.gameObject.GetComponent<HitBox>().getAttackPower;
             collision.gameObject.GetComponent<HitBox>().isAttacked = true;
+            //피흡 있으면 여기서 회복
+            character.GetComponent<Character>().AbsorbAttack();
 
             if (nowHp > getDamage)
                 nowHp -= getDamage;
