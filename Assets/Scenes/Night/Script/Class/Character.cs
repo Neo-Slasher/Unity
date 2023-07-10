@@ -43,11 +43,14 @@ public class Character : MonoBehaviour
     public Vector3 nowDir;
     public bool isHitBoxFix = false;
     float hitboxDistance = 3; //히트박스와 캐릭터와의 거리
-    Vector3 fixPos = Vector3.zero;
+    public Vector3 fixPos = Vector3.zero;
     bool isAttack;
     public bool canChange = false;
     public bool isAbsorb = false;
     public double nowMoveSpeed;
+
+    //아이템 관련
+    public bool isDoubleAttack = false;
 
     private void Awake()
     {
@@ -187,15 +190,36 @@ public class Character : MonoBehaviour
     {
         while (!nightManager.isStageEnd)
         {
-            //공격 애니메이션 진행
+            if (!isDoubleAttack)
+            {
+                //공격 애니메이션 진행
 
-            //히트박스 온오프
-            hitBox.SetActive(true);
-            SetHitbox();
-            isHitBoxFix = true;
+                //히트박스 온오프
+                hitBox.SetActive(true);
+                SetHitbox();
+                isHitBoxFix = true;
 
-            yield return new WaitForSeconds(0.5f);
-            hitBox.SetActive(false);
+                yield return new WaitForSeconds(0.5f);
+                hitBox.SetActive(false);
+            }
+            else
+            {
+                //히트박스 온오프
+                hitBox.SetActive(true);
+                SetHitbox();
+                isHitBoxFix = true;
+
+                yield return new WaitForSeconds(0.1f);
+                hitBox.SetActive(false);
+
+                yield return new WaitForSeconds(0.1f);
+                hitBox.SetActive(true);
+                SetHitbox();
+                yield return new WaitForSeconds(0.5f);
+                hitBox.SetActive(false);
+
+                isDoubleAttack = false;
+            }
 
             //다음 공격까지 대기
             yield return new WaitForSeconds(0.5f);
@@ -203,8 +227,6 @@ public class Character : MonoBehaviour
             isAttack = false;
             isHitBoxFix = false;
         }
-
-        hitBox.SetActive(false);
     }
 
     //이동 방향에 따라 히트박스 위치 조절하는 함수

@@ -22,6 +22,8 @@ public class ItemManager : MonoBehaviour
     GameObject characterParent;
     [SerializeField]
     Character character;
+    [SerializeField]
+    GameObject hitBox;
 
     [SerializeField]
     int[] itemIdxArr;
@@ -88,8 +90,10 @@ public class ItemManager : MonoBehaviour
                 DisasterDrone();
                 break;
             case ItemName.MultiSlash:
+                StartCoroutine(MultiSlashCoroutine());
                 break;
             case ItemName.RailPiercer:
+                StartCoroutine(RailPiercerCoroutine());
                 break;
             case ItemName.FirstAde:
                 break;
@@ -179,5 +183,64 @@ public class ItemManager : MonoBehaviour
         disasterDroneParent.transform.localPosition = character.transform.position;
         disasterDroneParent.GetComponent<DisasterDrone>().character = character;
         disasterDroneParent.GetComponent<DisasterDrone>().nightManager = nightManager;
+    }
+
+    IEnumerator MultiSlashCoroutine()
+    {
+        //2회 연속공격 + 에너지파
+        while (!nightManager.isStageEnd)
+        {
+            character.isDoubleAttack = true;
+
+            while (character.isDoubleAttack)
+            {
+                yield return null;
+            }
+            Debug.Log("end");
+            ShootSwordAura();
+            yield return new WaitForSeconds(6);
+        }
+    }
+
+    void ShootSwordAura()
+    {
+        GameObject swordAura = Instantiate(itemPrefabArr[4]);
+        swordAura.transform.SetParent(characterParent.transform);
+        swordAura.transform.position = hitBox.transform.position;
+
+        Color swordAuraColor = Color.blue;
+        swordAuraColor.a = 0.5f;
+
+        swordAura.GetComponent<SpriteRenderer>().color = swordAuraColor;
+        SetSwordAuraAngle(swordAura);
+
+        if(character.fixPos != Vector3.zero)
+            swordAura.GetComponent<Rigidbody2D>().velocity = character.fixPos.normalized * 10;
+        else
+            swordAura.GetComponent<Rigidbody2D>().velocity = Vector3.right * 10;
+    }
+
+    void SetSwordAuraAngle(GameObject getSwordAura)
+    {
+        if (character.fixPos != Vector3.zero)
+        {
+            float dot = Vector3.Dot(character.fixPos, new Vector3(1, 0, 0));
+            float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
+
+            if (character.fixPos.y >= 0)
+                getSwordAura.transform.rotation = Quaternion.Euler(0, 0, angle);
+            else
+                getSwordAura.transform.rotation = Quaternion.Euler(0, 0, 180 - angle);
+        }
+        else
+        {
+            getSwordAura.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+
+    IEnumerator RailPiercerCoroutine()
+    {
+        GameObject railPiercerParent = Instantiate(itemPrefabArr[5]);
+        yield return null;
     }
 }
