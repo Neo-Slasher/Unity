@@ -37,6 +37,7 @@ public class TouchScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             
             character.CharacterMove(moveVector);
+            //character.SetHitbox();
         }
     }
 

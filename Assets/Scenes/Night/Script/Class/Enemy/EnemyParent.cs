@@ -186,17 +186,54 @@ public class EnemyParent : MonoBehaviour
 
     void EnemyDamaged(Collider2D collision)
     {
+        double getDamage = 0;
         if (collision.name == "HitBox")
         {
-            double getDamage = collision.gameObject.GetComponent<HitBox>().getAttackPower;
+            getDamage = collision.gameObject.GetComponent<HitBox>().getAttackPower;
             collision.gameObject.GetComponent<HitBox>().isAttacked = true;
+        }
+
+        else if(collision.name == "CentryBallProjPrefab(Clone)")
+        {
+            getDamage = character.GetComponent<Character>().ReturnCharacterAttackPower();
+        }
+
+        else if (collision.tag == "Item")
+        {
+            Debug.Log(collision.name);
+            if(collision.name == "ChargingReaperImage")
+            {
+                getDamage = collision.transform.parent.GetComponent<ChargingReaper>().reaperAttackDamaege;
+            }
+        }
+
+        if(getDamage > 0)
+        {
             //피흡 있으면 여기서 회복
             character.GetComponent<Character>().AbsorbAttack();
 
             if (nowHp > getDamage)
                 nowHp -= getDamage;
             else
+            {
+                character.GetComponent<Character>().UpdateKillCount();
                 Destroy(this.gameObject);
+            }
+        }
+    }
+
+
+    public void EnemyDamaged(double getDamage)
+    {
+        if (getDamage > 0)
+        {
+            if (nowHp > getDamage)
+                nowHp -= getDamage;
+            else
+            {
+                character.GetComponent<Character>().UpdateKillCount();
+                Destroy(this.gameObject);
+            }
         }
     }
 
@@ -272,6 +309,11 @@ public class EnemyParent : MonoBehaviour
         enemyRigid.velocity = Vector3.zero;
         StopCoroutine(moveCoroutine);
         moveCoroutine = null;
+    }
+
+    public double ReturnEnemyHitPointMax()
+    {
+        return enemyTrashData.hitPointMax;
     }
 
     public void DebuggingFunc()

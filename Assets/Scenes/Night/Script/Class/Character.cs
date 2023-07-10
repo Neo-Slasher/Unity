@@ -10,11 +10,17 @@ public class Character : MonoBehaviour
     [SerializeField]
     NightManager nightManager;
     [SerializeField]
+    ItemManager itemManager;
+    [SerializeField]
     GameObject characterObject;
     [SerializeField]
     Rigidbody2D characterRigid;
     [SerializeField]
+    Rigidbody2D hitBoxRigid;
+    [SerializeField]
     SpriteRenderer characterSpriteRanderer;
+    [SerializeField]
+    GameObject hpBarParent;
     [SerializeField]
     Image hpBarImage;
     [SerializeField]
@@ -31,9 +37,13 @@ public class Character : MonoBehaviour
     bool isCheat;
 
     //컨트롤 변수
+    [SerializeField] 
+    float hpBarPositionController;
     double maxShield;
-    Vector3 nowDir;
-    float hitboxDistance = 1.75f; //히트박스와 캐릭터와의 거리
+    public Vector3 nowDir;
+    public bool isHitBoxFix = false;
+    float hitboxDistance = 3; //히트박스와 캐릭터와의 거리
+    Vector3 fixPos = Vector3.zero;
     bool isAttack;
     public bool canChange = false;
     public bool isAbsorb = false;
@@ -42,7 +52,7 @@ public class Character : MonoBehaviour
     private void Awake()
     {
         characterTrashData = new CharacterTrashData(isCheat);
-        characterRigid = GetComponent<Rigidbody2D>();
+        characterRigid = this.GetComponent<Rigidbody2D>();
         characterSpriteRanderer = GetComponent<SpriteRenderer>();
 
         //캐릭터의 스테이터스를 장비 등 변화에 따라 변화시킨다.
@@ -180,8 +190,9 @@ public class Character : MonoBehaviour
             //공격 애니메이션 진행
 
             //히트박스 온오프
-            SetHitbox();
             hitBox.SetActive(true);
+            SetHitbox();
+            isHitBoxFix = true;
 
             yield return new WaitForSeconds(0.5f);
             hitBox.SetActive(false);
@@ -190,29 +201,44 @@ public class Character : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             isAbsorb = false;
             isAttack = false;
+            isHitBoxFix = false;
         }
 
         hitBox.SetActive(false);
     }
 
     //이동 방향에 따라 히트박스 위치 조절하는 함수
-    void SetHitbox()
+    public void SetHitbox()
     {
+        if (!isHitBoxFix)
+            fixPos = nowDir.normalized;
+
         if (nowDir != Vector3.zero)
         {
-            hitBox.transform.localPosition = nowDir * hitboxDistance;
-            float dot = Vector3.Dot(nowDir, new Vector3(1, 0, 0));
+            hitBox.transform.localPosition = this.transform.position + fixPos * hitboxDistance;
+            float dot = Vector3.Dot(fixPos, new Vector3(1, 0, 0));
             float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
 
-            if(nowDir.y >= 0)
+            if(fixPos.y >= 0)
                 hitBox.transform.rotation = Quaternion.Euler(0, 0, angle);
             else
                 hitBox.transform.rotation = Quaternion.Euler(0, 0, 180 - angle);
         }
         else
         {
-            hitBox.transform.localPosition = new Vector3(hitboxDistance, 0, 0);
+            hitBox.transform.localPosition = this.transform.position + new Vector3(hitboxDistance, 0, 0);
             hitBox.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+
+        StartCoroutine(SetHitBoxCoroutine());
+    }
+
+    IEnumerator SetHitBoxCoroutine()
+    {
+        while(hitBox.gameObject.activeSelf == true)
+        {
+            hitBoxRigid.velocity = nowDir.normalized * SetMoveSpeed(characterTrashData.moveSpeed);
+            yield return null;
         }
     }
 
@@ -282,8 +308,11 @@ public class Character : MonoBehaviour
         }
         else if(nowCollision.tag == "Projectile")
         {
-            nowAttackPower = nowCollision.transform.parent.GetComponent<EliteEnemy>().GetEnemyAttackPower();
-            nowCollision.transform.parent.GetComponent<EliteEnemy>().SetIsAttacked();
+            if (nowCollision.GetComponent<Projectile>().isEnemy)
+            {
+                nowAttackPower = nowCollision.transform.parent.GetComponent<EliteEnemy>().GetEnemyAttackPower();
+                nowCollision.transform.parent.GetComponent<EliteEnemy>().SetIsAttacked();
+            }
         }
         else
         {
@@ -390,6 +419,13 @@ public class Character : MonoBehaviour
                         ((float)characterTrashData.shieldPoint + (float)characterTrashData.hitPoint);
     }
 
+    public void SetHpBarPosition()
+    {
+        Vector3 hpBarPos = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, 
+                                                            transform.position.y - hpBarPositionController, 0));
+        hpBarParent.transform.position = hpBarPos;
+    }
+
     //특성에서 주변을 탐색하고 싶을 때 사용할 함수
     public Collider2D[] ReturnOverLapColliders(float maxRadius, float minRadius)
     {
@@ -433,5 +469,21 @@ public class Character : MonoBehaviour
     public void SetAbsorbAttackData(float getHealByHit)
     {
         characterTrashData.healByHit += getHealByHit;
+    }
+
+    //아이템쪽
+    public int ReturnCharacterItemSlot()
+    {
+        return characterTrashData.itemSlot;
+    }
+
+    public void UpdateKillCount()
+    {
+        nightManager.UpdateKillCount();
+    }
+
+    public Vector3 ReturnSpeed()
+    {
+        return nowDir.normalized * SetMoveSpeed(characterTrashData.moveSpeed);
     }
 }

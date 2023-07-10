@@ -8,8 +8,8 @@ public class EliteEnemy : EnemyParent
     GameObject projectileObject;
     [SerializeField]
     GameObject[] projectilesPulling;
-    int pullingScale = 10;
-    int nowPullingIndex = 0;
+    int pullingScale = 20;
+    [SerializeField]int nowPullingIndex = 0;
 
     bool isShoot = false;
 
@@ -34,6 +34,7 @@ public class EliteEnemy : EnemyParent
             for(int i =0; i< pullingScale; i++)
             {
                 GameObject nowProj = Instantiate(projectileObject, this.transform);
+                nowProj.GetComponent<Projectile>().isEnemy = true;
                 nowProj.transform.SetParent(this.transform);
                 nowProj.transform.position = this.transform.position;
                 nowProj.SetActive(false);
@@ -60,7 +61,7 @@ public class EliteEnemy : EnemyParent
 
             yield return new WaitForSeconds(2f);
 
-            if (nowPullingIndex < 10)
+            if (nowPullingIndex < 20)
                 nowPullingIndex++;
             else
                 nowPullingIndex = 0;
