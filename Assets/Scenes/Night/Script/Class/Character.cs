@@ -427,6 +427,14 @@ public class Character : MonoBehaviour
         SetShieldImage();
     }
 
+    //해당 숫자만큼 쉴드 생성
+    public void SetShieldPointData(float getShieldPoint)
+    {
+        characterTrashData.shieldPoint = getShieldPoint;
+        SetShieldImage();
+    }
+    
+
     void SetShieldImage()
     {
         Vector3 fixShieldPos = shieldBarImage.transform.localPosition;
@@ -482,6 +490,11 @@ public class Character : MonoBehaviour
         return characterTrashData.attackPower;
     }
 
+    public double ReturnCharacterAttackSpeed()
+    {
+        return characterTrashData.attackSpeed;
+    }
+
     public void SetCharacterAttackPower(double getAttackPower)
     {
         characterTrashData.attackPower = getAttackPower;
@@ -507,5 +520,52 @@ public class Character : MonoBehaviour
     public Vector3 ReturnSpeed()
     {
         return nowDir.normalized * SetMoveSpeed(characterTrashData.moveSpeed);
+    }
+
+    //아이템 6번 퍼스트 에이드에서 체력 회복할 때 쓰려고 만듬
+    public void HealHp(double getHealHp)
+    {
+        StartCoroutine(HealHpCoroutine(getHealHp));
+    }
+
+    IEnumerator HealHpCoroutine(double getHealHp)
+    {
+        float time = 3;
+        float deltaTime = 0;
+        double value = 0;
+        double nowHeal = 0;
+
+        while (time> deltaTime)
+        {
+            deltaTime+= Time.deltaTime;
+            value = getHealHp * Time.deltaTime;
+            nowHeal += value;
+
+            //힐량 초과시 종료
+            if (nowHeal >= getHealHp)
+                break;
+
+            if (characterTrashData.hitPoint < characterTrashData.hitPointMax)
+            {
+                characterTrashData.hitPoint += value;
+
+                //만약 피가 오버되면 종료
+                if(characterTrashData.hitPoint >= characterTrashData.hitPointMax)
+                {
+                    characterTrashData.hitPoint = characterTrashData.hitPointMax;
+                    hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+                    break;
+                }
+
+                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+            }
+            yield return null;
+        }
+        Debug.Log("End");
+    }
+
+    public double ReturnCharacterShieldPoint()
+    {
+        return characterTrashData.shieldPoint;
     }
 }

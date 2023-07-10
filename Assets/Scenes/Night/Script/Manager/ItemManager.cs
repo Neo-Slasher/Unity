@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum ItemName
@@ -93,11 +94,13 @@ public class ItemManager : MonoBehaviour
                 StartCoroutine(MultiSlashCoroutine());
                 break;
             case ItemName.RailPiercer:
-                StartCoroutine(RailPiercerCoroutine());
+                RailPiercer();
                 break;
             case ItemName.FirstAde:
+                StartCoroutine(FirstAdeCoroutine());
                 break;
             case ItemName.Barrior:
+                StartCoroutine(BarriorCoroutine());
                 break;
             case ItemName.HologramTrick:
                 break;
@@ -238,9 +241,53 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    IEnumerator RailPiercerCoroutine()
+    void RailPiercer()
     {
         GameObject railPiercerParent = Instantiate(itemPrefabArr[5]);
-        yield return null;
+        railPiercerParent.transform.SetParent(characterParent.transform);
+        RailPiercer railPiercerScript = railPiercerParent.GetComponent<RailPiercer>();
+
+        railPiercerScript.character = character;
+        railPiercerScript.nightManager = nightManager;
+
+        double characterAttackSpeed = character.ReturnCharacterAttackSpeed();
+        double characterAttackPower = character.ReturnCharacterAttackPower();
+
+        railPiercerScript.SetRailPiercerPos();
+        railPiercerScript.ShootRailPiercer(characterAttackSpeed, characterAttackPower);
+    }
+
+    IEnumerator FirstAdeCoroutine()
+    {
+        double nowHp = character.ReturnCharacterHitPoint();
+        double firstAdeHp = character.ReturnCharacterHitPointMax() * 0.4f;
+        double healHp = character.ReturnCharacterAttackPower();
+
+        while(!nightManager.isStageEnd)
+        {
+            while (nowHp >= firstAdeHp)
+            {
+                nowHp = character.ReturnCharacterHitPoint();
+                yield return null;
+            }
+
+            character.HealHp(healHp);
+
+            yield return new WaitForSeconds(20);
+        }
+    }
+
+    IEnumerator BarriorCoroutine()
+    {
+        double characterAttackSpeed = character.ReturnCharacterAttackSpeed();
+        double characterAttackPower = character.ReturnCharacterAttackPower();
+        float shieldPoint = (float)characterAttackPower;
+        while (!nightManager.isStageEnd)
+        {
+            character.SetShieldPointData(shieldPoint);
+            yield return new WaitUntil(() => character.ReturnCharacterShieldPoint() == 0);
+            Debug.Log(1);
+            yield return new WaitForSeconds((float)(50 / characterAttackSpeed));
+        }
     }
 }
