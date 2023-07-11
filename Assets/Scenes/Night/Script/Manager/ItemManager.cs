@@ -115,12 +115,16 @@ public class ItemManager : MonoBehaviour
                 GravityBind();
                 break;
             case ItemName.MoveBack:
+                StartCoroutine(MoveBack());
                 break;
             case ItemName.Booster:
+                StartCoroutine(BoosterCoroutine());
                 break;
             case ItemName.BioSnach:
+                BioSnach();
                 break;
             case ItemName.InterceptDrone:
+                InterceptDroneCoroutine();
                 break;
         }
     }
@@ -292,7 +296,7 @@ public class ItemManager : MonoBehaviour
         {
             character.SetShieldPointData(shieldPoint);
             yield return new WaitUntil(() => character.ReturnCharacterShieldPoint() == 0);
-            Debug.Log(1);
+            
             yield return new WaitForSeconds((float)timeCount);
         }
     }
@@ -339,5 +343,58 @@ public class ItemManager : MonoBehaviour
         gravityBindParent.transform.localPosition = character.transform.position;
         gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().character = character;
         gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().nightManager = nightManager;
+    }
+
+    IEnumerator MoveBack()
+    {
+        double getAttackSpeed = character.ReturnCharacterAttackSpeed();
+        float timeCount = (float)(200 / getAttackSpeed);
+
+        while(!nightManager.isStageEnd)
+        {
+            character.isMoveBackOn = true;
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    IEnumerator BoosterCoroutine()
+    {
+        double getBasicSpeed = character.ReturnCharacterMoveSpeed();
+        double getAttackSpeed = character.ReturnCharacterAttackSpeed();
+        double getAttackRange = character.ReturnCharacterAttackRange();
+        double getAttackPower = character.ReturnCharacterAttackPower();
+
+        float timeCount = (float)(300 / getAttackSpeed); Debug.Log(timeCount);
+        float duration = (float)getAttackRange;
+        double speed = getAttackPower; 
+
+        while(!nightManager.isStageEnd)
+        {
+            character.SetMoveSpeendData(speed);
+            yield return new WaitForSeconds(duration);
+            character.SetMoveSpeendData(getBasicSpeed);
+
+            yield return new WaitForSeconds(timeCount - duration);
+        }
+    }
+
+    void BioSnach()
+    {
+        float getAbsorbAttackData = 100;
+        character.SetAbsorbAttackData(getAbsorbAttackData);
+    }
+    
+    void InterceptDroneCoroutine()
+    {
+        GameObject interceptDroneParent = Instantiate(itemPrefabArr[15]);
+        interceptDroneParent.transform.SetParent(character.transform);
+        interceptDroneParent.transform.localPosition = character.transform.position;
+        interceptDroneParent.GetComponent<InterceptDrone>().character = character;
+        interceptDroneParent.GetComponent<InterceptDrone>().nightManager = nightManager;
+
+        double getAttackSpeed = character.ReturnCharacterAttackSpeed();
+        double getAttackRange = character.ReturnCharacterAttackRange();
+
+        interceptDroneParent.GetComponent<InterceptDrone>().SetInterceptDrone(getAttackRange, getAttackSpeed);
     }
 }

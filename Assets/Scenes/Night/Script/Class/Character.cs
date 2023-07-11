@@ -54,6 +54,7 @@ public class Character : MonoBehaviour
     public bool isDoubleAttack = false;
     public bool isHologramTrickOn = false;
     public bool isAntiPhenetOn = false;
+    public bool isMoveBackOn = false;
 
     private void Awake()
     {
@@ -207,6 +208,7 @@ public class Character : MonoBehaviour
 
                 yield return new WaitForSeconds(0.5f);
                 hitBox.SetActive(false);
+                isMoveBackOn = false;
             }
             else
             {
@@ -225,6 +227,7 @@ public class Character : MonoBehaviour
                 hitBox.SetActive(false);
 
                 isDoubleAttack = false;
+                isMoveBackOn = false;
             }
 
             //다음 공격까지 대기
@@ -279,7 +282,8 @@ public class Character : MonoBehaviour
             if (characterTrashData.hitPoint + characterTrashData.healByHit < characterTrashData.hitPointMax)
             {
                 characterTrashData.hitPoint += characterTrashData.healByHit;
-                SetShieldImage();
+                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+                //SetShieldImage();
             }
             else
             {
@@ -317,7 +321,6 @@ public class Character : MonoBehaviour
     
     IEnumerator HpRegenCoroutine()
     {
-        Debug.Log(1);
         while (!nightManager.isStageEnd)
         {
             if (characterTrashData.hitPoint < characterTrashData.hitPointMax)
@@ -556,6 +559,11 @@ public class Character : MonoBehaviour
     public void UpdateKillCount()
     {
         nightManager.UpdateKillCount();
+    }
+
+    public double ReturnCharacterMoveSpeed()
+    {
+        return characterTrashData.moveSpeed;
     }
 
     public Vector3 ReturnSpeed()

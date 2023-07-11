@@ -51,8 +51,6 @@ public class EnemyParent : MonoBehaviour
     {
         //난이도에 따른 스테이터스 변화
         SetLevelStatus(getLevel);
-
-        nowHp = enemyTrashData.hitPoint;
     }
 
     //캐릭터 위치를 찾기 위해서 NightManager를 통해 character 오브젝트를 받아옴
@@ -215,9 +213,12 @@ public class EnemyParent : MonoBehaviour
         {
             //피흡 있으면 여기서 회복
             character.GetComponent<Character>().AbsorbAttack();
+            EnemyMoveBack();
 
-            if (nowHp > getDamage)
-                nowHp -= getDamage;
+            if (enemyTrashData.hitPoint > getDamage)
+            {
+                enemyTrashData.hitPoint -= getDamage;
+            }
             else
             {
                 character.GetComponent<Character>().UpdateKillCount();
@@ -231,8 +232,8 @@ public class EnemyParent : MonoBehaviour
     {
         if (getDamage > 0)
         {
-            if (nowHp > getDamage)
-                nowHp -= getDamage;
+            if (enemyTrashData.hitPoint > getDamage)
+                enemyTrashData.hitPoint -= getDamage;
             else
             {
                 character.GetComponent<Character>().UpdateKillCount();
@@ -328,5 +329,39 @@ public class EnemyParent : MonoBehaviour
     public void DebuggingFunc()
     {
         Debug.Log("HitPoint: " + enemyTrashData.hitPoint);
+    }
+
+    void EnemyMoveBack()
+    {
+        if (character.GetComponent<Character>().isMoveBackOn && !enemyTrashData.monResist)
+        {
+            isStop = true;
+            Vector3 start;
+            start = this.transform.position;
+            StartCoroutine(EnemyMoveBackCoroutine(start));
+        }
+    }
+
+    IEnumerator EnemyMoveBackCoroutine(Vector3 start)
+    {
+        Vector3 nowVelocity = enemyRigid.velocity;
+        moveDir = start - character.transform.position;
+        enemyRigid.velocity = moveDir.normalized * 5; Debug.Log(moveDir + " " + enemyRigid.velocity);
+
+        //투명도로 확인하려고 임시로 만들어둠
+        Color nowColor = enemyRenderer.color;
+        nowColor.a = 0.5f;
+        enemyRenderer.color = nowColor;
+
+        //적 초기 위치 기준 150px 튕김
+        while ((start - this.transform.position).magnitude <= 1.5f)
+        {
+            //enemyRigid.AddForceAtPosition(moveDir, this.transform.position);
+            yield return null;
+        }Debug.Log("end");
+        nowColor.a = 1f;
+        enemyRenderer.color = nowColor;
+        enemyRigid.velocity = nowVelocity;
+        isStop = false; 
     }
 }

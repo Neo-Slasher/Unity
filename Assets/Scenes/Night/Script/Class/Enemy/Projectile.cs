@@ -42,4 +42,14 @@ public class Projectile : MonoBehaviour
             }
         }
     }
+
+    public void SetProjPos()
+    {
+        if (isEnemy)
+        {
+            this.gameObject.SetActive(false);
+            if (this.transform.parent != null)
+                this.transform.position = this.transform.parent.position;
+        }
+    }
 }
