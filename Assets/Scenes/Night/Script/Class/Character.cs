@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class Character : MonoBehaviour
@@ -51,6 +52,8 @@ public class Character : MonoBehaviour
 
     //아이템 관련
     public bool isDoubleAttack = false;
+    public bool isHologramTrickOn = false;
+    public bool isAntiPhenetOn = false;
 
     private void Awake()
     {
@@ -66,6 +69,9 @@ public class Character : MonoBehaviour
     private void Start()
     {
         CharacterAttack();
+
+        if (characterTrashData.hpRegen > 0)
+            HpRegen();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -304,6 +310,35 @@ public class Character : MonoBehaviour
         }
     }
 
+    void HpRegen()
+    {
+        StartCoroutine(HpRegenCoroutine());
+    }
+    
+    IEnumerator HpRegenCoroutine()
+    {
+        Debug.Log(1);
+        while (!nightManager.isStageEnd)
+        {
+            if (characterTrashData.hitPoint < characterTrashData.hitPointMax)
+            {
+                if (characterTrashData.hitPoint + characterTrashData.hpRegen >= characterTrashData.hitPointMax)
+                {
+                    characterTrashData.hitPoint = characterTrashData.hitPointMax;
+                }
+                else
+                {
+                    characterTrashData.hitPoint += characterTrashData.hpRegen;
+                }
+
+                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+                yield return new WaitForSeconds(1);
+            }
+            else
+                yield return new WaitForSeconds(1);
+        }
+    }
+
     public void CharacterDamaged(Collider2D collision)
     {
         //공격이 성공할 때 히트박스가 캐릭터의 하위 오브젝트라 데미지를 받는 경우가 있어서 만든 코드
@@ -346,12 +381,18 @@ public class Character : MonoBehaviour
         if(nowAttackPower != 0)
             SetDamagedAnim();
 
+        //홀로그램 켜지면 그냥 데미지 계산 안하고 빠빠이
+        if (isHologramTrickOn)
+            return;
 
         SetDamageData(nowAttackPower);
     }
 
     void SetDamageData(double getAttackData)
     {
+        //안티 페넷 사용시 데미지 경감 계산
+        getAttackData = AntiPhenetUse(getAttackData);
+
         //쉴드로 데미지 받을 때
         if (characterTrashData.shieldPoint > 0)
         {
@@ -567,5 +608,32 @@ public class Character : MonoBehaviour
     public double ReturnCharacterShieldPoint()
     {
         return characterTrashData.shieldPoint;
+    }
+
+    public double ReturnCharacterAttackRange()
+    {
+        return characterTrashData.attackRange;
+    }
+
+    //데미지 경감용
+    double AntiPhenetUse(double getAttackPowerData)
+    {
+        if(isAntiPhenetOn)
+        {
+            return getAttackPowerData / characterTrashData.attackPower;
+        }
+        else
+            return getAttackPowerData;
+    }
+
+    public void SetCharacterHitPointMax(double getHitPoint)
+    {
+        characterTrashData.hitPointMax += getHitPoint;
+        characterTrashData.hitPoint = characterTrashData.hitPointMax;
+    }
+
+    public void SetCharacterHpRegen(double getHpRegen)
+    {
+        characterTrashData.hpRegen = getHpRegen;
     }
 }

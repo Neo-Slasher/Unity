@@ -103,12 +103,16 @@ public class ItemManager : MonoBehaviour
                 StartCoroutine(BarriorCoroutine());
                 break;
             case ItemName.HologramTrick:
+                StartCoroutine(HologramTrickCoroutine());
                 break;
             case ItemName.AntiPhenet:
+                AntiPhenet();
                 break;
             case ItemName.RegenerationArmor:
+                RegenerationArmor();
                 break;
             case ItemName.GravityBind:
+                GravityBind();
                 break;
             case ItemName.MoveBack:
                 break;
@@ -282,12 +286,58 @@ public class ItemManager : MonoBehaviour
         double characterAttackSpeed = character.ReturnCharacterAttackSpeed();
         double characterAttackPower = character.ReturnCharacterAttackPower();
         float shieldPoint = (float)characterAttackPower;
+
+        double timeCount = 50 / characterAttackSpeed;
         while (!nightManager.isStageEnd)
         {
             character.SetShieldPointData(shieldPoint);
             yield return new WaitUntil(() => character.ReturnCharacterShieldPoint() == 0);
             Debug.Log(1);
-            yield return new WaitForSeconds((float)(50 / characterAttackSpeed));
+            yield return new WaitForSeconds((float)timeCount);
         }
+    }
+
+    IEnumerator HologramTrickCoroutine()
+    {
+        double characterAttackSpeed = character.ReturnCharacterAttackSpeed();
+        double characterAttackRange = character.ReturnCharacterAttackRange();
+
+        double duration = characterAttackRange;
+        double timeCount = 1200 / characterAttackSpeed;
+
+        while(!nightManager.isStageEnd)
+        {
+            character.isHologramTrickOn = true;
+            yield return new WaitForSeconds((float)duration);
+            character.isHologramTrickOn = false;
+            
+            yield return new WaitForSeconds((float)timeCount);
+        }
+    }
+
+    void AntiPhenet()
+    {
+        character.isAntiPhenetOn = true;
+    }
+
+    void RegenerationArmor()
+    {
+        double addHp = character.ReturnCharacterAttackPower();
+        double addHpRegen = character.ReturnCharacterAttackRange();
+
+        //임시 코드
+        addHpRegen = 100;
+
+        character.SetCharacterHitPointMax(addHp);
+        character.SetCharacterHpRegen(addHpRegen);
+    }
+
+    void GravityBind()
+    {
+        GameObject gravityBindParent = Instantiate(itemPrefabArr[11]);
+        gravityBindParent.transform.SetParent(characterParent.transform);
+        gravityBindParent.transform.localPosition = character.transform.position;
+        gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().character = character;
+        gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().nightManager = nightManager;
     }
 }

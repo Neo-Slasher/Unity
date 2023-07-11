@@ -27,6 +27,10 @@ public class EnemyParent : MonoBehaviour
 
     public TextMeshPro tempEnemyName;
 
+
+    //아이템
+    public bool isSlow = false;
+
     //테스트용
     SpriteRenderer enemyRenderer;
 
@@ -314,6 +318,11 @@ public class EnemyParent : MonoBehaviour
     public double ReturnEnemyHitPointMax()
     {
         return enemyTrashData.hitPointMax;
+    }
+
+    public void SetEnemyMoveSpeed(double getEnemySpeed)
+    {
+        enemyTrashData.moveSpeed = getEnemySpeed;
     }
 
     public void DebuggingFunc()

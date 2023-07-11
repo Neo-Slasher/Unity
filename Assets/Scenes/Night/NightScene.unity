@@ -820,7 +820,7 @@ MonoBehaviour:
   character: {fileID: 889106807}
   hitBox: {fileID: 1410340655}
   itemIdxArr: 
-  tempItemIdx: 7
+  tempItemIdx: 11
   itemPrefabArr:
   - {fileID: 0}
   - {fileID: 6435774007306126119, guid: 5e53ae801b6353d47b55e9e30bc26a36, type: 3}
@@ -833,14 +833,14 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 7827755809980893889, guid: 3f68c9d86c27439419ce96ab5a64ccd5, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   centryBallAngle: 0.4
   chargingReaperAngle: 1
-  reaperCircleR: 5
+  reaperCircleR: 7
   reaperSpeed: 200
   isChargingReaperUse: 0
 --- !u!1 &470622975
@@ -1566,6 +1566,8 @@ MonoBehaviour:
   isAbsorb: 0
   nowMoveSpeed: 0
   isDoubleAttack: 0
+  isHologramTrickOn: 0
+  isAntiPhenetOn: 0
 --- !u!4 &889106808
 Transform:
   m_ObjectHideFlags: 0
