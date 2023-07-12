@@ -40,21 +40,21 @@ public class Category : MonoBehaviour
                 Scenes[0].SetActive(true);
                 Scenes[1].SetActive(false);
                 Scenes[2].SetActive(false);
-                SName.text = "Store";
+                SName.text = "상점";
             }
             if(Toggle.name.Equals("암살tog"))
             {
                 Scenes[0].SetActive(false);
                 Scenes[1].SetActive(true);
                 Scenes[2].SetActive(false);
-                SName.text = "Assasination";
+                SName.text = "암살";
             }
             if(Toggle.name.Equals("정비tog"))
             {
                 Scenes[0].SetActive(false);
                 Scenes[1].SetActive(false);
                 Scenes[2].SetActive(true);
-                SName.text = "Repair";
+                SName.text = "정비";
             }
     }
 }
