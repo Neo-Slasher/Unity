@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class Character : MonoBehaviour
@@ -10,11 +11,17 @@ public class Character : MonoBehaviour
     [SerializeField]
     NightManager nightManager;
     [SerializeField]
+    ItemManager itemManager;
+    [SerializeField]
     GameObject characterObject;
     [SerializeField]
     Rigidbody2D characterRigid;
     [SerializeField]
+    Rigidbody2D hitBoxRigid;
+    [SerializeField]
     SpriteRenderer characterSpriteRanderer;
+    [SerializeField]
+    GameObject hpBarParent;
     [SerializeField]
     Image hpBarImage;
     [SerializeField]
@@ -31,24 +38,41 @@ public class Character : MonoBehaviour
     bool isCheat;
 
     //컨트롤 변수
+    [SerializeField] 
+    float hpBarPositionController;
     double maxShield;
-    Vector3 nowDir;
-    float hitboxDistance = 1.75f; //히트박스와 캐릭터와의 거리
+    public Vector3 nowDir;
+    public bool isHitBoxFix = false;
+    float hitboxDistance = 3; //히트박스와 캐릭터와의 거리
+    public Vector3 fixPos = Vector3.zero;
     bool isAttack;
+    public bool canChange = false;
+    public bool isAbsorb = false;
+    public double nowMoveSpeed;
+
+    //아이템 관련
+    public bool isDoubleAttack = false;
+    public bool isHologramTrickOn = false;
+    public bool isAntiPhenetOn = false;
+    public bool isMoveBackOn = false;
 
     private void Awake()
     {
         characterTrashData = new CharacterTrashData(isCheat);
-        characterRigid = GetComponent<Rigidbody2D>();
+        characterRigid = this.GetComponent<Rigidbody2D>();
         characterSpriteRanderer = GetComponent<SpriteRenderer>();
 
         //캐릭터의 스테이터스를 장비 등 변화에 따라 변화시킨다.
         hitBoxScript.getAttackPower = characterTrashData.attackPower;    //무기 공격력 임시로 줌
+        nowMoveSpeed = characterTrashData.moveSpeed;
     }
 
     private void Start()
     {
         CharacterAttack();
+
+        if (characterTrashData.hpRegen > 0)
+            HpRegen();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -136,9 +160,15 @@ public class Character : MonoBehaviour
     float SetMoveSpeed(double getMoveSpeed)
     {
         double result = 0;
-        result = (getMoveSpeed * 25) / 128;
+        result = (getMoveSpeed * 25) / 100;
 
         return (float)result;
+    }
+
+    //이동속도 컨트롤할때 이 함수 쓸 예정
+    public void SetMoveSpeendData(double getMoveSpeed)
+    {
+        characterTrashData.moveSpeed = getMoveSpeed;
     }
 
     public void CharacterStop(Vector3 joystickDir)
@@ -167,40 +197,148 @@ public class Character : MonoBehaviour
     {
         while (!nightManager.isStageEnd)
         {
-            //공격 애니메이션 진행
+            if (!isDoubleAttack)
+            {
+                //공격 애니메이션 진행
 
-            //히트박스 온오프
-            SetHitbox();
-            hitBox.SetActive(true);
-            yield return new WaitForSeconds(0.5f);
-            hitBox.SetActive(false);
+                //히트박스 온오프
+                hitBox.SetActive(true);
+                SetHitbox();
+                isHitBoxFix = true;
+
+                yield return new WaitForSeconds(0.5f);
+                hitBox.SetActive(false);
+                isMoveBackOn = false;
+            }
+            else
+            {
+                //히트박스 온오프
+                hitBox.SetActive(true);
+                SetHitbox();
+                isHitBoxFix = true;
+
+                yield return new WaitForSeconds(0.1f);
+                hitBox.SetActive(false);
+
+                yield return new WaitForSeconds(0.1f);
+                hitBox.SetActive(true);
+                SetHitbox();
+                yield return new WaitForSeconds(0.5f);
+                hitBox.SetActive(false);
+
+                isDoubleAttack = false;
+                isMoveBackOn = false;
+            }
 
             //다음 공격까지 대기
             yield return new WaitForSeconds(0.5f);
+            isAbsorb = false;
             isAttack = false;
+            isHitBoxFix = false;
         }
-
-        hitBox.SetActive(false);
     }
 
     //이동 방향에 따라 히트박스 위치 조절하는 함수
-    void SetHitbox()
+    public void SetHitbox()
     {
+        if (!isHitBoxFix)
+            fixPos = nowDir.normalized;
+
         if (nowDir != Vector3.zero)
         {
-            hitBox.transform.localPosition = nowDir * hitboxDistance;
-            float dot = Vector3.Dot(nowDir, new Vector3(1, 0, 0));
+            hitBox.transform.localPosition = this.transform.position + fixPos * hitboxDistance;
+            float dot = Vector3.Dot(fixPos, new Vector3(1, 0, 0));
             float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
 
-            if(nowDir.y >= 0)
+            if(fixPos.y >= 0)
                 hitBox.transform.rotation = Quaternion.Euler(0, 0, angle);
             else
                 hitBox.transform.rotation = Quaternion.Euler(0, 0, 180 - angle);
         }
         else
         {
-            hitBox.transform.localPosition = new Vector3(hitboxDistance, 0, 0);
+            hitBox.transform.localPosition = this.transform.position + new Vector3(hitboxDistance, 0, 0);
             hitBox.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+
+        StartCoroutine(SetHitBoxCoroutine());
+    }
+
+    IEnumerator SetHitBoxCoroutine()
+    {
+        while(hitBox.gameObject.activeSelf == true)
+        {
+            hitBoxRigid.velocity = nowDir.normalized * SetMoveSpeed(characterTrashData.moveSpeed);
+            yield return null;
+        }
+    }
+
+    public void AbsorbAttack()   //canChange가 참이면 최대 체력일때 쉴드로 전환 가능
+    {
+        if(characterTrashData.healByHit > 0 && !isAbsorb)
+        {
+            isAbsorb = true;
+
+            if (characterTrashData.hitPoint + characterTrashData.healByHit < characterTrashData.hitPointMax)
+            {
+                characterTrashData.hitPoint += characterTrashData.healByHit;
+                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+                //SetShieldImage();
+            }
+            else
+            {
+                //초과량 쉴드로 전환
+                if(canChange)
+                {
+                    //쉴드가 최대 체력 초과면 리턴
+                    if (characterTrashData.shieldPoint >= characterTrashData.hitPointMax)
+                        return;    
+
+                    double excessHeal = characterTrashData.hitPoint + characterTrashData.healByHit
+                                                                            - characterTrashData.hitPointMax;
+
+                    //쉴드가 최대 체력을 넘지 못하게 제어
+                    if (characterTrashData.shieldPoint + excessHeal >= characterTrashData.hitPointMax)
+                    {
+                        characterTrashData.shieldPoint = characterTrashData.hitPointMax;
+                    }
+
+                    //그냥 보호막 회복
+                    else
+                        characterTrashData.shieldPoint += excessHeal;
+                }
+
+                characterTrashData.hitPoint = characterTrashData.hitPointMax;
+                SetShieldImage();
+            }    
+        }
+    }
+
+    void HpRegen()
+    {
+        StartCoroutine(HpRegenCoroutine());
+    }
+    
+    IEnumerator HpRegenCoroutine()
+    {
+        while (!nightManager.isStageEnd)
+        {
+            if (characterTrashData.hitPoint < characterTrashData.hitPointMax)
+            {
+                if (characterTrashData.hitPoint + characterTrashData.hpRegen >= characterTrashData.hitPointMax)
+                {
+                    characterTrashData.hitPoint = characterTrashData.hitPointMax;
+                }
+                else
+                {
+                    characterTrashData.hitPoint += characterTrashData.hpRegen;
+                }
+
+                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+                yield return new WaitForSeconds(1);
+            }
+            else
+                yield return new WaitForSeconds(1);
         }
     }
 
@@ -213,7 +351,7 @@ public class Character : MonoBehaviour
             return;
         }
 
-        Debug.Log("Damaged!");
+        //Debug.Log("Damaged!");
         GameObject nowCollision = collision.gameObject;
         double nowAttackPower = 0;
 
@@ -230,8 +368,11 @@ public class Character : MonoBehaviour
         }
         else if(nowCollision.tag == "Projectile")
         {
-            nowAttackPower = nowCollision.transform.parent.GetComponent<EliteEnemy>().GetEnemyAttackPower();
-            nowCollision.transform.parent.GetComponent<EliteEnemy>().SetIsAttacked();
+            if (nowCollision.GetComponent<Projectile>().isEnemy)
+            {
+                nowAttackPower = nowCollision.transform.parent.GetComponent<EliteEnemy>().GetEnemyAttackPower();
+                nowCollision.transform.parent.GetComponent<EliteEnemy>().SetIsAttacked();
+            }
         }
         else
         {
@@ -243,27 +384,35 @@ public class Character : MonoBehaviour
         if(nowAttackPower != 0)
             SetDamagedAnim();
 
+        //홀로그램 켜지면 그냥 데미지 계산 안하고 빠빠이
+        if (isHologramTrickOn)
+            return;
 
         SetDamageData(nowAttackPower);
     }
 
     void SetDamageData(double getAttackData)
     {
+        //안티 페넷 사용시 데미지 경감 계산
+        getAttackData = AntiPhenetUse(getAttackData);
+
         //쉴드로 데미지 받을 때
         if (characterTrashData.shieldPoint > 0)
         {
-            
+            //어차피 체력 100%에서 쉴드가 생기므로 
+            //1. 체력바를 쉴드 비율만큼 옆으로 민다
+            //2. 해당 체력바 위치에 쉴드 이미지를 놓는다.
+            //3. 쉴드의 fillamount를 설정한다.
             if(characterTrashData.shieldPoint >= getAttackData)
             {
                 characterTrashData.shieldPoint -= getAttackData;
-                shieldBarImage.fillAmount = (float)characterTrashData.shieldPoint / (float)maxShield;
+                SetShieldImage();
             }
             else
             {
                 double nowAttactDamage = getAttackData - (float)characterTrashData.shieldPoint;
                 characterTrashData.shieldPoint = 0;
-                shieldBarImage.fillAmount = (float)characterTrashData.shieldPoint / (float)maxShield;
-                shieldBarImage.gameObject.SetActive(false);
+                SetShieldImage();
 
                 characterTrashData.hitPoint -= nowAttactDamage;
                 //감소한 만큼 플레이어 체력바 줄어들게
@@ -318,9 +467,37 @@ public class Character : MonoBehaviour
     public void SetStartShieldPointData(float getShieldPoint)
     {
         float shieldData = (float)characterTrashData.hitPoint * getShieldPoint;
-        maxShield = shieldData;
         characterTrashData.shieldPoint = shieldData;
-        shieldBarImage.gameObject.SetActive(true);
+        SetShieldImage();
+    }
+
+    //해당 숫자만큼 쉴드 생성
+    public void SetShieldPointData(float getShieldPoint)
+    {
+        characterTrashData.shieldPoint = getShieldPoint;
+        SetShieldImage();
+    }
+    
+
+    void SetShieldImage()
+    {
+        Vector3 fixShieldPos = shieldBarImage.transform.localPosition;
+
+        hpBarImage.fillAmount = (float)characterTrashData.hitPoint /
+                        ((float)characterTrashData.shieldPoint + (float)characterTrashData.hitPoint);
+
+        fixShieldPos.x = hpBarImage.rectTransform.sizeDelta.x * hpBarImage.fillAmount;
+
+        shieldBarImage.transform.localPosition = fixShieldPos;
+        shieldBarImage.fillAmount = (float)characterTrashData.shieldPoint /
+                        ((float)characterTrashData.shieldPoint + (float)characterTrashData.hitPoint);
+    }
+
+    public void SetHpBarPosition()
+    {
+        Vector3 hpBarPos = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, 
+                                                            transform.position.y - hpBarPositionController, 0));
+        hpBarParent.transform.position = hpBarPos;
     }
 
     //특성에서 주변을 탐색하고 싶을 때 사용할 함수
@@ -333,5 +510,138 @@ public class Character : MonoBehaviour
             overLapColArr = overLapMaxColArr.Except(overLapMinColArr).ToArray();
 
         return overLapColArr;
+    }
+
+    public Collider2D[] ReturnOverLapColliders(float radius)
+    {
+        Collider2D[] overLapColArr = Physics2D.OverlapCircleAll(this.transform.position, radius);
+
+        return overLapColArr;
+    }
+
+    public double ReturnCharacterHitPoint()
+    {
+        return characterTrashData.hitPoint;
+    }
+
+    public double ReturnCharacterHitPointMax()
+    {
+        return characterTrashData.hitPointMax;
+    }
+
+    public double ReturnCharacterAttackPower() 
+    { 
+        return characterTrashData.attackPower;
+    }
+
+    public double ReturnCharacterAttackSpeed()
+    {
+        return characterTrashData.attackSpeed;
+    }
+
+    public void SetCharacterAttackPower(double getAttackPower)
+    {
+        characterTrashData.attackPower = getAttackPower;
+        hitBoxScript.getAttackPower = characterTrashData.attackPower;
+    }
+
+    public void SetAbsorbAttackData(float getHealByHit)
+    {
+        characterTrashData.healByHit += getHealByHit;
+    }
+
+    //아이템쪽
+    public int ReturnCharacterItemSlot()
+    {
+        return characterTrashData.itemSlot;
+    }
+
+    public void UpdateKillCount()
+    {
+        nightManager.UpdateKillCount();
+    }
+
+    public double ReturnCharacterMoveSpeed()
+    {
+        return characterTrashData.moveSpeed;
+    }
+
+    public Vector3 ReturnSpeed()
+    {
+        return nowDir.normalized * SetMoveSpeed(characterTrashData.moveSpeed);
+    }
+
+    //아이템 6번 퍼스트 에이드에서 체력 회복할 때 쓰려고 만듬
+    public void HealHp(double getHealHp)
+    {
+        StartCoroutine(HealHpCoroutine(getHealHp));
+    }
+
+    IEnumerator HealHpCoroutine(double getHealHp)
+    {
+        float time = 3;
+        float deltaTime = 0;
+        double value = 0;
+        double nowHeal = 0;
+
+        while (time> deltaTime)
+        {
+            deltaTime+= Time.deltaTime;
+            value = getHealHp * Time.deltaTime;
+            nowHeal += value;
+
+            //힐량 초과시 종료
+            if (nowHeal >= getHealHp)
+                break;
+
+            if (characterTrashData.hitPoint < characterTrashData.hitPointMax)
+            {
+                characterTrashData.hitPoint += value;
+
+                //만약 피가 오버되면 종료
+                if(characterTrashData.hitPoint >= characterTrashData.hitPointMax)
+                {
+                    characterTrashData.hitPoint = characterTrashData.hitPointMax;
+                    hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+                    break;
+                }
+
+                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+            }
+            yield return null;
+        }
+        Debug.Log("End");
+    }
+
+    public double ReturnCharacterShieldPoint()
+    {
+        return characterTrashData.shieldPoint;
+    }
+
+    public double ReturnCharacterAttackRange()
+    {
+        return characterTrashData.attackRange;
+    }
+
+    //데미지 경감용
+    double AntiPhenetUse(double getAttackPowerData)
+    {
+        if(isAntiPhenetOn)
+        {
+            return getAttackPowerData / characterTrashData.attackPower;
+        }
+        else
+            return getAttackPowerData;
+    }
+
+    public void SetCharacterHitPointMax(double getHitPoint)
+    {
+        characterTrashData.hitPointMax += getHitPoint;
+        characterTrashData.hitPoint = characterTrashData.hitPointMax;
+    }
+
+    public void SetCharacterHpRegen(double getHpRegen)
+    {
+        characterTrashData.hpRegen = getHpRegen;
     }
 }

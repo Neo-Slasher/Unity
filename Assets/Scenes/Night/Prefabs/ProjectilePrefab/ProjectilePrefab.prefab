@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 861042125032669460}
   - component: {fileID: 3841373257414992852}
   - component: {fileID: 2892319549107730066}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ProjectilePrefab
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed81ed29dff76bc408ba2f14bfb12f44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isEnemy: 0
 --- !u!58 &3841373257414992852
 CircleCollider2D:
   m_ObjectHideFlags: 0

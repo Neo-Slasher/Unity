@@ -5,6 +5,8 @@ using UnityEngine;
 public class NightManager : MonoBehaviour
 {
     [SerializeField]
+    ItemManager itemManager;
+    [SerializeField]
     TimerManager timerManager;
     [SerializeField]
     GameObject character;
@@ -40,6 +42,8 @@ public class NightManager : MonoBehaviour
     [SerializeField]
     AssassinationTrashData assassinationTrashData;
 
+    public int killCount = 0;
+
     private void Start()
     {
         leveltrashData = new LevelTrashData(nowLevel);
@@ -52,8 +56,8 @@ public class NightManager : MonoBehaviour
         SetEnemyArrData();
 
         //몬스터 생성 함수
-        InstantiateEnemy();
-        //TestEnemy();
+        //InstantiateEnemy();
+        TestEnemy(); TestEnemy(); TestEnemy();
     }
 
     void SetEnemyArrData()
@@ -95,6 +99,7 @@ public class NightManager : MonoBehaviour
 
     void TestEnemy()
     {
+        eliteEnemyArr[1].SetEnforceData(nowLevel, true);
         GameObject eliteEnemyClone = Instantiate(eliteEnemyPrefabArr[1], SetEnemyPos(), Quaternion.identity);
         eliteEnemyClone.transform.SetParent(enemyCloneParent);
         eliteEnemyClone.SetActive(true);
@@ -231,5 +236,11 @@ public class NightManager : MonoBehaviour
         }
 
         endPopup.SetActive(true);
+    }
+
+    public void UpdateKillCount()
+    {
+        killCount++;
+        itemManager.ChargingReaperGauge();  //차징 리퍼 쓰면 동작
     }
 }
