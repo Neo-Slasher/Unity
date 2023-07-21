@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ChargingReaper : MonoBehaviour
 {
+    [SerializeField]
+    GameObject reaperAfterImage;
     public bool isAttack = false;
     public int chargingGauge = 100;
     public double reaperAttackDamaege = 500; //юс╫ц
@@ -16,6 +18,7 @@ public class ChargingReaper : MonoBehaviour
         }
         else
         {
+            //StartCoroutine(ReaperAfterImageCoroutine());
             this.gameObject.SetActive(true);
             return true;
         }
@@ -30,5 +33,12 @@ public class ChargingReaper : MonoBehaviour
     public void ChargingGauge()
     {
         chargingGauge += 5;
+    }
+
+    IEnumerator ReaperAfterImageCoroutine()
+    {
+        reaperAfterImage.SetActive(false) ;
+        yield return new WaitForSeconds(0.1f);
+        reaperAfterImage.SetActive(true);
     }
 }

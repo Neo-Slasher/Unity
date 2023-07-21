@@ -40,10 +40,10 @@ public class ItemManager : MonoBehaviour
     [SerializeField]
     float chargingReaperAngle;
     [SerializeField] 
-    float reaperCircleR = 5; //반지름
+    float reaperCircleR = 3; //반지름
     float reaperDeg = 0; //각도
     [SerializeField]
-    float reaperSpeed = 100; //원운동 속도
+    float reaperSpeed = 600; //원운동 속도
     ChargingReaper chargingReaperScript;
     public bool isChargingReaperUse = false;
 
@@ -133,15 +133,17 @@ public class ItemManager : MonoBehaviour
     {
         GameObject centryBallParent = Instantiate(itemPrefabArr[1]);
         GameObject centryBall = centryBallParent.transform.GetChild(0).gameObject;
+        CentryBall centryBallScript = centryBallParent.GetComponent<CentryBall>();
         centryBallParent.transform.SetParent(character.transform);
 
         Vector3 centryBallPos = character.transform.position;
-        centryBallPos.y += 5;
+        centryBallPos.y += 7;
 
         centryBall.transform.localPosition = centryBallPos;
         while (!nightManager.isStageEnd)
         {
-            centryBall.transform.RotateAround(character.transform.position, Vector3.back, centryBallAngle);
+            if(!centryBallScript.StopCentryBall())
+                centryBall.transform.RotateAround(character.transform.position, Vector3.back, centryBallAngle);
             yield return null;
         }
     }
