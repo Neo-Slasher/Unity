@@ -7,6 +7,18 @@ public class InterceptDrone : MonoBehaviour
     public NightManager nightManager;
     public Character character;
     LayerMask projLayer;
+
+    [SerializeField]
+    GameObject droneArea;
+    [SerializeField]
+    GameObject droneAreaImage;
+    [SerializeField]
+    GameObject interceptDroneImage;
+    [SerializeField]
+    SpriteRenderer droneRenderer;
+
+    [SerializeField]
+    float droneAngle;
     [SerializeField]
     float detectRadius;
 
@@ -18,7 +30,29 @@ public class InterceptDrone : MonoBehaviour
     private void Start()
     {
         DetectProjectile();
+        StartCoroutine(DroneRotate());
     }
+
+    IEnumerator DroneRotate()
+    {
+        while (!nightManager.isStageEnd)
+        {
+            interceptDroneImage.transform.RotateAround(character.transform.position, Vector3.back, droneAngle);
+            interceptDroneImage.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+
+            yield return null;
+        }
+    }
+    //void SetCentryBallWatchEnemy(Collider2D getCol)
+    //{
+    //    Transform enemyTransform = getCol.transform;
+    //    float angle;
+
+    //    watchDir = enemyTransform.position - centryBallImage.transform.position;
+
+    //    angle = Mathf.Atan2(watchDir.y, watchDir.x) * Mathf.Rad2Deg;
+    //    centryBallImage.transform.rotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
+    //}
 
     public void SetInterceptDrone(double getAttackSpeed, double getAttackRange)
     {
