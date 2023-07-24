@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ChangeComp : MonoBehaviour
+public class SelectItem : MonoBehaviour
 {
-    // Start is called before the first frame update
+    //아이템 슬롯 클릭시 정보 변경 
+
     public Image change_img;
     Image thisimg;
 
