@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum ItemName
 {
@@ -40,10 +41,10 @@ public class ItemManager : MonoBehaviour
     [SerializeField]
     float chargingReaperAngle;
     [SerializeField] 
-    float reaperCircleR = 5; //반지름
+    float reaperCircleR = 3; //반지름
     float reaperDeg = 0; //각도
     [SerializeField]
-    float reaperSpeed = 100; //원운동 속도
+    float reaperSpeed = 600; //원운동 속도
     ChargingReaper chargingReaperScript;
     public bool isChargingReaperUse = false;
 
@@ -133,15 +134,20 @@ public class ItemManager : MonoBehaviour
     {
         GameObject centryBallParent = Instantiate(itemPrefabArr[1]);
         GameObject centryBall = centryBallParent.transform.GetChild(0).gameObject;
+        CentryBall centryBallScript = centryBallParent.GetComponent<CentryBall>();
         centryBallParent.transform.SetParent(character.transform);
 
         Vector3 centryBallPos = character.transform.position;
-        centryBallPos.y += 5;
+        centryBallPos.y += 7;
 
         centryBall.transform.localPosition = centryBallPos;
         while (!nightManager.isStageEnd)
         {
-            centryBall.transform.RotateAround(character.transform.position, Vector3.back, centryBallAngle);
+            if (!centryBallScript.StopCentryBall())
+            {
+                centryBall.transform.RotateAround(character.transform.position, Vector3.back, centryBallAngle);
+                centryBall.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+            }
             yield return null;
         }
     }
@@ -287,6 +293,11 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator BarriorCoroutine()
     {
+        GameObject barriorParent = Instantiate(itemPrefabArr[7]);
+        barriorParent.transform.SetParent(character.transform);
+        barriorParent.transform.position = character.transform.position;
+        Barrior barriorScript = barriorParent.GetComponent<Barrior>();
+
         double characterAttackSpeed = character.ReturnCharacterAttackSpeed();
         double characterAttackPower = character.ReturnCharacterAttackPower();
         float shieldPoint = (float)characterAttackPower;
@@ -295,14 +306,40 @@ public class ItemManager : MonoBehaviour
         while (!nightManager.isStageEnd)
         {
             character.SetShieldPointData(shieldPoint);
-            yield return new WaitUntil(() => character.ReturnCharacterShieldPoint() == 0);
+            barriorScript.CreateBarrior();
             
+            yield return new WaitUntil(() => character.ReturnCharacterShieldPoint() == 0);
+            barriorScript.SetBarriorActive(false);
+
             yield return new WaitForSeconds((float)timeCount);
         }
     }
 
     IEnumerator HologramTrickCoroutine()
     {
+        GameObject[] hologramParentArr = new GameObject[2];
+        Vector3 hologramVector;
+
+        for (int i = 0; i < 2; i++)
+        {
+            hologramVector = character.transform.position;
+            GameObject hologramParent = Instantiate(itemPrefabArr[8]);
+            hologramParent.transform.SetParent(character.transform);
+            hologramParent.transform.position = character.transform.position;
+            hologramParentArr[i] = hologramParent;
+
+            if (i == 0)
+            {
+                hologramVector.x -= 1;
+            }
+            else
+            {
+                hologramVector.x += 1;
+            }
+
+            hologramParentArr[i].transform.position = hologramVector;
+        }
+
         double characterAttackSpeed = character.ReturnCharacterAttackSpeed();
         double characterAttackRange = character.ReturnCharacterAttackRange();
 
