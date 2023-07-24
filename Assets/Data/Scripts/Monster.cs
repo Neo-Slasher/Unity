@@ -6,28 +6,28 @@ using UnityEngine;
 [Serializable]
 public class Monster
 {
-    private int index;
-    private double width;
-    private double length;
+    public int index;
+    public double width;
+    public double length;
 
-    private int maxHp;
-    private int curHp;
-    private int moveSpeed;
-    private int attackPower;
+    public int maxHp;
+    public int curHp;
+    public int moveSpeed;
+    public int attackPower;
 
-    private bool dashAble;
-    private double dashFreq;
-    private double dashSpeed;
-    private double dashDuration;
+    public bool dashAble;
+    public double dashFreq;
+    public double dashSpeed;
+    public double dashDuration;
 
-    private bool isElite;
-    private bool isEnforce;
-    private bool isResist;
-    private bool canKnockback;
-    private bool canProj;
+    public bool isElite;
+    public bool isEnforce;
+    public bool isResist;
+    public bool canKnockback;
+    public bool canProj;
 
-    private int imageIndex;
-    private int soundIndex;
+    public int imageIndex;
+    public int soundIndex;
 
 
 

@@ -1332,30 +1332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasSavedData: 0
-  player:
-    level: 0
-    reqExp: 0
-    curExp: 0
-    money: 0
-    maxHp: 0
-    curHp: 0
-    attackPower: 0
-    attackSpeed: 0
-    attackRange: 0
-    moveSpeed: 0
-    shieldDuration: 0
-    shieldPoint: 0
-    immuneDuration: 0
-    immuneCount: 0
-    dashable: 0
-    dashFreq: 0
-    dashSpeed: 0
-    dashDuration: 0
-    damageReductionRate: 0
-    dealOnMaxHp: 0
-    dealOnCurHp: 0
-    healByHit: 0
-    hpRegen: 0
+  player: {fileID: 0}
 --- !u!4 &749105472
 Transform:
   m_ObjectHideFlags: 0
@@ -3816,7 +3793,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2135326778}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.02, y: 0.15, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class Player {
+public class Player : MonoBehaviour {
     // defalut
     public int level;
     public int reqExp;
