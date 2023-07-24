@@ -87,7 +87,7 @@ public class CharacterTrashData
         hitPointMax = 2000;
         hitPoint = 2000;
         moveSpeed = 10.0;               //10 = 1초당 250px, 이동속도 1당 30px + 유니티 1칸당 128px
-        attackPower = 58.0;
+        attackPower = 500.0;
         dashAble = false;
         dashFreq = 0.0;
         dashSpeed = 0.0;

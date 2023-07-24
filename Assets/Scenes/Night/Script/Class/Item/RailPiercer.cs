@@ -12,7 +12,10 @@ public class RailPiercer : MonoBehaviour
 
     public NightManager nightManager;
     public Character character;
-
+    [SerializeField]
+    SpriteRenderer hitBoxRenderer;
+    [SerializeField]
+    SpriteRenderer railPiercerImageRenderer;
     Rigidbody2D railPiercerRigid;
     double attackPower = 500;
     double attackSpeed;
@@ -23,7 +26,9 @@ public class RailPiercer : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Normal" || collision.tag == "Elite")
+        {
             collision.GetComponent<EnemyParent>().EnemyDamaged(attackPower);
+        }
     }
 
     public void ShootRailPiercer(double getAttackSpeed, double getAttackDamage)
@@ -36,11 +41,11 @@ public class RailPiercer : MonoBehaviour
         //우측을 바라보면 우측으로 길이가 길어짐
         if (isWatchRight)
         {
-            hitBoxScale = 21.6f - railPiercerImage.transform.position.x;
+            hitBoxScale = 2;
         }
         else
         {
-            hitBoxScale = 21.6f + railPiercerImage.transform.position.x;
+            hitBoxScale = 2;
         }
         StartCoroutine(ShootRailPiercerCoroutine());
     }
@@ -48,13 +53,14 @@ public class RailPiercer : MonoBehaviour
     IEnumerator ShootRailPiercerCoroutine()
     {
         Vector3 hitBoxScaleVector = Vector3.zero;
+        
         while (!nightManager.isStageEnd)
         {
             isShoot = true;
             //히트박스가 맵 끝까지 도달하도록 설정하는 부분
             //hitBoxScaleVector = railPiercerImage.transform.position;
             hitBoxScaleVector.y = 1;
-            hitBoxScaleVector.x = hitBoxScale;
+            hitBoxScaleVector.x = 1;
             railPiercerHitBox.transform.localScale = hitBoxScaleVector;
 
             //히트박스를 보는 방향에 쏘도록 x 좌표를 조정함
@@ -62,14 +68,17 @@ public class RailPiercer : MonoBehaviour
             if (character.nowDir.x >= 0)
             {
                 isWatchRight = true;
-                hitBoxPos.x = hitBoxScale;
+                hitBoxRenderer.flipX = false;
+                railPiercerImageRenderer.flipX = true;
+                hitBoxPos.x = 10;
             }
             else
             {
                 isWatchRight = false;
-                hitBoxPos.x = (-1) * hitBoxScale;
+                railPiercerImageRenderer.flipX = false;
+                hitBoxRenderer.flipX = true;
+                hitBoxPos.x = (-1) * 10;
             }
-            hitBoxPos.x /= 2;
             railPiercerHitBox.transform.localPosition = hitBoxPos;
 
 
@@ -88,6 +97,8 @@ public class RailPiercer : MonoBehaviour
 
     public void SetRailPiercerPos()
     {
+        hitBoxRenderer = railPiercerHitBox.GetComponent<SpriteRenderer>();
+        railPiercerImageRenderer = railPiercerImage.GetComponent<SpriteRenderer>();
         StartCoroutine(SetRailPiercerPosCoroutine());
     }
 
@@ -95,21 +106,27 @@ public class RailPiercer : MonoBehaviour
     {
         railPiercerRigid = this.GetComponent<Rigidbody2D>();
         Vector3 nowPos = character.transform.position;
-        float fixPos = 0;
+        
         
         while(!nightManager.isStageEnd)
         {
             nowPos = character.transform.position;
 
-            //광선을 쏘고 있을 때
+            //광선을 안쏘고 있을 때
             if (!isShoot)
             {
                 if (character.nowDir.x >= 0)
+                {
+                    railPiercerImageRenderer.flipX = true;
                     nowPos.x -= 2;
+                }
                 else
+                {
+                    railPiercerImageRenderer.flipX = false;
                     nowPos.x += 2;
+                }
             }
-            //안쏠 때
+            //쏠 때
             else
             {
                 if(isWatchRight)
