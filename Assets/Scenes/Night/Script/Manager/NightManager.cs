@@ -211,8 +211,8 @@ public class NightManager : MonoBehaviour
         isStageEnd = true;
 
         //플레이어 공격 정지
-        character.GetComponent<Character>().CharacterAttackStop();
-        character.GetComponent<Character>().CharacterStop(Vector3.zero);
+        character.GetComponent<Character>().StopAttack();
+        character.GetComponent<Character>().EndMove();
 
         //조이스틱 사용 정지와는 nightManager.isStageEnd를 매번 받기 때문에 알아서 꺼짐
 

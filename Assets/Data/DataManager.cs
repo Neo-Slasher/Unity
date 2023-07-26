@@ -12,6 +12,7 @@ public class DataManager : MonoBehaviour
     public TraitList traitList;
     public EquipmentList equipmentList;
     public AssassinationStageList assassinationStageList;
+    public ItemList itemList;
 
     
     void Awake()
@@ -42,8 +43,10 @@ public class DataManager : MonoBehaviour
 
         // assassination stage data
         string AssassinationStageData = File.ReadAllText(Application.dataPath + "/Data/Json/AssassinationStage.json");
-        assassinationStageList = JsonUtility.FromJson<AssassinationStageList>(AssassinationStageData);   
+        assassinationStageList = JsonUtility.FromJson<AssassinationStageList>(AssassinationStageData);
+
+        // item data 
+        string ItemData = File.ReadAllText(Application.dataPath + "/Data/Json/Item.json");
+        itemList = JsonUtility.FromJson<ItemList>(ItemData);
     }
-
-
 }

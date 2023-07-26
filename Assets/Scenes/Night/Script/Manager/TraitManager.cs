@@ -191,20 +191,20 @@ public class TraitManager : MonoBehaviour
         double upgradeMoveSpeed = character.nowMoveSpeed * (1 + getTrait.traitEffectValue3);
 
         //60~54초
-        character.SetMoveSpeendData(upgradeMoveSpeed);
+        character.SetMoveSpeed(upgradeMoveSpeed);
         while (timerManager.timerCount >= getTrait.traitEffectValue2)
         {
             yield return new WaitForSeconds(0.5f);
         }
 
-        character.SetMoveSpeendData(defaultMoveSpeed);
+        character.SetMoveSpeed(defaultMoveSpeed);
 
         //6~0초@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         while (timerManager.timerCount >= getTrait.traitEffectValue1 * 5)
         {
             yield return new WaitForSeconds(0.5f);
         }
-        character.SetMoveSpeendData(upgradeMoveSpeed);
+        character.SetMoveSpeed(upgradeMoveSpeed);
     }
 
     IEnumerator GetAttackPower(TraitTrash getTrait)

@@ -36,7 +36,7 @@ public class TouchScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             moveVector = (currVector - startPos).normalized;
 
             
-            character.CharacterMove(moveVector);
+            character.StartMove(moveVector);
             //character.SetHitbox();
         }
     }
@@ -45,7 +45,7 @@ public class TouchScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         if (!nightManager.isStageEnd)
         {
-            character.CharacterStop(Vector3.zero);
+            character.EndMove();
             startPos = Vector3.zero;
             moveVector = Vector3.zero;
         }

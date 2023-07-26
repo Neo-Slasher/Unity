@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4681204186273128588}
   - component: {fileID: 3770914068062517101}
   - component: {fileID: 8276696553215602102}
+  - component: {fileID: -126441113125679193}
   m_Layer: 0
   m_Name: NormalEnemyPrefab
   m_TagString: Normal
@@ -145,8 +146,10 @@ MonoBehaviour:
   nowHp: 0
   character: {fileID: 0}
   isStageEnd: 0
+  isStop: 0
   isAttacked: 0
   tempEnemyName: {fileID: 1063014538193848070}
+  isSlow: 0
 --- !u!58 &3770914068062517101
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -184,6 +187,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &-126441113125679193
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24583802718368516}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ac20515ee6387475eb236a003f1c677a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1868915873570964560
 GameObject:
   m_ObjectHideFlags: 0

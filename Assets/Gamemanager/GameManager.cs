@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     public void InitPlayerData() {
         // init player
         this.player = new Player();
-        string initData = File.ReadAllText(Application.dataPath + "/Json/InitPlayer.json");
+        string initData = File.ReadAllText(Application.dataPath + "/Data/Json/InitPlayer.json");
         this.player =  JsonUtility.FromJson<Player>(initData);
 
         // save player

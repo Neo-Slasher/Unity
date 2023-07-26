@@ -407,9 +407,9 @@ public class ItemManager : MonoBehaviour
 
         while(!nightManager.isStageEnd)
         {
-            character.SetMoveSpeendData(speed);
+            character.SetMoveSpeed(speed);
             yield return new WaitForSeconds(duration);
-            character.SetMoveSpeendData(getBasicSpeed);
+            character.SetMoveSpeed(getBasicSpeed);
 
             yield return new WaitForSeconds(timeCount - duration);
         }

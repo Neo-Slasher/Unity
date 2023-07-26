@@ -36,7 +36,7 @@ public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 currPos : currPos.normalized * joystickRange;
 
             joystick.anchoredPosition = clampedPos;
-            character.CharacterMove(joystick.anchoredPosition);
+            character.StartMove(joystick.anchoredPosition);
         }
         else
             joystick.anchoredPosition = Vector3.zero;
@@ -54,7 +54,7 @@ public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 currPos : currPos.normalized * joystickRange;
 
             joystick.anchoredPosition = clampedPos;
-            character.CharacterMove(joystick.anchoredPosition);
+            character.StartMove(joystick.anchoredPosition);
         }
         else
             joystick.anchoredPosition = Vector3.zero;
@@ -64,7 +64,7 @@ public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         if (!nightManager.isStageEnd)
         {
-            character.CharacterStop(joystick.anchoredPosition);
+            character.EndMove();
             joystick.anchoredPosition = Vector3.zero;
         }
         else
