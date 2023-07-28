@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a381493b06a89874b8c5defb1c2c8b22, type: 3}
   m_Color: {r: 0.8000001, g: 0.93725497, b: 0.98823535, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,4 +98,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   barriorImageTransform: {fileID: 1935732905924140003}
-  createSpeed: 8
+  createSpeed: 2

@@ -157,7 +157,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: fb967556140386e48bf8c49cbd45deed, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 85eeee5eee7825f4f8330ef5f315f33c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -220,6 +220,7 @@ MonoBehaviour:
   droneArea: {fileID: 1808193311054635575}
   droneAreaImage: {fileID: 6673172780091351981}
   interceptDroneImage: {fileID: 3340012465032878071}
+  droneRenderer: {fileID: 0}
   droneAngle: 0.5
   detectRadius: 3.5
 --- !u!1 &6673172780091351981
@@ -295,12 +296,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ad5fda4993ebf464b8737c437de7d385, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 985dcd4f73ed79d4dbdccc9bbf4a8cc6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 6, y: 6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

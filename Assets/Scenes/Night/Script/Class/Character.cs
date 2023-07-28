@@ -153,7 +153,8 @@ public class Character : MonoBehaviour
         nowDir = joystickDir.normalized;
         characterRigid.velocity = joystickDir.normalized * ConvertMoveSpeedToPixelSpeed(characterTrashData.moveSpeed);
         animator.SetBool("move", true);
-        transform.localScale = (nowDir.x < 0) ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
+        characterSpriteRanderer.flipX = (nowDir.x < 0) ? false : true;
+        //transform.localScale = (nowDir.x < 0) ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);     아이템도 같이 이동해서 주석처리했어
     }
 
     public void EndMove() {

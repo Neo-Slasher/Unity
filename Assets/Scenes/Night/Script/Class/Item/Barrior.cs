@@ -10,7 +10,7 @@ public class Barrior : MonoBehaviour
     float createSpeed;
     float startSize = 0;
     float nowSize = 0;
-    float maxSize = 4;
+    float maxSize = 1;
 
 
     public void CreateBarrior()

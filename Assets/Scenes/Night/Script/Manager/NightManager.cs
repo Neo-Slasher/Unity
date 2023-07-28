@@ -56,8 +56,8 @@ public class NightManager : MonoBehaviour
         SetEnemyArrData();
 
         //몬스터 생성 함수
-        //InstantiateEnemy();
-        TestEnemy(); TestEnemy();
+        InstantiateEnemy();
+        //TestEnemy(); TestEnemy();
     }
 
     void SetEnemyArrData()
