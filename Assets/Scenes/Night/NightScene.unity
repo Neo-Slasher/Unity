@@ -788,7 +788,7 @@ MonoBehaviour:
   character: {fileID: 889106807}
   hitBox: {fileID: 1410340655}
   itemIdxArr: 
-  tempItemIdx: 6
+  tempItemIdx: 3
   itemPrefabArr:
   - {fileID: 0}
   - {fileID: 6435774007306126119, guid: 5e53ae801b6353d47b55e9e30bc26a36, type: 3}

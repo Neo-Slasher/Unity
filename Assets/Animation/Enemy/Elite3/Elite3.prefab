@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9000554287139158811}
   - component: {fileID: 1975450430849206323}
   - component: {fileID: 2140621916757236782}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Elite3
   m_TagString: Elite
   m_Icon: {fileID: 0}
