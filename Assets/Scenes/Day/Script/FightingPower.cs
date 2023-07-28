@@ -13,17 +13,15 @@ public class FightingPower : MonoBehaviour
     public int currentCP;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         currentCP = (int)((hitPoint * 1.5) + (moveSpeed * 3) + (attackPower * attackSpeed * attackRange * 0.02));
         Debug.Log("currentCP "+currentCP);
     }
 
-    // Update is called once per frame
-    void Update()
+    void ChangingPower()
     {
         
     }
-
 
 }
