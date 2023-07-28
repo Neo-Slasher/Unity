@@ -143,9 +143,9 @@ public class ItemManager : MonoBehaviour
         centryBall.transform.localPosition = centryBallPos;
         while (!nightManager.isStageEnd)
         {
+            centryBall.transform.RotateAround(character.transform.position, Vector3.back, centryBallAngle);
             if (!centryBallScript.StopCentryBall())
             {
-                centryBall.transform.RotateAround(character.transform.position, Vector3.back, centryBallAngle);
                 centryBall.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
             }
             yield return null;
@@ -247,7 +247,7 @@ public class ItemManager : MonoBehaviour
             if (character.fixPos.y >= 0)
                 getSwordAura.transform.rotation = Quaternion.Euler(0, 0, angle);
             else
-                getSwordAura.transform.rotation = Quaternion.Euler(0, 0, 180 - angle);
+                getSwordAura.transform.rotation = Quaternion.Euler(0, 0, 360 - angle);
         }
         else
         {
@@ -273,6 +273,11 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator FirstAdeCoroutine()
     {
+        GameObject firstAdeParent = Instantiate(itemPrefabArr[6]);
+        firstAdeParent.transform.SetParent(character.transform);
+        firstAdeParent.transform.localPosition = character.transform.position;
+        firstAdeParent.SetActive(false);
+
         double nowHp = character.ReturnCharacterHitPoint();
         double firstAdeHp = character.ReturnCharacterHitPointMax() * 0.4f;
         double healHp = character.ReturnCharacterAttackPower();
@@ -285,7 +290,7 @@ public class ItemManager : MonoBehaviour
                 yield return null;
             }
 
-            character.HealHp(healHp);
+            character.HealHp(healHp, firstAdeParent);
 
             yield return new WaitForSeconds(20);
         }

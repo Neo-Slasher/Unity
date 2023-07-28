@@ -162,7 +162,7 @@ public class CentryBall : MonoBehaviour
     public bool StopCentryBall()
     {
         if (isStop)
-            return false;
+            return true;
         else
             return false;
     }

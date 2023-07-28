@@ -25,8 +25,6 @@ public class EnemyParent : MonoBehaviour
     public bool isAttacked = false;     //공격을 했다면 2초간 true로 변환
     Coroutine moveCoroutine = null;
 
-    public TextMeshPro tempEnemyName;
-
 
     //아이템
     public bool isSlow = false;
@@ -104,15 +102,12 @@ public class EnemyParent : MonoBehaviour
         {
             case 0:
                 enemyTrashData = new EnemyTrashData(EnemyType.BlackSuitMan);
-                tempEnemyName.text = "Black Suit";
                 break;
             case 1:
                 enemyTrashData = new EnemyTrashData(EnemyType.WhiteSuitMan);
-                tempEnemyName.text = "White Suit";
                 break;
             case 2:
                 enemyTrashData = new EnemyTrashData(EnemyType.MachineArmorSoldier);
-                tempEnemyName.text = "Machine Armor";
                 break;
         }
     }
@@ -123,15 +118,12 @@ public class EnemyParent : MonoBehaviour
         {
             case 0:
                 enemyTrashData = new EnemyTrashData(EnemyType.Red3LegRobot);
-                tempEnemyName.text = "Red 3Leg";
                 break;
             case 1:
                 enemyTrashData = new EnemyTrashData(EnemyType.Blue3LegRobot);
-                tempEnemyName.text = "Blue 3Leg";
                 break;
             case 2:
                 enemyTrashData = new EnemyTrashData(EnemyType.Big4LegRobot);
-                tempEnemyName.text = "Big 4Leg";
                 break;
         }
     }

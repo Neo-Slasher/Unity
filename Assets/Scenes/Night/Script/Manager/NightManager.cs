@@ -224,14 +224,14 @@ public class NightManager : MonoBehaviour
             {
                 enemyCloneParent.GetChild(i).GetComponent<NormalEnemy>().isStageEnd = true;
                 //해당 콜라이더 정지는 이후 오브젝트 형태에 따라 변경될 예정@@@@@@@@@@
-                enemyCloneParent.GetChild(i).GetComponent<CircleCollider2D>().enabled = false;
+                enemyCloneParent.GetChild(i).GetComponent<BoxCollider2D>().enabled = false;
             }
 
             //엘리트 적일때
             else if (enemyCloneParent.GetChild(i).tag == "Elite")
             {
                 enemyCloneParent.GetChild(i).GetComponent<EliteEnemy>().isStageEnd = true;
-                enemyCloneParent.GetChild(i).GetComponent<CircleCollider2D>().enabled = false;
+                enemyCloneParent.GetChild(i).GetComponent<BoxCollider2D>().enabled = false;
             }
         }
 

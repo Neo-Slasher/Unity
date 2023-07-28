@@ -232,7 +232,7 @@ public class Character : MonoBehaviour
         if(fixPos.y >= 0)
             hitBox.transform.rotation = Quaternion.Euler(0, 0, angle);
         else
-            hitBox.transform.rotation = Quaternion.Euler(0, 0, 180 - angle);
+            hitBox.transform.rotation = Quaternion.Euler(0, 0, 360 - angle);
         
         StartCoroutine(SetHitBoxCoroutine());
     }
@@ -533,17 +533,19 @@ public class Character : MonoBehaviour
     }
 
     //아이템 6번 퍼스트 에이드에서 체력 회복할 때 쓰려고 만듬
-    public void HealHp(double getHealHp)
+    public void HealHp(double getHealHp, GameObject getImage)
     {
-        StartCoroutine(HealHpCoroutine(getHealHp));
+        StartCoroutine(HealHpCoroutine(getHealHp, getImage));
     }
 
-    IEnumerator HealHpCoroutine(double getHealHp)
+    IEnumerator HealHpCoroutine(double getHealHp, GameObject getImage)
     {
         float time = 3;
         float deltaTime = 0;
         double value = 0;
         double nowHeal = 0;
+
+        getImage.SetActive(true);
 
         while (time> deltaTime)
         {
@@ -571,6 +573,7 @@ public class Character : MonoBehaviour
             }
             yield return null;
         }
+        getImage.SetActive(false);
         Debug.Log("End");
     }
 
