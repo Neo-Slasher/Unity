@@ -193,6 +193,7 @@ public class Character : MonoBehaviour
 
                 isMoveBackOn = false;
             } else {
+                itemManager.SetMultiSlasherSprite(true);
                 hitBox.SetActive(true);
                 SetHitbox();
                 yield return new WaitForSeconds(0.1f);
@@ -204,6 +205,7 @@ public class Character : MonoBehaviour
                 SetHitbox();
                 yield return new WaitForSeconds(0.5f);
                 hitBox.SetActive(false);
+                itemManager.SetMultiSlasherSprite(false);
 
                 isDoubleAttack = false;
                 isMoveBackOn = false;

@@ -54,6 +54,10 @@ public class EliteEnemy : EnemyParent
         if (!isShoot)
         {
             isShoot = true;
+
+            float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
+            projectilesPulling[nowPullingIndex].transform.rotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
+
             projectilesPulling[nowPullingIndex].SetActive(true);
 
             projectilesPulling[nowPullingIndex].GetComponent<Rigidbody2D>().velocity

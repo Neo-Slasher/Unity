@@ -44,6 +44,8 @@ public class ItemManager : MonoBehaviour
     float reaperCircleR = 3; //반지름
     float reaperDeg = 0; //각도
     [SerializeField]
+    Sprite[] multiSlasherSprite;
+    [SerializeField]
     float reaperSpeed = 600; //원운동 속도
     ChargingReaper chargingReaperScript;
     public bool isChargingReaperUse = false;
@@ -204,6 +206,7 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator MultiSlashCoroutine()
     {
+
         //2회 연속공격 + 에너지파
         while (!nightManager.isStageEnd)
         {
@@ -215,8 +218,19 @@ public class ItemManager : MonoBehaviour
             }
             Debug.Log("end");
             ShootSwordAura();
+
             yield return new WaitForSeconds(6);
         }
+    }
+
+    public void SetMultiSlasherSprite(bool isMultiActive)
+    {
+        SpriteRenderer hitBoxSpriteRenderer = hitBox.GetComponent<SpriteRenderer>();
+
+        if (isMultiActive)
+            hitBoxSpriteRenderer.sprite = multiSlasherSprite[0];   //멀티 슬레쉬 스프라이트
+        else
+            hitBoxSpriteRenderer.sprite = multiSlasherSprite[1];   //멀티 슬레쉬 스프라이트
     }
 
     void ShootSwordAura()
@@ -225,10 +239,10 @@ public class ItemManager : MonoBehaviour
         swordAura.transform.SetParent(characterParent.transform);
         swordAura.transform.position = hitBox.transform.position;
 
-        Color swordAuraColor = Color.blue;
-        swordAuraColor.a = 0.5f;
+        //Color swordAuraColor = Color.blue;
+        //swordAuraColor.a = 0.5f;
 
-        swordAura.GetComponent<SpriteRenderer>().color = swordAuraColor;
+        //swordAura.GetComponent<SpriteRenderer>().color = swordAuraColor;
         SetSwordAuraAngle(swordAura);
 
         if(character.fixPos != Vector3.zero)

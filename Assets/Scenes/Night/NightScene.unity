@@ -788,7 +788,7 @@ MonoBehaviour:
   character: {fileID: 889106807}
   hitBox: {fileID: 1410340655}
   itemIdxArr: 
-  tempItemIdx: 3
+  tempItemIdx: 0
   itemPrefabArr:
   - {fileID: 0}
   - {fileID: 6435774007306126119, guid: 5e53ae801b6353d47b55e9e30bc26a36, type: 3}
@@ -809,6 +809,9 @@ MonoBehaviour:
   centryBallAngle: 0.4
   chargingReaperAngle: 1
   reaperCircleR: 3
+  multiSlasherSprite:
+  - {fileID: 21300000, guid: 8ad25757d5d6f1746b0663f4e1c1f06a, type: 3}
+  - {fileID: 21300000, guid: 47d296a347284854a8fd7c08cae896dc, type: 3}
   reaperSpeed: 400
   isChargingReaperUse: 0
 --- !u!1 &470622975
@@ -3229,7 +3232,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2022676908
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3688,7 +3691,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3514429689775917769, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3514429689775917780, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
       propertyPath: m_Size.x
@@ -3729,7 +3732,7 @@ PrefabInstance:
     - target: {fileID: 3514429689775917783, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 8d4009a052ea75843aadbce36d3db306, type: 3}
+      objectReference: {fileID: 21300000, guid: 47d296a347284854a8fd7c08cae896dc, type: 3}
     - target: {fileID: 3514429689775917783, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
       propertyPath: m_Color.a
       value: 0.8862745

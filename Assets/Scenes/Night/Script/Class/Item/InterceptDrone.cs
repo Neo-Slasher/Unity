@@ -15,6 +15,8 @@ public class InterceptDrone : MonoBehaviour
     [SerializeField]
     GameObject interceptDroneImage;
     [SerializeField]
+    GameObject interceptDroneSearchingImage;
+    [SerializeField]
     SpriteRenderer droneRenderer;
 
     [SerializeField]
@@ -77,11 +79,29 @@ public class InterceptDrone : MonoBehaviour
             {
                 for (int i = 0; i < colArr.Length; i++)
                 {
+                    StartCoroutine(SearchIngProjEffectCoroutine());
                     InterceptProj(colArr[i]);
                 }
             }
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    IEnumerator SearchIngProjEffectCoroutine()
+    {
+        float nowAngle = 0;
+        float spinSpeed = 720;
+        droneAreaImage.SetActive(true);
+
+        while (nowAngle <= 360)
+        {
+            nowAngle += Time.deltaTime * spinSpeed;
+            interceptDroneSearchingImage.transform.rotation = Quaternion.Euler(0, 0, nowAngle * (-1));
+
+            yield return null;
+        }
+
+        droneAreaImage.SetActive(false);
     }
 
     void InterceptProj(Collider2D getCol)

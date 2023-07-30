@@ -52,35 +52,23 @@ public class RailPiercer : MonoBehaviour
 
     IEnumerator ShootRailPiercerCoroutine()
     {
-        Vector3 hitBoxScaleVector = Vector3.zero;
+        Vector3 railPiercerImageScale = Vector3.zero;
         
         while (!nightManager.isStageEnd)
         {
             isShoot = true;
-            //히트박스가 맵 끝까지 도달하도록 설정하는 부분
-            //hitBoxScaleVector = railPiercerImage.transform.position;
-            hitBoxScaleVector.y = 1;
-            hitBoxScaleVector.x = 1;
-            railPiercerHitBox.transform.localScale = hitBoxScaleVector;
 
             //히트박스를 보는 방향에 쏘도록 x 좌표를 조정함
             Vector3 hitBoxPos = Vector3.zero;
             if (character.nowDir.x >= 0)
             {
                 isWatchRight = true;
-                hitBoxRenderer.flipX = false;
-                railPiercerImageRenderer.flipX = true;
-                hitBoxPos.x = 10;
             }
             else
             {
                 isWatchRight = false;
-                railPiercerImageRenderer.flipX = false;
-                hitBoxRenderer.flipX = true;
-                hitBoxPos.x = (-1) * 10;
             }
-            railPiercerHitBox.transform.localPosition = hitBoxPos;
-
+            SetRailPiercerViewPos();
 
             //이제 쏘는 부분
             railPiercerHitBox.SetActive(true);
@@ -92,6 +80,16 @@ public class RailPiercer : MonoBehaviour
 
             yield return new WaitForSeconds((float)attackSpeed / 10);
         }
+    }
+
+    void SetRailPiercerViewPos()
+    {
+        Transform railPiercerTransform = this.transform;
+        float angle;
+        Vector3 watchDir = character.nowDir;
+
+        angle = Mathf.Atan2(watchDir.y, watchDir.x) * Mathf.Rad2Deg;
+        railPiercerTransform.rotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
     }
 
 
