@@ -150,4 +150,4 @@ MonoBehaviour:
   character: {fileID: 0}
   detectRadius: 0
   getEnemySpeed: 0
-  spinSpeed: 10
+  spinSpeed: 30
