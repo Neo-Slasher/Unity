@@ -33,7 +33,7 @@ public class Character : MonoBehaviour
 
     //캐릭터 임시 데이터
     [SerializeField]
-    CharacterTrashData characterTrashData;
+    CharacterTrashData characterData;
     [SerializeField]
     bool isCheat;
 
@@ -59,20 +59,21 @@ public class Character : MonoBehaviour
     private Animator animator;
 
     private void Awake() {
-        characterTrashData = new CharacterTrashData(isCheat);
+        characterData = new CharacterTrashData(isCheat);
+        //characterData = GameManager.instance.player;
         characterRigid = this.GetComponent<Rigidbody2D>();
         characterSpriteRanderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
 
         //캐릭터의 스테이터스를 장비 등 변화에 따라 변화시킨다.
-        hitBoxScript.getAttackPower = characterTrashData.attackPower;    //무기 공격력 임시로 줌
-        nowMoveSpeed = characterTrashData.moveSpeed;
+        hitBoxScript.getAttackPower = characterData.attackPower;    //무기 공격력 임시로 줌
+        nowMoveSpeed = characterData.moveSpeed;
     }
 
     private void Start() {
         StartAttack();
 
-        if (characterTrashData.hpRegen > 0)
+        if (characterData.hpRegen > 0)
             HpRegen();
     }
 
@@ -88,62 +89,62 @@ public class Character : MonoBehaviour
             case EffectType.none:
                 break;
             case EffectType.hp:
-                    characterTrashData.hitPoint += getEffectValue;
-                    characterTrashData.hitPointMax += getEffectValue;
+                    characterData.hitPoint += getEffectValue;
+                    characterData.hitPointMax += getEffectValue;
                 break;
             case EffectType.moveSpeed:
-                characterTrashData.moveSpeed += getEffectValue;
+                characterData.moveSpeed += getEffectValue;
                 break;
             case EffectType.attackPower:
-                characterTrashData.attackPower += getEffectValue;
+                characterData.attackPower += getEffectValue;
                 break;
             case EffectType.attackSpeed:
-                characterTrashData.attackSpeed += getEffectValue;
+                characterData.attackSpeed += getEffectValue;
                 break;
             case EffectType.attackRange:
-                characterTrashData.attackRange += getEffectValue;
+                characterData.attackRange += getEffectValue;
                 break;
             case EffectType.startMoney:
                 if (!getEffectMulti)
-                    characterTrashData.startMoney += (int)getEffectValue;
+                    characterData.startMoney += (int)getEffectValue;
                 break;
             case EffectType.earnMoney:
-                characterTrashData.earnMoney += getEffectValue;
+                characterData.earnMoney += getEffectValue;
                 break;
             case EffectType.shopSlot:
                 if (!getEffectMulti)
-                    characterTrashData.shopSlot += (int)getEffectValue;
+                    characterData.shopSlot += (int)getEffectValue;
                 break;
             case EffectType.itemSlot:
                 if (!getEffectMulti)
-                    characterTrashData.itemSlot += (int)getEffectValue;
+                    characterData.itemSlot += (int)getEffectValue;
                 break;
             case EffectType.shopMinRank:
                 if (!getEffectMulti)
-                    characterTrashData.shopMinRank += (int)getEffectValue;
+                    characterData.shopMinRank += (int)getEffectValue;
                 break;
             case EffectType.shopMaxRank:
                 if (!getEffectMulti)
-                    characterTrashData.shopMaxRank += (int)getEffectValue;
+                    characterData.shopMaxRank += (int)getEffectValue;
                 break;
             case EffectType.dropRank:
                 if (!getEffectMulti)
-                    characterTrashData.dropRank += (int)getEffectValue;
+                    characterData.dropRank += (int)getEffectValue;
                 break;
             case EffectType.dropRate:
-                characterTrashData.dropRate += getEffectValue;
+                characterData.dropRate += getEffectValue;
                 break;
             case EffectType.healByHit:
-                characterTrashData.healByHit += getEffectValue;
+                characterData.healByHit += getEffectValue;
                 break;
             case EffectType.hpRegen:
-                characterTrashData.hpRegen += getEffectValue;
+                characterData.hpRegen += getEffectValue;
                 break;
             case EffectType.dealOnMax:
-                    characterTrashData.dealOnMax += getEffectValue;
+                    characterData.dealOnMax += getEffectValue;
                 break;
             case EffectType.dealOnHp:
-                    characterTrashData.dealOnHp += getEffectValue;
+                    characterData.dealOnHp += getEffectValue;
                 break;
         }
     }
@@ -151,7 +152,7 @@ public class Character : MonoBehaviour
     // 아래는 이동 관련 로직(이 주석은 리팩토링이 끝나면 지울 것)
     public void StartMove(Vector3 joystickDir) {
         nowDir = joystickDir.normalized;
-        characterRigid.velocity = joystickDir.normalized * ConvertMoveSpeedToPixelSpeed(characterTrashData.moveSpeed);
+        characterRigid.velocity = joystickDir.normalized * ConvertMoveSpeedToPixelSpeed(characterData.moveSpeed);
         animator.SetBool("move", true);
         characterSpriteRanderer.flipX = (nowDir.x < 0) ? false : true;
         //transform.localScale = (nowDir.x < 0) ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);     아이템도 같이 이동해서 주석처리했어
@@ -220,7 +221,7 @@ public class Character : MonoBehaviour
 
     //이동속도 컨트롤할때 이 함수 쓸 예정
     public void SetMoveSpeed(double moveSpeed) {
-        characterTrashData.moveSpeed = moveSpeed;
+        characterData.moveSpeed = moveSpeed;
     }
 
     //이동 방향에 따라 히트박스 위치 조절하는 함수
@@ -241,7 +242,7 @@ public class Character : MonoBehaviour
 
     IEnumerator SetHitBoxCoroutine() {
         while(hitBox.gameObject.activeSelf == true) {
-            hitBoxRigid.velocity = nowDir.normalized * ConvertMoveSpeedToPixelSpeed(characterTrashData.moveSpeed);
+            hitBoxRigid.velocity = nowDir.normalized * ConvertMoveSpeedToPixelSpeed(characterData.moveSpeed);
             yield return null;
         }
     }
@@ -252,14 +253,14 @@ public class Character : MonoBehaviour
     // 2. 로직
     public void AbsorbAttack()   //canChange가 참이면 최대 체력일때 쉴드로 전환 가능
     {
-        if(characterTrashData.healByHit > 0 && !isAbsorb)
+        if(characterData.healByHit > 0 && !isAbsorb)
         {
             isAbsorb = true;
 
-            if (characterTrashData.hitPoint + characterTrashData.healByHit < characterTrashData.hitPointMax)
+            if (characterData.hitPoint + characterData.healByHit < characterData.hitPointMax)
             {
-                characterTrashData.hitPoint += characterTrashData.healByHit;
-                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+                characterData.hitPoint += characterData.healByHit;
+                hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
                 //SetShieldImage();
             }
             else
@@ -268,24 +269,24 @@ public class Character : MonoBehaviour
                 if(canChange)
                 {
                     //쉴드가 최대 체력 초과면 리턴
-                    if (characterTrashData.shieldPoint >= characterTrashData.hitPointMax)
+                    if (characterData.shieldPoint >= characterData.hitPointMax)
                         return;    
 
-                    double excessHeal = characterTrashData.hitPoint + characterTrashData.healByHit
-                                                                            - characterTrashData.hitPointMax;
+                    double excessHeal = characterData.hitPoint + characterData.healByHit
+                                                                            - characterData.hitPointMax;
 
                     //쉴드가 최대 체력을 넘지 못하게 제어
-                    if (characterTrashData.shieldPoint + excessHeal >= characterTrashData.hitPointMax)
+                    if (characterData.shieldPoint + excessHeal >= characterData.hitPointMax)
                     {
-                        characterTrashData.shieldPoint = characterTrashData.hitPointMax;
+                        characterData.shieldPoint = characterData.hitPointMax;
                     }
 
                     //그냥 보호막 회복
                     else
-                        characterTrashData.shieldPoint += excessHeal;
+                        characterData.shieldPoint += excessHeal;
                 }
 
-                characterTrashData.hitPoint = characterTrashData.hitPointMax;
+                characterData.hitPoint = characterData.hitPointMax;
                 SetShieldImage();
             }    
         }
@@ -299,18 +300,18 @@ public class Character : MonoBehaviour
     {
         while (!nightManager.isStageEnd)
         {
-            if (characterTrashData.hitPoint < characterTrashData.hitPointMax)
+            if (characterData.hitPoint < characterData.hitPointMax)
             {
-                if (characterTrashData.hitPoint + characterTrashData.hpRegen >= characterTrashData.hitPointMax)
+                if (characterData.hitPoint + characterData.hpRegen >= characterData.hitPointMax)
                 {
-                    characterTrashData.hitPoint = characterTrashData.hitPointMax;
+                    characterData.hitPoint = characterData.hitPointMax;
                 }
                 else
                 {
-                    characterTrashData.hitPoint += characterTrashData.hpRegen;
+                    characterData.hitPoint += characterData.hpRegen;
                 }
 
-                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+                hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
                 yield return new WaitForSeconds(1);
             }
             else
@@ -367,40 +368,40 @@ public class Character : MonoBehaviour
         getAttackData = AntiPhenetUse(getAttackData);
 
         //쉴드로 데미지 받을 때
-        if (characterTrashData.shieldPoint > 0)
+        if (characterData.shieldPoint > 0)
         {
             //어차피 체력 100%에서 쉴드가 생기므로 
             //1. 체력바를 쉴드 비율만큼 옆으로 민다
             //2. 해당 체력바 위치에 쉴드 이미지를 놓는다.
             //3. 쉴드의 fillamount를 설정한다.
-            if(characterTrashData.shieldPoint >= getAttackData)
+            if(characterData.shieldPoint >= getAttackData)
             {
-                characterTrashData.shieldPoint -= getAttackData;
+                characterData.shieldPoint -= getAttackData;
                 SetShieldImage();
             }
             else
             {
-                double nowAttactDamage = getAttackData - (float)characterTrashData.shieldPoint;
-                characterTrashData.shieldPoint = 0;
+                double nowAttactDamage = getAttackData - (float)characterData.shieldPoint;
+                characterData.shieldPoint = 0;
                 SetShieldImage();
 
-                characterTrashData.hitPoint -= nowAttactDamage;
+                characterData.hitPoint -= nowAttactDamage;
                 //감소한 만큼 플레이어 체력바 줄어들게
-                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+                hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
             }
         }
         else { // 체력으로 데미지 받을 때
             //Hp - 적 데미지 계산
-            if (characterTrashData.hitPoint > getAttackData) {
-                characterTrashData.hitPoint -= getAttackData;
-                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+            if (characterData.hitPoint > getAttackData) {
+                characterData.hitPoint -= getAttackData;
+                hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
             }
             else {
                 //체력이 다 떨어졌으므로 사망
                 Debug.Log("GameEnd");
                 // TODO: 죽은 모션이 나온 후 결과 창이 뜨도록 딜레이 필요
                 animator.SetTrigger("die");
-                characterTrashData.hitPoint = 0;
+                characterData.hitPoint = 0;
                 hpBarImage.fillAmount = 0;
 
                 nightManager.SetStageEnd();
@@ -429,15 +430,15 @@ public class Character : MonoBehaviour
 
     public void SetStartShieldPointData(float getShieldPoint)
     {
-        float shieldData = (float)characterTrashData.hitPoint * getShieldPoint;
-        characterTrashData.shieldPoint = shieldData;
+        float shieldData = (float)characterData.hitPoint * getShieldPoint;
+        characterData.shieldPoint = shieldData;
         SetShieldImage();
     }
 
     //해당 숫자만큼 쉴드 생성
     public void SetShieldPointData(float getShieldPoint)
     {
-        characterTrashData.shieldPoint = getShieldPoint;
+        characterData.shieldPoint = getShieldPoint;
         SetShieldImage();
     }
     
@@ -446,14 +447,14 @@ public class Character : MonoBehaviour
     {
         Vector3 fixShieldPos = shieldBarImage.transform.localPosition;
 
-        hpBarImage.fillAmount = (float)characterTrashData.hitPoint /
-                        ((float)characterTrashData.shieldPoint + (float)characterTrashData.hitPoint);
+        hpBarImage.fillAmount = (float)characterData.hitPoint /
+                        ((float)characterData.shieldPoint + (float)characterData.hitPoint);
 
         fixShieldPos.x = hpBarImage.rectTransform.sizeDelta.x * hpBarImage.fillAmount;
 
         shieldBarImage.transform.localPosition = fixShieldPos;
-        shieldBarImage.fillAmount = (float)characterTrashData.shieldPoint /
-                        ((float)characterTrashData.shieldPoint + (float)characterTrashData.hitPoint);
+        shieldBarImage.fillAmount = (float)characterData.shieldPoint /
+                        ((float)characterData.shieldPoint + (float)characterData.hitPoint);
     }
 
     public void SetHpBarPosition()
@@ -484,39 +485,39 @@ public class Character : MonoBehaviour
 
     public double ReturnCharacterHitPoint()
     {
-        return characterTrashData.hitPoint;
+        return characterData.hitPoint;
     }
 
     public double ReturnCharacterHitPointMax()
     {
-        return characterTrashData.hitPointMax;
+        return characterData.hitPointMax;
     }
 
     public double ReturnCharacterAttackPower() 
     { 
-        return characterTrashData.attackPower;
+        return characterData.attackPower;
     }
 
     public double ReturnCharacterAttackSpeed()
     {
-        return characterTrashData.attackSpeed;
+        return characterData.attackSpeed;
     }
 
     public void SetCharacterAttackPower(double getAttackPower)
     {
-        characterTrashData.attackPower = getAttackPower;
-        hitBoxScript.getAttackPower = characterTrashData.attackPower;
+        characterData.attackPower = getAttackPower;
+        hitBoxScript.getAttackPower = characterData.attackPower;
     }
 
     public void SetAbsorbAttackData(float getHealByHit)
     {
-        characterTrashData.healByHit += getHealByHit;
+        characterData.healByHit += getHealByHit;
     }
 
     //아이템쪽
     public int ReturnCharacterItemSlot()
     {
-        return characterTrashData.itemSlot;
+        return characterData.itemSlot;
     }
 
     public void UpdateKillCount()
@@ -526,12 +527,12 @@ public class Character : MonoBehaviour
 
     public double ReturnCharacterMoveSpeed()
     {
-        return characterTrashData.moveSpeed;
+        return characterData.moveSpeed;
     }
 
     public Vector3 ReturnSpeed()
     {
-        return nowDir.normalized * ConvertMoveSpeedToPixelSpeed(characterTrashData.moveSpeed);
+        return nowDir.normalized * ConvertMoveSpeedToPixelSpeed(characterData.moveSpeed);
     }
 
     //아이템 6번 퍼스트 에이드에서 체력 회복할 때 쓰려고 만듬
@@ -559,19 +560,19 @@ public class Character : MonoBehaviour
             if (nowHeal >= getHealHp)
                 break;
 
-            if (characterTrashData.hitPoint < characterTrashData.hitPointMax)
+            if (characterData.hitPoint < characterData.hitPointMax)
             {
-                characterTrashData.hitPoint += value;
+                characterData.hitPoint += value;
 
                 //만약 피가 오버되면 종료
-                if(characterTrashData.hitPoint >= characterTrashData.hitPointMax)
+                if(characterData.hitPoint >= characterData.hitPointMax)
                 {
-                    characterTrashData.hitPoint = characterTrashData.hitPointMax;
-                    hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+                    characterData.hitPoint = characterData.hitPointMax;
+                    hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
                     break;
                 }
 
-                hpBarImage.fillAmount = (float)characterTrashData.hitPoint / (float)characterTrashData.hitPointMax;
+                hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
             }
             yield return null;
         }
@@ -581,12 +582,12 @@ public class Character : MonoBehaviour
 
     public double ReturnCharacterShieldPoint()
     {
-        return characterTrashData.shieldPoint;
+        return characterData.shieldPoint;
     }
 
     public double ReturnCharacterAttackRange()
     {
-        return characterTrashData.attackRange;
+        return characterData.attackRange;
     }
 
     //데미지 경감용
@@ -594,7 +595,7 @@ public class Character : MonoBehaviour
     {
         if(isAntiPhenetOn)
         {
-            return getAttackPowerData / characterTrashData.attackPower;
+            return getAttackPowerData / characterData.attackPower;
         }
         else
             return getAttackPowerData;
@@ -602,12 +603,12 @@ public class Character : MonoBehaviour
 
     public void SetCharacterHitPointMax(double getHitPoint)
     {
-        characterTrashData.hitPointMax += getHitPoint;
-        characterTrashData.hitPoint = characterTrashData.hitPointMax;
+        characterData.hitPointMax += getHitPoint;
+        characterData.hitPoint = characterData.hitPointMax;
     }
 
     public void SetCharacterHpRegen(double getHpRegen)
     {
-        characterTrashData.hpRegen = getHpRegen;
+        characterData.hpRegen = getHpRegen;
     }
 }
