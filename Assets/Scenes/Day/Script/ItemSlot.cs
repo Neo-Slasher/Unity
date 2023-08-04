@@ -17,18 +17,18 @@ public class ItemSlot : MonoBehaviour
 
     public int shopMinRank = 3;
     public int shopMaxRank = 2;
-    public List<int> equips = new List<int>();//랭크 기준에 부합하는 장비들 모음
+    public List<int> equips = new List<int>(); //랭크 기준에 부합하는 장비들 모음
 
     
     private int totalEquip = 48; //전체 장비 개수
     private int totalItem = 60; //전체 아이템 개수
-    private int equipORitem;//장비와 아이템 랜덤 계수
-    private int equipRank;//장비의 랭크(최대, 최소 랭크와 비교용)
+    private int equipORitem; //장비와 아이템 랜덤 계수
+    private int equipRank; //장비의 랭크(최대, 최소 랭크와 비교용)
     
     public class ShopSlot
     {
-        public string shopType;
-        public int shopNum;
+        public string shopType; //아이템인지 장비인지
+        public int shopNum; //
     } 
     public List<ShopSlot> shopslot = new List<ShopSlot>();
 
@@ -108,7 +108,9 @@ public class ItemSlot : MonoBehaviour
 
             if(shopslot[i].shopType == "equip")
             {
-                ItemImage.sprite = Resources.Load<Sprite>("Equip/" + i.ToString()) as Sprite; ////이미지 들어오면 경로 변경해야함!!!!!!
+                string imageName = DataManager.instance.equipmentList.equipment[shopslot[i].shopNum].name;
+                Debug.Log(imageName);
+                ItemImage.sprite = Resources.Load<Sprite>("Equip/" + imageName) as Sprite; 
                 ItemAlpha.text = DataManager.instance.equipmentList.equipment[shopslot[i].shopNum].price + "α";
             
                 if(DataManager.instance.equipmentList.equipment[shopslot[i].shopNum].rank == 0)
@@ -124,7 +126,7 @@ public class ItemSlot : MonoBehaviour
             }
             else if(shopslot[i].shopType == "item") //아이템 파일 만들어지면 수정!
             {
-                ItemImage.sprite = Resources.Load<Sprite>("Item/" + i.ToString()) as Sprite; ////이미지 들어오면 경로dddd 변경해야함!!!!!!
+                ItemImage.sprite = Resources.Load<Sprite>("Item/" + i.ToString()) as Sprite; ////이미지 들어오면 경로 변경해야함!!!!!!
                 ItemAlpha.text = "Alapha";
                 ItemRank.text = "Rank";
             }
