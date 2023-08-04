@@ -13,6 +13,7 @@ public class DataManager : MonoBehaviour
     public EquipmentList equipmentList;
     public AssassinationStageList assassinationStageList;
     public ItemList itemList;
+    public MonsterList monsterList;
 
     
     void Awake()
@@ -48,5 +49,9 @@ public class DataManager : MonoBehaviour
         // item data 
         string ItemData = File.ReadAllText(Application.dataPath + "/Data/Json/Item.json");
         itemList = JsonUtility.FromJson<ItemList>(ItemData);
+
+        // monster data
+        string MonsterData = File.ReadAllText(Application.dataPath + "/Data/Json/Monster.json");
+        monsterList = JsonUtility.FromJson<MonsterList>(MonsterData);
     }
 }

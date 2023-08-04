@@ -2,6 +2,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -31,11 +32,14 @@ public class PreparationManager : MonoBehaviour
     public TextMeshProUGUI dropRankText;
     public TextMeshProUGUI enemyRespawnText;
 
-    public TextMeshProUGUI firstText;
-    public TextMeshProUGUI secondText;
-    public TextMeshProUGUI thirdText;
-    public TextMeshProUGUI fourthText;
-    public TextMeshProUGUI fifthText;
+
+
+    public GameObject traitBoard1;
+    public GameObject traitBoard2;
+    public GameObject traitBoard3;
+    public GameObject traitBoard4;
+
+    public List<GameObject> traitButtons;
 
 
     void Start()
@@ -102,40 +106,50 @@ public class PreparationManager : MonoBehaviour
     }
 
 
-    public void OnClickFirstTraitButton()
-    {
-        firstText.text = "Lv.1";
-        secondText.text = "Lv.2";
-        thirdText.text = "Lv.3";
-        fourthText.text = "Lv.4";
-        fifthText.text = "Lv.5";
+    public void OnClickFirstTraitButton() {
+        traitBoard1.SetActive(true);
+        traitBoard2.SetActive(false);
+        traitBoard3.SetActive(false);
+        traitBoard4.SetActive(false);
     }
 
-    public void OnClickSecondTraitButton()
-    {
-        firstText.text = "Lv.6";
-        secondText.text = "Lv.7";
-        thirdText.text = "Lv.8";
-        fourthText.text = "Lv.9";
-        fifthText.text = "Lv.10";
+    public void OnClickSecondTraitButton() {
+        traitBoard1.SetActive(false);
+        traitBoard2.SetActive(true);
+        traitBoard3.SetActive(false);
+        traitBoard4.SetActive(false);
     }
 
-    public void OnClickThirdTraitButton()
-    {
-        firstText.text = "Lv.11";
-        secondText.text = "Lv.12";
-        thirdText.text = "Lv.13";
-        fourthText.text = "Lv.14";
-        fifthText.text = "Lv.15";
+    public void OnClickThirdTraitButton() {
+        traitBoard1.SetActive(false);
+        traitBoard2.SetActive(false);
+        traitBoard3.SetActive(true);
+        traitBoard4.SetActive(false);
     }
 
-    public void OnClickFourthTraitButton()
-    {
-        firstText.text = "Lv.16";
-        secondText.text = "Lv.17";
-        thirdText.text = "Lv.18";
-        fourthText.text = "Lv.19";
-        fifthText.text = "Lv.20";
+    public void OnClickFourthTraitButton() {
+        traitBoard1.SetActive(false);
+        traitBoard2.SetActive(false);
+        traitBoard3.SetActive(false);
+        traitBoard4.SetActive(true);
     }
 
+
+    public void OnClickTraitButton() {
+        GameObject buttonObject = EventSystem.current.currentSelectedGameObject;
+
+        Button traitButton = buttonObject.GetComponent<Button>();
+        traitButton.interactable = false;
+
+        int traitNumber = int.Parse(buttonObject.name);
+        GameManager.instance.player.trait[traitNumber] = true;
+
+        TraitChecking(traitNumber);
+    }
+
+    void TraitChecking(int traitNumber) {
+        switch (traitNumber) {
+
+        }
+    }
 }

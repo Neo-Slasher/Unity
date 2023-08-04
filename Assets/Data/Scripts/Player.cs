@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -11,14 +12,14 @@ public class Player {
     public int money;
 
     // status
-    public int maxHp;
-    public int curHp;
-    public int attackPower;
-    public int attackSpeed;
-    public int attackRange;
-    public int moveSpeed;
+    public double maxHp;
+    public double curHp;
+    public double attackPower;
+    public double attackSpeed;
+    public double attackRange;
+    public double moveSpeed;
     public double shieldDuration;
-    public int shieldPoint;
+    public double shieldPoint;
     public double immuneDuration;
     public int immuneCount;
     public bool dashable;
@@ -28,9 +29,12 @@ public class Player {
     public double damageReductionRate;
     public double dealOnMaxHp;
     public double dealOnCurHp;
-    public int healByHit;
-    public int hpRegen;
+    public double healByHit;
+    public double hpRegen;
 
     // trait
+    public bool[] trait = new bool[63];
 
+    // equipment
+     
 }
