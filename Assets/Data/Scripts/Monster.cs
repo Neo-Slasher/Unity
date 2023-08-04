@@ -3,6 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[Serializable]
+public class MonsterList {
+    public List<Monster> monster;
+}
+
+
 [Serializable]
 public class Monster
 {
