@@ -26,7 +26,7 @@ public class EliteEnemy : EnemyParent
     //공격 함수 들어갈 예정 + 범위는 overlap
     void SetProjectile()
     {
-        if(enemyTrashData.monProj)
+        if(enemyData.monProj)
         {
             projectilesPulling = new GameObject[pullingScale];
 
@@ -54,10 +54,14 @@ public class EliteEnemy : EnemyParent
         if (!isShoot)
         {
             isShoot = true;
+
+            float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
+            projectilesPulling[nowPullingIndex].transform.rotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
+
             projectilesPulling[nowPullingIndex].SetActive(true);
 
             projectilesPulling[nowPullingIndex].GetComponent<Rigidbody2D>().velocity
-                = moveDir.normalized * SetMoveSpeed(enemyTrashData.moveSpeed * 2);
+                = moveDir.normalized * SetMoveSpeed(enemyData.moveSpeed * 2);
 
             yield return new WaitForSeconds(2f);
 

@@ -11,8 +11,15 @@ public class GravityBind : MonoBehaviour
     float detectRadius;
     [SerializeField]
     double getEnemySpeed;
+    [SerializeField]
+    float spinSpeed;
 
     EnemyParent getEnemyScript;
+
+    private void Start()
+    {
+        StartCoroutine(SpinGravityBindCoroutine());
+    }
 
     private void Update()
     {
@@ -52,5 +59,24 @@ public class GravityBind : MonoBehaviour
 
         getEnemyScript.isSlow = false;
         getEnemyScript.SetEnemyMoveSpeed(getEnemySpeed * 2);
+    }
+
+    IEnumerator SpinGravityBindCoroutine()
+    {
+        float nowAngle = 0;
+
+        while(!nightManager.isStageEnd)
+        {
+            nowAngle += Time.deltaTime * spinSpeed;
+
+            if (nowAngle >=360)
+            {
+                nowAngle -= 360;
+            }
+
+            this.transform.rotation = Quaternion.Euler(0, 0, nowAngle * -1);
+
+            yield return null;
+        }
     }
 }

@@ -44,6 +44,8 @@ public class ItemManager : MonoBehaviour
     float reaperCircleR = 3; //반지름
     float reaperDeg = 0; //각도
     [SerializeField]
+    Sprite[] multiSlasherSprite;
+    [SerializeField]
     float reaperSpeed = 600; //원운동 속도
     ChargingReaper chargingReaperScript;
     public bool isChargingReaperUse = false;
@@ -143,9 +145,9 @@ public class ItemManager : MonoBehaviour
         centryBall.transform.localPosition = centryBallPos;
         while (!nightManager.isStageEnd)
         {
+            centryBall.transform.RotateAround(character.transform.position, Vector3.back, centryBallAngle);
             if (!centryBallScript.StopCentryBall())
             {
-                centryBall.transform.RotateAround(character.transform.position, Vector3.back, centryBallAngle);
                 centryBall.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
             }
             yield return null;
@@ -204,6 +206,7 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator MultiSlashCoroutine()
     {
+
         //2회 연속공격 + 에너지파
         while (!nightManager.isStageEnd)
         {
@@ -215,8 +218,19 @@ public class ItemManager : MonoBehaviour
             }
             Debug.Log("end");
             ShootSwordAura();
+
             yield return new WaitForSeconds(6);
         }
+    }
+
+    public void SetMultiSlasherSprite(bool isMultiActive)
+    {
+        SpriteRenderer hitBoxSpriteRenderer = hitBox.GetComponent<SpriteRenderer>();
+
+        if (isMultiActive)
+            hitBoxSpriteRenderer.sprite = multiSlasherSprite[0];   //멀티 슬레쉬 스프라이트
+        else
+            hitBoxSpriteRenderer.sprite = multiSlasherSprite[1];   //멀티 슬레쉬 스프라이트
     }
 
     void ShootSwordAura()
@@ -225,10 +239,10 @@ public class ItemManager : MonoBehaviour
         swordAura.transform.SetParent(characterParent.transform);
         swordAura.transform.position = hitBox.transform.position;
 
-        Color swordAuraColor = Color.blue;
-        swordAuraColor.a = 0.5f;
+        //Color swordAuraColor = Color.blue;
+        //swordAuraColor.a = 0.5f;
 
-        swordAura.GetComponent<SpriteRenderer>().color = swordAuraColor;
+        //swordAura.GetComponent<SpriteRenderer>().color = swordAuraColor;
         SetSwordAuraAngle(swordAura);
 
         if(character.fixPos != Vector3.zero)
@@ -247,7 +261,7 @@ public class ItemManager : MonoBehaviour
             if (character.fixPos.y >= 0)
                 getSwordAura.transform.rotation = Quaternion.Euler(0, 0, angle);
             else
-                getSwordAura.transform.rotation = Quaternion.Euler(0, 0, 180 - angle);
+                getSwordAura.transform.rotation = Quaternion.Euler(0, 0, 360 - angle);
         }
         else
         {
@@ -273,6 +287,11 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator FirstAdeCoroutine()
     {
+        GameObject firstAdeParent = Instantiate(itemPrefabArr[6]);
+        firstAdeParent.transform.SetParent(character.transform);
+        firstAdeParent.transform.localPosition = character.transform.position;
+        firstAdeParent.SetActive(false);
+
         double nowHp = character.ReturnCharacterHitPoint();
         double firstAdeHp = character.ReturnCharacterHitPointMax() * 0.4f;
         double healHp = character.ReturnCharacterAttackPower();
@@ -285,7 +304,7 @@ public class ItemManager : MonoBehaviour
                 yield return null;
             }
 
-            character.HealHp(healHp);
+            character.HealHp(healHp, firstAdeParent);
 
             yield return new WaitForSeconds(20);
         }

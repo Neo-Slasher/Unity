@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EnemyParent : MonoBehaviour
 {
     [SerializeField]
-    protected EnemyTrashData enemyTrashData;
+    protected EnemyTrashData enemyData;
     public LevelTrashData levelTrashData;
 
     //적 데이터
@@ -24,8 +24,6 @@ public class EnemyParent : MonoBehaviour
     public bool isStop = false;         //오브젝트 움직임을 컨트롤하기 위해 만듦
     public bool isAttacked = false;     //공격을 했다면 2초간 true로 변환
     Coroutine moveCoroutine = null;
-
-    public TextMeshPro tempEnemyName;
 
 
     //아이템
@@ -75,7 +73,7 @@ public class EnemyParent : MonoBehaviour
 
             nowCharPos = character.transform.position;
             moveDir = nowCharPos - this.transform.position;
-            enemyRigid.velocity = moveDir.normalized * SetMoveSpeed(enemyTrashData.moveSpeed);
+            enemyRigid.velocity = moveDir.normalized * SetMoveSpeed(enemyData.moveSpeed);
             yield return new WaitForSeconds(1);
         }
         enemyRigid.velocity = Vector3.zero;
@@ -92,9 +90,9 @@ public class EnemyParent : MonoBehaviour
     void SetLevelStatus(int level)
     {
         //선택한 난이도에 따라 스테이터스 변경
-        enemyTrashData.hitPointMax *= levelTrashData.diffStat;
-        enemyTrashData.hitPoint *= levelTrashData.diffStat;
-        enemyTrashData.attackPower *= levelTrashData.diffStat;
+        enemyData.hitPointMax *= levelTrashData.diffStat;
+        enemyData.hitPoint *= levelTrashData.diffStat;
+        enemyData.attackPower *= levelTrashData.diffStat;
     }
 
     public void SetNormalEnemyType(int nowIndex)
@@ -103,16 +101,13 @@ public class EnemyParent : MonoBehaviour
         switch(nowIndex)
         {
             case 0:
-                enemyTrashData = new EnemyTrashData(EnemyType.BlackSuitMan);
-                tempEnemyName.text = "Black Suit";
+                enemyData = new EnemyTrashData(EnemyType.BlackSuitMan);
                 break;
             case 1:
-                enemyTrashData = new EnemyTrashData(EnemyType.WhiteSuitMan);
-                tempEnemyName.text = "White Suit";
+                enemyData = new EnemyTrashData(EnemyType.WhiteSuitMan);
                 break;
             case 2:
-                enemyTrashData = new EnemyTrashData(EnemyType.MachineArmorSoldier);
-                tempEnemyName.text = "Machine Armor";
+                enemyData = new EnemyTrashData(EnemyType.MachineArmorSoldier);
                 break;
         }
     }
@@ -122,16 +117,13 @@ public class EnemyParent : MonoBehaviour
         switch (nowIndex)
         {
             case 0:
-                enemyTrashData = new EnemyTrashData(EnemyType.Red3LegRobot);
-                tempEnemyName.text = "Red 3Leg";
+                enemyData = new EnemyTrashData(EnemyType.Red3LegRobot);
                 break;
             case 1:
-                enemyTrashData = new EnemyTrashData(EnemyType.Blue3LegRobot);
-                tempEnemyName.text = "Blue 3Leg";
+                enemyData = new EnemyTrashData(EnemyType.Blue3LegRobot);
                 break;
             case 2:
-                enemyTrashData = new EnemyTrashData(EnemyType.Big4LegRobot);
-                tempEnemyName.text = "Big 4Leg";
+                enemyData = new EnemyTrashData(EnemyType.Big4LegRobot);
                 break;
         }
     }
@@ -141,11 +133,11 @@ public class EnemyParent : MonoBehaviour
     {
         if(IsEnforce(getLevel,isElite))
         {
-            enemyTrashData.monEnforce = true;
+            enemyData.monEnforce = true;
             //강화되었으므로 스테이터스 변경
-            enemyTrashData.hitPointMax *= 2;
-            enemyTrashData.hitPoint *= 2;
-            enemyTrashData.attackPower *= 2;
+            enemyData.hitPointMax *= 2;
+            enemyData.hitPoint *= 2;
+            enemyData.attackPower *= 2;
         }
     }
 
@@ -169,7 +161,7 @@ public class EnemyParent : MonoBehaviour
     public double GetEnemyAttackPower()
     {
         if (isAttacked == false)
-            return enemyTrashData.attackPower;
+            return enemyData.attackPower;
         else return 0;
     }
 
@@ -215,9 +207,9 @@ public class EnemyParent : MonoBehaviour
             character.GetComponent<Character>().AbsorbAttack();
             EnemyMoveBack();
 
-            if (enemyTrashData.hitPoint > getDamage)
+            if (enemyData.hitPoint > getDamage)
             {
-                enemyTrashData.hitPoint -= getDamage;
+                enemyData.hitPoint -= getDamage;
             }
             else
             {
@@ -232,8 +224,8 @@ public class EnemyParent : MonoBehaviour
     {
         if (getDamage > 0)
         {
-            if (enemyTrashData.hitPoint > getDamage)
-                enemyTrashData.hitPoint -= getDamage;
+            if (enemyData.hitPoint > getDamage)
+                enemyData.hitPoint -= getDamage;
             else
             {
                 character.GetComponent<Character>().UpdateKillCount();
@@ -306,7 +298,7 @@ public class EnemyParent : MonoBehaviour
 
     public double ReturnEnemyMoveSpeed()
     {
-        return enemyTrashData.moveSpeed;
+        return enemyData.moveSpeed;
     }
 
     public void EnemyStop()
@@ -318,22 +310,22 @@ public class EnemyParent : MonoBehaviour
 
     public double ReturnEnemyHitPointMax()
     {
-        return enemyTrashData.hitPointMax;
+        return enemyData.hitPointMax;
     }
 
     public void SetEnemyMoveSpeed(double getEnemySpeed)
     {
-        enemyTrashData.moveSpeed = getEnemySpeed;
+        enemyData.moveSpeed = getEnemySpeed;
     }
 
     public void DebuggingFunc()
     {
-        Debug.Log("HitPoint: " + enemyTrashData.hitPoint);
+        Debug.Log("HitPoint: " + enemyData.hitPoint);
     }
 
     void EnemyMoveBack()
     {
-        if (character.GetComponent<Character>().isMoveBackOn && !enemyTrashData.monResist)
+        if (character.GetComponent<Character>().isMoveBackOn && !enemyData.monResist)
         {
             isStop = true;
             Vector3 start;
