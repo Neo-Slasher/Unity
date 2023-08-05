@@ -1,0 +1,19 @@
+﻿{
+    "item": [
+      {
+        "itemIdx": 1,
+        "name": "센트리볼",
+        "rank": 0,
+        "price": 250,
+        "script": "범위 #ar# (공격범위 120%) 내의 적을 자동으로 감지하여 #as# (공격속도 150%) 의 공격속도로 #at# (공격력 50%) 피해를 입히는 광선을 발사하는 구체 드론.",
+        "imgIdx": 1,
+        "category": 0,
+        "attackPowerCalc": true,
+        "attackPowerValue": 0.50,
+        "attackSpeedCalc": true,
+        "attackSpeedValue": 1.20,
+        "attackRangeCalc": true,
+        "attackRangeValue": 1.50
+      }
+    ]
+}

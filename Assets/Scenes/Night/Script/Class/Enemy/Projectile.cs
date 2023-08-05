@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 public class Projectile : MonoBehaviour
 {
     public bool isEnemy;
+    public float projPower;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isEnemy)

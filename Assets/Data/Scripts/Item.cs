@@ -10,7 +10,7 @@ public class ItemList {
 }
 
 
-[SerializeField]
+[Serializable]
 public class Item {
     public int itemIdx;
     public string name;

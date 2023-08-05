@@ -13,11 +13,46 @@ public class DisasterDrone : MonoBehaviour
     [SerializeField]
     double damage;
 
+    int itemRank;
+    float getAttackRangeValue;
+    float enemyDamageRate;
+
     EnemyParent getEnemyScript;
 
     private void Start()
     {
         DetectEnemy();
+    }
+
+    public void SetItemRank(int getRank)
+    {
+        itemRank = getRank;
+        SetDisasterDroneData();
+    }
+
+    void SetDisasterDroneData()
+    {
+        getAttackRangeValue = (float)DataManager.instance.itemList.item[2].attackRangeValue;
+
+        switch (itemRank)
+        {
+            case 0:
+                detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
+                enemyDamageRate = 0.05f;
+                break;
+            case 1:
+                detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
+                enemyDamageRate = 0.08f;
+                break;
+            case 2:
+                detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
+                enemyDamageRate = 0.12f;
+                break;
+            case 3:
+                detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
+                enemyDamageRate = 0.16f;
+                break;
+        }
     }
 
     void DetectEnemy()
@@ -49,7 +84,7 @@ public class DisasterDrone : MonoBehaviour
         getEnemyScript = getCol.GetComponent<EnemyParent>();
         damage = getEnemyScript.ReturnEnemyHitPointMax();
 
-        damage /= 1;
+        damage *= enemyDamageRate;
 
         getEnemyScript.EnemyDamaged(damage);
     }

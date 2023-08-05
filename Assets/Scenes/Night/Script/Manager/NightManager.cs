@@ -56,8 +56,8 @@ public class NightManager : MonoBehaviour
         SetEnemyArrData();
 
         //몬스터 생성 함수
-        InstantiateEnemy();
-        //TestEnemy(); TestEnemy();
+        //InstantiateEnemy();
+        TestEnemy();
     }
 
     void SetEnemyArrData()
@@ -100,7 +100,7 @@ public class NightManager : MonoBehaviour
     void TestEnemy()
     {
         eliteEnemyArr[1].SetEnforceData(nowLevel, true);
-        GameObject eliteEnemyClone = Instantiate(eliteEnemyPrefabArr[1], SetEnemyPos(), Quaternion.identity);
+        GameObject eliteEnemyClone = Instantiate(normalEnemyPrefabArr[0], SetEnemyPos(), Quaternion.identity);
         eliteEnemyClone.transform.SetParent(enemyCloneParent);
         eliteEnemyClone.SetActive(true);
     }

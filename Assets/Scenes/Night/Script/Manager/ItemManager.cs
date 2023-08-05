@@ -30,6 +30,8 @@ public class ItemManager : MonoBehaviour
     [SerializeField]
     int[] itemIdxArr;
     [SerializeField]
+    int[] itemRankArr;
+    [SerializeField]
     int tempItemIdx;
 
     [SerializeField]
@@ -63,20 +65,31 @@ public class ItemManager : MonoBehaviour
     }
 
     //아이템 체크하려고 만든 임시 코드
-    void SetTempItem1()
+    //void SetTempItem1()
+    //{
+    //    FindItem(tempItemIdx);
+    //}
+
+    void SetItemIdxArr()
     {
-        FindItem(tempItemIdx);
+        for (int i = 0; i < GameManager.instance.player.item.Length; i++)
+        {
+            itemIdxArr[i] = GameManager.instance.player.item[i].itemIdx;
+            itemRankArr[i] = GameManager.instance.player.item[i].rank;
+            itemIdxArr[i] -= (itemRankArr[i] * 15);     //아이템 인덱스로 ItemName을 구분하기 때문에 강제로 만든 식입니다.
+                                                        //아이템 인덱스 - 랭크*15 = itemName
+        }
     }
 
     void StartItem()
     {
         for(int i =0; i< itemIdxArr.Length; i++)
         {
-            FindItem(itemIdxArr[i]);
+            FindItem(itemIdxArr[i], itemRankArr[i]);
         }
     }
 
-    void FindItem(int getIdx)
+    void FindItem(int getIdx, int getRank)
     {
         ItemName nowItemName = (ItemName)getIdx;
         Debug.Log(nowItemName.ToString());
@@ -85,59 +98,60 @@ public class ItemManager : MonoBehaviour
             case ItemName.None:
                 break;
             case ItemName.CentryBall:
-                StartCoroutine(CentryBallCoroutine());
+                StartCoroutine(CentryBallCoroutine(getRank));
                 break;
             case ItemName.ChargingReaper:
-                StartCoroutine(ChargingReaperCoroutine());
+                StartCoroutine(ChargingReaperCoroutine(getRank));
                 break;
             case ItemName.DisasterDrone:
-                DisasterDrone();
+                DisasterDrone(getRank);
                 break;
             case ItemName.MultiSlash:
-                StartCoroutine(MultiSlashCoroutine());
+                StartCoroutine(MultiSlashCoroutine(getRank));
                 break;
             case ItemName.RailPiercer:
-                RailPiercer();
+                RailPiercer(getRank);
                 break;
             case ItemName.FirstAde:
-                StartCoroutine(FirstAdeCoroutine());
+                StartCoroutine(FirstAdeCoroutine(getRank));
                 break;
             case ItemName.Barrior:
-                StartCoroutine(BarriorCoroutine());
+                StartCoroutine(BarriorCoroutine(getRank));
                 break;
             case ItemName.HologramTrick:
-                StartCoroutine(HologramTrickCoroutine());
+                StartCoroutine(HologramTrickCoroutine(getRank));
                 break;
             case ItemName.AntiPhenet:
-                AntiPhenet();
+                AntiPhenet(getRank);
                 break;
             case ItemName.RegenerationArmor:
-                RegenerationArmor();
+                RegenerationArmor(getRank);
                 break;
             case ItemName.GravityBind:
-                GravityBind();
+                GravityBind(getRank);
                 break;
             case ItemName.MoveBack:
-                StartCoroutine(MoveBack());
+                StartCoroutine(MoveBack(getRank));
                 break;
             case ItemName.Booster:
-                StartCoroutine(BoosterCoroutine());
+                StartCoroutine(BoosterCoroutine(getRank));
                 break;
             case ItemName.BioSnach:
-                BioSnach();
+                BioSnach(getRank);
                 break;
             case ItemName.InterceptDrone:
-                InterceptDroneCoroutine();
+                InterceptDroneCoroutine(getRank);
                 break;
         }
     }
 
-    IEnumerator CentryBallCoroutine()
+    IEnumerator CentryBallCoroutine(int getitemRank)
     {
         GameObject centryBallParent = Instantiate(itemPrefabArr[1]);
         GameObject centryBall = centryBallParent.transform.GetChild(0).gameObject;
         CentryBall centryBallScript = centryBallParent.GetComponent<CentryBall>();
         centryBallParent.transform.SetParent(character.transform);
+        centryBallScript.SetItemRank(getitemRank);
 
         Vector3 centryBallPos = character.transform.position;
         centryBallPos.y += 7;
@@ -154,12 +168,13 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    IEnumerator ChargingReaperCoroutine()
+    IEnumerator ChargingReaperCoroutine(int getRank)
     {
         isChargingReaperUse = true;
         GameObject chargingReaperParent = Instantiate(itemPrefabArr[2]);
         chargingReaperParent.transform.SetParent(characterParent.transform);
         chargingReaperScript = chargingReaperParent.GetComponent<ChargingReaper>();
+        chargingReaperScript.SetItemRank(getRank);
 
         Transform reaperImageTransform = chargingReaperParent.transform.GetChild(0);
 
@@ -195,17 +210,38 @@ public class ItemManager : MonoBehaviour
             chargingReaperScript.ChargingGauge();
     }
 
-    void DisasterDrone()
+    void DisasterDrone(int getRank)
     {
         GameObject disasterDroneParent = Instantiate(itemPrefabArr[3]);
         disasterDroneParent.transform.SetParent(character.transform);
         disasterDroneParent.transform.localPosition = character.transform.position;
         disasterDroneParent.GetComponent<DisasterDrone>().character = character;
         disasterDroneParent.GetComponent<DisasterDrone>().nightManager = nightManager;
+        disasterDroneParent.GetComponent<DisasterDrone>().SetItemRank(getRank);
     }
 
-    IEnumerator MultiSlashCoroutine()
+    IEnumerator MultiSlashCoroutine(int getRank)
     {
+        //랭크에 따라 다른 작업 추가
+        float slashTime = 6;
+        float attackPowerRate = (float)DataManager.instance.itemList.item[3].attackPowerValue;
+        float slashAttackPower = (float)character.ReturnCharacterAttackPower() * attackPowerRate;
+
+        switch (getRank)
+        {
+            case 0:
+                slashTime = 6;
+                break;
+            case 1:
+                slashTime = 5;
+                break;
+            case 2:
+                slashTime = 4;
+                break;
+            case 3:
+                slashTime = 3;
+                break;
+        }
 
         //2회 연속공격 + 에너지파
         while (!nightManager.isStageEnd)
@@ -217,9 +253,9 @@ public class ItemManager : MonoBehaviour
                 yield return null;
             }
             Debug.Log("end");
-            ShootSwordAura();
+            ShootSwordAura(slashAttackPower);
 
-            yield return new WaitForSeconds(6);
+            yield return new WaitForSeconds(slashTime);
         }
     }
 
@@ -233,11 +269,12 @@ public class ItemManager : MonoBehaviour
             hitBoxSpriteRenderer.sprite = multiSlasherSprite[1];   //멀티 슬레쉬 스프라이트
     }
 
-    void ShootSwordAura()
+    void ShootSwordAura(float getSlashAttackPower)
     {
         GameObject swordAura = Instantiate(itemPrefabArr[4]);
         swordAura.transform.SetParent(characterParent.transform);
         swordAura.transform.position = hitBox.transform.position;
+        swordAura.GetComponent<SwordAura>().attackDamage = getSlashAttackPower;
 
         //Color swordAuraColor = Color.blue;
         //swordAuraColor.a = 0.5f;
@@ -269,7 +306,7 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    void RailPiercer()
+    void RailPiercer(int getRank)
     {
         GameObject railPiercerParent = Instantiate(itemPrefabArr[5]);
         railPiercerParent.transform.SetParent(characterParent.transform);
@@ -277,6 +314,7 @@ public class ItemManager : MonoBehaviour
 
         railPiercerScript.character = character;
         railPiercerScript.nightManager = nightManager;
+        railPiercerScript.SetItemRank(getRank);
 
         double characterAttackSpeed = character.ReturnCharacterAttackSpeed();
         double characterAttackPower = character.ReturnCharacterAttackPower();
@@ -285,7 +323,7 @@ public class ItemManager : MonoBehaviour
         railPiercerScript.ShootRailPiercer(characterAttackSpeed, characterAttackPower);
     }
 
-    IEnumerator FirstAdeCoroutine()
+    IEnumerator FirstAdeCoroutine(int getRank)
     {
         GameObject firstAdeParent = Instantiate(itemPrefabArr[6]);
         firstAdeParent.transform.SetParent(character.transform);
@@ -310,7 +348,7 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    IEnumerator BarriorCoroutine()
+    IEnumerator BarriorCoroutine(int getRank)
     {
         GameObject barriorParent = Instantiate(itemPrefabArr[7]);
         barriorParent.transform.SetParent(character.transform);
@@ -334,7 +372,7 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    IEnumerator HologramTrickCoroutine()
+    IEnumerator HologramTrickCoroutine(int getRank)
     {
         GameObject[] hologramParentArr = new GameObject[2];
         Vector3 hologramVector;
@@ -375,12 +413,12 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    void AntiPhenet()
+    void AntiPhenet(int getRank)
     {
         character.isAntiPhenetOn = true;
     }
 
-    void RegenerationArmor()
+    void RegenerationArmor(int getRank)
     {
         double addHp = character.ReturnCharacterAttackPower();
         double addHpRegen = character.ReturnCharacterAttackRange();
@@ -392,7 +430,7 @@ public class ItemManager : MonoBehaviour
         character.SetCharacterHpRegen(addHpRegen);
     }
 
-    void GravityBind()
+    void GravityBind(int getRank)
     {
         GameObject gravityBindParent = Instantiate(itemPrefabArr[11]);
         gravityBindParent.transform.SetParent(characterParent.transform);
@@ -401,7 +439,7 @@ public class ItemManager : MonoBehaviour
         gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().nightManager = nightManager;
     }
 
-    IEnumerator MoveBack()
+    IEnumerator MoveBack(int getRank)
     {
         double getAttackSpeed = character.ReturnCharacterAttackSpeed();
         float timeCount = (float)(200 / getAttackSpeed);
@@ -413,7 +451,7 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    IEnumerator BoosterCoroutine()
+    IEnumerator BoosterCoroutine(int getRank)
     {
         double getBasicSpeed = character.ReturnCharacterMoveSpeed();
         double getAttackSpeed = character.ReturnCharacterAttackSpeed();
@@ -434,13 +472,13 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    void BioSnach()
+    void BioSnach(int getRank)
     {
         float getAbsorbAttackData = 100;
         character.SetAbsorbAttackData(getAbsorbAttackData);
     }
     
-    void InterceptDroneCoroutine()
+    void InterceptDroneCoroutine(int getRank)
     {
         GameObject interceptDroneParent = Instantiate(itemPrefabArr[15]);
         interceptDroneParent.transform.SetParent(character.transform);

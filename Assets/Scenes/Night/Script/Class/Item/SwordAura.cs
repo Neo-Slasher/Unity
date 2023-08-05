@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SwordAura : MonoBehaviour
 {
-    double attackDamage = 500;
+    public double attackDamage = 500;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

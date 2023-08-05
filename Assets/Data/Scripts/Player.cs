@@ -10,6 +10,8 @@ public class Player {
     public int reqExp;
     public int curExp;
     public int money;
+    public int startMoney;
+    public float earnMoney;
 
     // status
     public double maxHp;

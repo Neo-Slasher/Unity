@@ -787,7 +787,8 @@ MonoBehaviour:
   characterParent: {fileID: 182467907}
   character: {fileID: 889106807}
   hitBox: {fileID: 1410340655}
-  itemIdxArr: 000000000000000000000000
+  itemIdxArr: 040000000000000000000000
+  itemRankArr: 000000000000000000000000
   tempItemIdx: 5
   itemPrefabArr:
   - {fileID: 0}
@@ -1217,7 +1218,7 @@ MonoBehaviour:
   traitJsonName: TraitTrashJsonData
   nowLevel: 0
   traitIndexList: 
-  traitList: []
+  traitOldList: []
   testTraitIndex: 0
   arr: []
 --- !u!1 &799972125
@@ -3277,7 +3278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2022676908
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3756,11 +3757,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3514429689775917780, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 6
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 3514429689775917780, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3514429689775917782, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
       propertyPath: m_LocalScale.y
@@ -3802,6 +3803,10 @@ PrefabInstance:
       propertyPath: shieldBarImage
       value: 
       objectReference: {fileID: 1406309405}
+    - target: {fileID: 3514429690322398364, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3514429690322398365, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
       propertyPath: m_FlipY
       value: 0
