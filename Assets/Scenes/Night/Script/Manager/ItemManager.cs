@@ -53,13 +53,13 @@ public class ItemManager : MonoBehaviour
     private void Awake()
     {
         //게임 매니저나 어딘가에서 아이템 인덱스 같은 거 들고오기
-        itemIdxArr = new int[character.ReturnCharacterItemSlot()];
+        //itemIdxArr = new int[character.ReturnCharacterItemSlot()];
     }
 
     private void Start()
     {
-        //StartItem();
-        SetTempItem1();
+        StartItem();
+        //SetTempItem1();
     }
 
     //아이템 체크하려고 만든 임시 코드

@@ -6,27 +6,30 @@ using UnityEngine;
 [System.Serializable]
 public class CharacterTrashData
 {
-    public double hitPointMax;              //최대 체력
-    public double hitPoint;                 //현재 체력
-    public double moveSpeed;                //이동 속도
+    // defalut
+    public int level;
+    public int reqExp;
+    public int curExp;
+    public int money;
+
+    public double maxHp;                    //최대 체력
+    public double curHp;                    //현재 체력
     public double attackPower;              //공격력
+    public double attackSpeed;
+    public double attackRange;
+    public double moveSpeed;                //이동 속도
+    public double shieldDuration;           //방어막 지속시간
+    public double shieldPoint;              //방어막 수치
+    public double immuneDuration;           //피해 면역 시간
+    public int immnuneCount;                //피해 면역 횟수
     public bool dashAble;                   //대시 여부
     public double dashFreq;                 //대시 주기
     public double dashSpeed;                //대시 이동속도
     public double dashDuration;             //대시 지속시간
-
-    public double attackSpeed;
-    public double attackRange;
-
-    public double shieldDuration;           //방어막 지속시간
-    public double shieldPoint;              //방어막 수치
-
-    public double immuneDuration;           //피해 면역 시간
-    public int immnuneCount;                //피해 면역 횟수
     public double damageReduction;          //데미지 경감률
 
-    public double dealOnMax;                //최대 체력 적 추가피해
-    public double dealOnHp;                 //적 체력 비례 피해
+    public double dealOnMaxHp;                //최대 체력 적 추가피해
+    public double dealOnCurHp;                 //적 체력 비례 피해
 
     public double healByHit;                //타격당 회복
     public double hpRegen;                  //자동 지속 회복
@@ -49,8 +52,14 @@ public class CharacterTrashData
     {
         if (!isCheat)
         {
-            hitPointMax = 20.0;
-            hitPoint = 20.0;
+            // defalut
+            level = 0;
+            reqExp = 0;
+            curExp = 0;
+            money = 0;
+
+            maxHp = 20.0;
+            curHp = 20.0;
             moveSpeed = 10.0;               //10 = 1초당 250px, 이동속도 1당 30px + 유니티 1칸당 128px
             attackPower = 5.0;
             dashAble = false;
@@ -64,8 +73,8 @@ public class CharacterTrashData
             immuneDuration = 0.0;
             immnuneCount = 0;
             damageReduction = 0.0;
-            dealOnMax = 0.0;
-            dealOnHp = 0.0;
+            dealOnMaxHp = 0.0;
+            dealOnCurHp = 0.0;
             healByHit = 0.0;
             hpRegen = 0.0;
             currentMoney = 0;
@@ -84,8 +93,14 @@ public class CharacterTrashData
 
     void CheatData()
     {
-        hitPointMax = 2000;
-        hitPoint = 2000;
+        // defalut
+        level = 0;
+        reqExp = 0;
+        curExp = 0;
+        money = 0;
+
+        maxHp = 2000;
+        curHp = 2000;
         moveSpeed = 10.0;               //10 = 1초당 250px, 이동속도 1당 30px + 유니티 1칸당 128px
         attackPower = 500.0;
         dashAble = false;
@@ -99,8 +114,8 @@ public class CharacterTrashData
         immuneDuration = 0.0;
         immnuneCount = 0;
         damageReduction = 0.0;
-        dealOnMax = 0.0;
-        dealOnHp = 0.0;
+        dealOnMaxHp = 0.0;
+        dealOnCurHp = 0.0;
         healByHit = 0.0;
         hpRegen = 0.0;
         currentMoney = 0;

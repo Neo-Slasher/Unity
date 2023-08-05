@@ -34,6 +34,7 @@ public class Character : MonoBehaviour
     //캐릭터 임시 데이터
     [SerializeField]
     CharacterTrashData characterData;
+    //Player characterData;
     [SerializeField]
     bool isCheat;
 
@@ -89,8 +90,8 @@ public class Character : MonoBehaviour
             case EffectType.none:
                 break;
             case EffectType.hp:
-                    characterData.hitPoint += getEffectValue;
-                    characterData.hitPointMax += getEffectValue;
+                    characterData.curHp += getEffectValue;
+                    characterData.maxHp += getEffectValue;
                 break;
             case EffectType.moveSpeed:
                 characterData.moveSpeed += getEffectValue;
@@ -141,10 +142,10 @@ public class Character : MonoBehaviour
                 characterData.hpRegen += getEffectValue;
                 break;
             case EffectType.dealOnMax:
-                    characterData.dealOnMax += getEffectValue;
+                    characterData.dealOnMaxHp += getEffectValue;
                 break;
             case EffectType.dealOnHp:
-                    characterData.dealOnHp += getEffectValue;
+                    characterData.dealOnCurHp += getEffectValue;
                 break;
         }
     }
@@ -257,10 +258,10 @@ public class Character : MonoBehaviour
         {
             isAbsorb = true;
 
-            if (characterData.hitPoint + characterData.healByHit < characterData.hitPointMax)
+            if (characterData.curHp + characterData.healByHit < characterData.maxHp)
             {
-                characterData.hitPoint += characterData.healByHit;
-                hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
+                characterData.curHp += characterData.healByHit;
+                hpBarImage.fillAmount = (float)characterData.curHp / (float)characterData.maxHp;
                 //SetShieldImage();
             }
             else
@@ -269,16 +270,16 @@ public class Character : MonoBehaviour
                 if(canChange)
                 {
                     //쉴드가 최대 체력 초과면 리턴
-                    if (characterData.shieldPoint >= characterData.hitPointMax)
+                    if (characterData.shieldPoint >= characterData.maxHp)
                         return;    
 
-                    double excessHeal = characterData.hitPoint + characterData.healByHit
-                                                                            - characterData.hitPointMax;
+                    double excessHeal = characterData.curHp + characterData.healByHit
+                                                                            - characterData.maxHp;
 
                     //쉴드가 최대 체력을 넘지 못하게 제어
-                    if (characterData.shieldPoint + excessHeal >= characterData.hitPointMax)
+                    if (characterData.shieldPoint + excessHeal >= characterData.maxHp)
                     {
-                        characterData.shieldPoint = characterData.hitPointMax;
+                        characterData.shieldPoint = characterData.maxHp;
                     }
 
                     //그냥 보호막 회복
@@ -286,7 +287,7 @@ public class Character : MonoBehaviour
                         characterData.shieldPoint += excessHeal;
                 }
 
-                characterData.hitPoint = characterData.hitPointMax;
+                characterData.curHp = characterData.maxHp;
                 SetShieldImage();
             }    
         }
@@ -300,18 +301,18 @@ public class Character : MonoBehaviour
     {
         while (!nightManager.isStageEnd)
         {
-            if (characterData.hitPoint < characterData.hitPointMax)
+            if (characterData.curHp < characterData.maxHp)
             {
-                if (characterData.hitPoint + characterData.hpRegen >= characterData.hitPointMax)
+                if (characterData.curHp + characterData.hpRegen >= characterData.maxHp)
                 {
-                    characterData.hitPoint = characterData.hitPointMax;
+                    characterData.curHp = characterData.maxHp;
                 }
                 else
                 {
-                    characterData.hitPoint += characterData.hpRegen;
+                    characterData.curHp += characterData.hpRegen;
                 }
 
-                hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
+                hpBarImage.fillAmount = (float)characterData.curHp / (float)characterData.maxHp;
                 yield return new WaitForSeconds(1);
             }
             else
@@ -385,23 +386,23 @@ public class Character : MonoBehaviour
                 characterData.shieldPoint = 0;
                 SetShieldImage();
 
-                characterData.hitPoint -= nowAttactDamage;
+                characterData.curHp -= nowAttactDamage;
                 //감소한 만큼 플레이어 체력바 줄어들게
-                hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
+                hpBarImage.fillAmount = (float)characterData.curHp / (float)characterData.maxHp;
             }
         }
         else { // 체력으로 데미지 받을 때
             //Hp - 적 데미지 계산
-            if (characterData.hitPoint > getAttackData) {
-                characterData.hitPoint -= getAttackData;
-                hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
+            if (characterData.curHp > getAttackData) {
+                characterData.curHp -= getAttackData;
+                hpBarImage.fillAmount = (float)characterData.curHp / (float)characterData.maxHp;
             }
             else {
                 //체력이 다 떨어졌으므로 사망
                 Debug.Log("GameEnd");
                 // TODO: 죽은 모션이 나온 후 결과 창이 뜨도록 딜레이 필요
                 animator.SetTrigger("die");
-                characterData.hitPoint = 0;
+                characterData.curHp = 0;
                 hpBarImage.fillAmount = 0;
 
                 nightManager.SetStageEnd();
@@ -430,7 +431,7 @@ public class Character : MonoBehaviour
 
     public void SetStartShieldPointData(float getShieldPoint)
     {
-        float shieldData = (float)characterData.hitPoint * getShieldPoint;
+        float shieldData = (float)characterData.curHp * getShieldPoint;
         characterData.shieldPoint = shieldData;
         SetShieldImage();
     }
@@ -447,14 +448,14 @@ public class Character : MonoBehaviour
     {
         Vector3 fixShieldPos = shieldBarImage.transform.localPosition;
 
-        hpBarImage.fillAmount = (float)characterData.hitPoint /
-                        ((float)characterData.shieldPoint + (float)characterData.hitPoint);
+        hpBarImage.fillAmount = (float)characterData.curHp /
+                        ((float)characterData.shieldPoint + (float)characterData.curHp);
 
         fixShieldPos.x = hpBarImage.rectTransform.sizeDelta.x * hpBarImage.fillAmount;
 
         shieldBarImage.transform.localPosition = fixShieldPos;
         shieldBarImage.fillAmount = (float)characterData.shieldPoint /
-                        ((float)characterData.shieldPoint + (float)characterData.hitPoint);
+                        ((float)characterData.shieldPoint + (float)characterData.curHp);
     }
 
     public void SetHpBarPosition()
@@ -485,12 +486,12 @@ public class Character : MonoBehaviour
 
     public double ReturnCharacterHitPoint()
     {
-        return characterData.hitPoint;
+        return characterData.curHp;
     }
 
     public double ReturnCharacterHitPointMax()
     {
-        return characterData.hitPointMax;
+        return characterData.maxHp;
     }
 
     public double ReturnCharacterAttackPower() 
@@ -560,19 +561,19 @@ public class Character : MonoBehaviour
             if (nowHeal >= getHealHp)
                 break;
 
-            if (characterData.hitPoint < characterData.hitPointMax)
+            if (characterData.curHp < characterData.maxHp)
             {
-                characterData.hitPoint += value;
+                characterData.curHp += value;
 
                 //만약 피가 오버되면 종료
-                if(characterData.hitPoint >= characterData.hitPointMax)
+                if(characterData.curHp >= characterData.maxHp)
                 {
-                    characterData.hitPoint = characterData.hitPointMax;
-                    hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
+                    characterData.curHp = characterData.maxHp;
+                    hpBarImage.fillAmount = (float)characterData.curHp / (float)characterData.maxHp;
                     break;
                 }
 
-                hpBarImage.fillAmount = (float)characterData.hitPoint / (float)characterData.hitPointMax;
+                hpBarImage.fillAmount = (float)characterData.curHp / (float)characterData.maxHp;
             }
             yield return null;
         }
@@ -603,8 +604,8 @@ public class Character : MonoBehaviour
 
     public void SetCharacterHitPointMax(double getHitPoint)
     {
-        characterData.hitPointMax += getHitPoint;
-        characterData.hitPoint = characterData.hitPointMax;
+        characterData.maxHp += getHitPoint;
+        characterData.curHp = characterData.maxHp;
     }
 
     public void SetCharacterHpRegen(double getHpRegen)
