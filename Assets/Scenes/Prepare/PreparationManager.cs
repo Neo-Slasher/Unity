@@ -33,13 +33,22 @@ public class PreparationManager : MonoBehaviour
     public TextMeshProUGUI enemyRespawnText;
 
 
+    public TextMeshProUGUI traitName;
+    public TextMeshProUGUI traitLv;
+    public TextMeshProUGUI traitScript;
 
     public GameObject traitBoard1;
     public GameObject traitBoard2;
     public GameObject traitBoard3;
     public GameObject traitBoard4;
+    public Image traitImage;        
 
     public Button[] traitButtons;
+    private GameObject[] traitButtonss = new GameObject[63];
+
+    public Sprite[] traitImages;
+
+
 
     void Start()
     {
@@ -47,6 +56,32 @@ public class PreparationManager : MonoBehaviour
         choiceDifficulty = 0;
         LoadDifficulty();
         ActivateDifficultyButton();
+
+        LoadTraitButton();
+        UnActiveTraitBoard();
+    }
+
+    // GameObject.Find는 Active된 오브젝트만 찾을 수 있으므로 주
+    private void LoadTraitButton() {
+        for (int i = 1; i <= 62; ++i) {
+            traitButtonss[i] = GameObject.Find(i.ToString());
+            traitButtonss[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = traitImages[DataManager.instance.traitList.trait[i-1].imageIndex];
+        }
+
+
+        Trait tempTrait = DataManager.instance.traitList.trait[0];
+        traitName.text = tempTrait.name;
+        traitLv.text = tempTrait.requireLv.ToString() + " / " + (tempTrait.rank == 0 ? "일반" : "핵심");
+        traitScript.text = tempTrait.script;
+        traitImage.sprite = traitButtonss[0].GetComponent<Image>().sprite;
+        traitImage.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = traitButtonss[0].transform.GetChild(1).gameObject.GetComponent<Image>().sprite;
+    }
+
+    private void UnActiveTraitBoard() {
+        traitBoard1.SetActive(true);
+        traitBoard2.SetActive(false);
+        traitBoard3.SetActive(false);
+        traitBoard4.SetActive(false);
     }
 
     private void LoadStatus()
@@ -144,6 +179,13 @@ public class PreparationManager : MonoBehaviour
 
         Button traitButton = buttonObject.GetComponent<Button>();
         traitButton.interactable = false;
+
+        Trait tempTrait = DataManager.instance.traitList.trait[traitNumber - 1];
+        traitName.text = tempTrait.name;
+        traitLv.text = tempTrait.requireLv.ToString() + " / " + (tempTrait.rank == 0 ? "일반" : "핵심");
+        traitScript.text = tempTrait.script;
+        traitImage.sprite = buttonObject.GetComponent<Image>().sprite;
+        traitImage.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = buttonObject.transform.GetChild(1).gameObject.GetComponent<Image>().sprite;
     }
 
     void DisableTraitInSameLevel(int traitNumber) {

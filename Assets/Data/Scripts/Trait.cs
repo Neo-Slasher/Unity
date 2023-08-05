@@ -16,7 +16,7 @@ public class Trait
 {
     public int index;
     public string name;
-    public int reqireLv;
+    public int requireLv;
     public int rank;
     public int imageIndex;
     public string script;
