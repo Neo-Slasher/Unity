@@ -15,6 +15,7 @@ public class Item {
     public int itemIdx;
     public string name;
     public int rank;
+    public bool showCooltime;
     public int price;
     public string script;
     public int imgIdx;
