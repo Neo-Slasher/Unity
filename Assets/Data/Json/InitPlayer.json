@@ -21,5 +21,12 @@
     "dealOnMaxHp": 0.0,
     "dealOnCurHp": 0.0,
     "healByHit": 0,
-    "hpRegen": 0
+    "hpRegen": 0,
+
+    "shopSlot": 1,
+    "shopMinRank": 0,
+    "shopMaxRank": 1,
+    "dropRank": 0,
+    "dropRate": 1.0,
+    "itemSlot": 1 
 }

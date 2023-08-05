@@ -32,9 +32,17 @@ public class Player {
     public double healByHit;
     public double hpRegen;
 
-    // trait
-    public bool[] trait = new bool[63];
+    public int shopSlot;
+    public int shopMinRank;
+    public int shopMaxRank;
+    public int dropRank;
+    public double dropRate;
+    public int itemSlot;
 
-    // equipment
-     
+    // 1~62까지 인덱스를 사용합니다.
+    public bool[] trait;
+
+    public Equipment[] equipment;
+
+    public Item[] item;
 }
