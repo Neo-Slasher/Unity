@@ -10,22 +10,28 @@ public class TraitManager : MonoBehaviour
     NightManager nightManager;
     [SerializeField]
     TimerManager timerManager;
-    [SerializeField]
-    TraitTrashWrapper traitTrashWrapper;
-    [SerializeField]
-    string traitJsonName;
 
     [SerializeField]
     Character character;
     [SerializeField]
     Transform enemyCloneParent;
 
+
+    //과거 임시 데이터들
+    [SerializeField]
+    TraitTrashWrapper traitTrashWrapper;
+    [SerializeField]
+    string traitJsonName;
     [SerializeField]
     int nowLevel;       //임시로 레벨을 설정함
     [SerializeField]
     List<int> traitIndexList;
     [SerializeField]
-    List<TraitTrash> traitTrashList;
+    List<TraitTrash> traitOldList;
+
+    //최종 데이터매니저에서 가져오는 데이터들
+    List<Trait> traitList;
+    Trait nowTrait;
 
     [SerializeField]
     int testTraitIndex;
@@ -33,12 +39,23 @@ public class TraitManager : MonoBehaviour
 
     private void Start()
     {
-        traitTrashWrapper = JsonManager.LoadJsonData<TraitTrashWrapper>(traitJsonName);
-        traitTrashWrapper.Parse();
-
+        //임시로 특성이 작동하는지 보기 위해 만든 임시 코드였습니다. 앞으로 쓸 일 없어요.
+        //traitTrashWrapper = JsonManager.LoadJsonData<TraitTrashWrapper>(traitJsonName);
+        //traitTrashWrapper.Parse();
         //SetTraitIndexListTemp();
-        TestActiveTrait(testTraitIndex);
-        SetTrait();
+        //TestActiveTrait(testTraitIndex);
+        //SetTrait2();
+
+
+        //실제로 구동되는 코드 입니다. 
+
+    }
+
+    //게임매니저에서 저장된 플레이어 데이터를 가져와 특성을 저장합니다.
+    void SetTraitList()
+    {
+        //플레이어 데이터에서 있는 인덱스 traitIndexList에 옮김
+        //traitList에 또 넣음
     }
 
     //임시로 각 레벨당 첫번째 특성을 가지도록 설정(만렙기준)
@@ -51,7 +68,7 @@ public class TraitManager : MonoBehaviour
             {
                 nowLevel++;
                 traitIndexList.Add(traitTrashWrapper.traitTrashArr[i].traitIdx);
-                traitTrashList.Add(traitTrashWrapper.traitTrashArr[i]);
+                traitOldList.Add(traitTrashWrapper.traitTrashArr[i]);
             }
         }
     }
@@ -59,20 +76,43 @@ public class TraitManager : MonoBehaviour
     //특성을 테스트하기 위해서 만들어둔 함수
     void TestActiveTrait(int testIndex)
     {
-        traitTrashList.Add(traitTrashWrapper.traitTrashArr[testIndex]);
+        traitOldList.Add(traitTrashWrapper.traitTrashArr[testIndex]);
     }
 
     //선택한 특성을 실행하는 함수
     void SetTrait()
     {
-        TraitTrash nowTrait;
-        for(int i =0; i< traitTrashList.Count; i++)
+        Trait nowTrait;
+        for (int i = 0; i < traitOldList.Count; i++)
         {
-            nowTrait = traitTrashList[i];
+            nowTrait = traitList[i];
             //패시브 특성 설정
-            if (traitTrashList[i].effectType1 != EffectType.active)
+            if (traitOldList[i].effectType1 != EffectType.active)
             {
-                SetPassiveTrait(nowTrait);
+                //SetPassiveTrait(nowTrait);
+                //패시브 특성은 밤 씬으로 들어오기 이전에 적용되어 있을 예정
+            }
+
+            //액티브 특성 설정
+            else
+            {
+                //SetActiveTrait(nowTrait);
+            }
+        }
+    }
+
+    //선택한 특성을 실행하는 함수(이젠 안씀)
+    void SetOldTrait()
+    {
+        TraitTrash nowTrait;
+        for(int i =0; i< traitOldList.Count; i++)
+        {
+            nowTrait = traitOldList[i];
+            //패시브 특성 설정
+            if (traitOldList[i].effectType1 != EffectType.active)
+            {
+                //SetPassiveTrait(nowTrait);
+                //패시브 특성은 밤 씬으로 들어오기 이전에 적용되어 있을 예정
             }
 
             //액티브 특성 설정
