@@ -23,11 +23,33 @@ public class RailPiercer : MonoBehaviour
     bool isWatchRight = true;
     bool isShoot = false;
 
+    int itemRank;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Normal" || collision.tag == "Elite")
         {
             collision.GetComponent<EnemyParent>().EnemyDamaged(attackPower);
+        }
+    }
+
+    public void SetItemRank(int getRank)
+    {
+        itemRank = getRank;
+    }
+
+    void SetChargingReaperData()
+    {
+        switch (itemRank)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
         }
     }
 

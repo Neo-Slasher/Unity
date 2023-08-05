@@ -33,8 +33,8 @@ public class Character : MonoBehaviour
 
     //캐릭터 임시 데이터
     [SerializeField]
-    CharacterTrashData characterData;
-    //Player characterData;
+    //CharacterTrashData characterData;
+    Player characterData;
     [SerializeField]
     bool isCheat;
 
@@ -60,8 +60,10 @@ public class Character : MonoBehaviour
     private Animator animator;
 
     private void Awake() {
-        characterData = new CharacterTrashData(isCheat);
-        //characterData = GameManager.instance.player;
+        //characterData = new CharacterTrashData(isCheat);
+        GameManager.instance.LoadPlayerData();          //임시코드@@@@@@@@@@@@@
+
+        characterData = GameManager.instance.player;
         characterRigid = this.GetComponent<Rigidbody2D>();
         characterSpriteRanderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -394,6 +396,7 @@ public class Character : MonoBehaviour
         else { // 체력으로 데미지 받을 때
             //Hp - 적 데미지 계산
             if (characterData.curHp > getAttackData) {
+                Debug.Log("damaged");
                 characterData.curHp -= getAttackData;
                 hpBarImage.fillAmount = (float)characterData.curHp / (float)characterData.maxHp;
             }

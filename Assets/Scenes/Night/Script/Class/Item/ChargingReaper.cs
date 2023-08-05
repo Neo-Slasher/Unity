@@ -8,7 +8,33 @@ public class ChargingReaper : MonoBehaviour
     GameObject reaperAfterImage;
     public bool isAttack = false;
     public int chargingGauge = 100;
-    public double reaperAttackDamaege = 500; //임시
+    public double reaperAttackDamaege; //임시
+    int itemRank;
+
+    public void SetItemRank(int getRank)
+    {
+        itemRank = getRank;
+        SetChargingReaperData();
+    }
+
+    void SetChargingReaperData()
+    {
+        switch (itemRank)
+        {
+            case 0:
+                reaperAttackDamaege = 13;
+                break;
+            case 1:
+                reaperAttackDamaege = 18;
+                break;
+            case 2:
+                reaperAttackDamaege = 27;
+                break;
+            case 3:
+                reaperAttackDamaege = 42;
+                break;
+        }
+    }
 
     public bool IsChargingGaugeFull()
     {

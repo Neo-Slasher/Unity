@@ -189,7 +189,7 @@ public class EnemyParent : MonoBehaviour
 
         else if(collision.name == "CentryBallProjPrefab(Clone)")
         {
-            getDamage = character.GetComponent<Character>().ReturnCharacterAttackPower();
+            getDamage = collision.GetComponent<Projectile>().projPower;
         }
 
         else if (collision.tag == "Item")
