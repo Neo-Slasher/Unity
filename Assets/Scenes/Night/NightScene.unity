@@ -787,7 +787,7 @@ MonoBehaviour:
   characterParent: {fileID: 182467907}
   character: {fileID: 889106807}
   hitBox: {fileID: 1410340655}
-  itemIdxArr: 040000000000000000000000
+  itemIdxArr: 0b0000000000000000000000
   itemRankArr: 000000000000000000000000
   tempItemIdx: 5
   itemPrefabArr:
@@ -3278,7 +3278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2022676908
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3803,6 +3803,14 @@ PrefabInstance:
       propertyPath: shieldBarImage
       value: 
       objectReference: {fileID: 1406309405}
+    - target: {fileID: 3514429690322398353, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      propertyPath: hologramAnimatorArr.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3514429690322398353, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      propertyPath: hologramRendererArr.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3514429690322398364, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
       propertyPath: m_IsTrigger
       value: 1
