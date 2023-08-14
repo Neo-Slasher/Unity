@@ -6,9 +6,13 @@ using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor.U2D.Animation;
+using static PreparationManager;
 
 public class PreparationManager : MonoBehaviour
 {
+    TraitManager traitManager;
+
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI expText;
     public TextMeshProUGUI maxHpText;
@@ -19,7 +23,6 @@ public class PreparationManager : MonoBehaviour
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI getMoneyText;
 
-    public int choiceDifficulty;
     public Button difficultyLeftButton;
     public Button difficultyRightButton;
     public TextMeshProUGUI difficultyLevelText;
@@ -48,16 +51,19 @@ public class PreparationManager : MonoBehaviour
 
     public Sprite[] traitImages;
 
+    public Player addValueByTrait;
 
+    void Awake() {
+    }
 
-    void Start()
-    {
+    void Start() {
         LoadStatus();
-        choiceDifficulty = 0;
+        GameManager.instance.gameDifficulty = 0;
         LoadDifficulty();
         ActivateDifficultyButton();
-
         LoadTraitButton();
+        LoadSelectedTraitUI();
+        //UnActiveTraitButton();
         UnActiveTraitBoard();
     }
 
@@ -67,14 +73,44 @@ public class PreparationManager : MonoBehaviour
             traitButtonss[i] = GameObject.Find(i.ToString());
             traitButtonss[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = traitImages[DataManager.instance.traitList.trait[i-1].imageIndex];
         }
+    }
 
-
+    private void LoadSelectedTraitUI() {
         Trait tempTrait = DataManager.instance.traitList.trait[0];
         traitName.text = tempTrait.name;
         traitLv.text = tempTrait.requireLv.ToString() + " / " + (tempTrait.rank == 0 ? "일반" : "핵심");
         traitScript.text = tempTrait.script;
-        traitImage.sprite = traitButtonss[0].GetComponent<Image>().sprite;
-        traitImage.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = traitButtonss[0].transform.GetChild(1).gameObject.GetComponent<Image>().sprite;
+        traitImage.sprite = traitButtonss[1].GetComponent<Image>().sprite; // 인덱스는 1부터 시작
+        traitImage.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = traitButtonss[1].transform.GetChild(1).gameObject.GetComponent<Image>().sprite;
+    }
+
+    // 본인 레벨 이하의 특성만 선택 가능하도록 버튼 off
+    private void UnActiveTraitButton() {
+        int level = GameManager.instance.player.level;
+        int maxTraitButton = 0;
+        if (level == 1) maxTraitButton = 2;
+        else if (level == 2) maxTraitButton = 5;
+        else if (level == 3) maxTraitButton = 8;
+        else if (level == 4) maxTraitButton = 10;
+        else if (level == 5) maxTraitButton = 13;
+        else if (level == 6) maxTraitButton = 15;
+        else if (level == 7) maxTraitButton = 19;
+        else if (level == 8) maxTraitButton = 22;
+        else if (level == 9) maxTraitButton = 25;
+        else if (level == 10) maxTraitButton = 29;
+        else if (level == 11) maxTraitButton = 32;
+        else if (level == 12) maxTraitButton = 35;
+        else if (level == 13) maxTraitButton = 38;
+        else if (level == 14) maxTraitButton = 41;
+        else if (level == 15) maxTraitButton = 45;
+        else if (level == 16) maxTraitButton = 48;
+        else if (level == 17) maxTraitButton = 52;
+        else if (level == 18) maxTraitButton = 55;
+        else if (level == 19) maxTraitButton = 58;
+        else if (level == 20) maxTraitButton = 62;
+        for (int i = maxTraitButton + 1; i <= 62; ++i) {
+            traitButtonss[i].GetComponent<Button>().interactable = false;
+        }
     }
 
     private void UnActiveTraitBoard() {
@@ -96,38 +132,35 @@ public class PreparationManager : MonoBehaviour
         moneyText.text = GameManager.instance.player.money.ToString();
     }
 
-    public void OnClickDifficultyLeftButton()
-    {
-        choiceDifficulty -= 1;
+    public void OnClickDifficultyLeftButton() {
+        GameManager.instance.gameDifficulty -= 1;
         LoadDifficulty();
         ActivateDifficultyButton();
     }
 
-    public void OnClickDifficultyRightButton()
-    {
-        choiceDifficulty += 1;
+    public void OnClickDifficultyRightButton() {
+        GameManager.instance.gameDifficulty += 1;
         LoadDifficulty();
         ActivateDifficultyButton();
     }
 
     public void ActivateDifficultyButton()
     {
-
-        difficultyLeftButton.interactable = (choiceDifficulty == 0) ? false : true;
-        difficultyRightButton.interactable = (choiceDifficulty == 6) ? false : true;
+        difficultyLeftButton.interactable = (GameManager.instance.gameDifficulty == 0) ? false : true;
+        difficultyRightButton.interactable = (GameManager.instance.gameDifficulty == 6) ? false : true;
     }
 
     private void LoadDifficulty()
     {
-        difficultyLevelText.text = (choiceDifficulty + 1).ToString();
-        recommandLvText.text = "권장 Lv." + DataManager.instance.difficultyList.difficulty[choiceDifficulty].recommandLv.ToString();
-        rewardExpText.text = "보상 EXP " + DataManager.instance.difficultyList.difficulty[choiceDifficulty].rewardExp.ToString();
-        goalMoneyText.text = "- 목표금액 " + DataManager.instance.difficultyList.difficulty[choiceDifficulty].goalMoney.ToString();
-        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 +" + DataManager.instance.difficultyList.difficulty[choiceDifficulty].enemyStatus.ToString() + "%";
-        normalEnhanceText.text = "- 일반 적이 " + DataManager.instance.difficultyList.difficulty[choiceDifficulty].normalEnhance.ToString() + "% 확률로 강화";
-        eliteEnhanceText.text = "- 정예 적이 " + DataManager.instance.difficultyList.difficulty[choiceDifficulty].eliteEnhance.ToString() + "% 확률로 강화";
-        dropRankText.text = "- 아이템 드롭률 +" + DataManager.instance.difficultyList.difficulty[choiceDifficulty].dropRank.ToString() + "%";
-        enemyRespawnText.text = "- 적 개체수 +" + DataManager.instance.difficultyList.difficulty[choiceDifficulty].enemyRespawn.ToString() + "%";
+        difficultyLevelText.text = (GameManager.instance.gameDifficulty + 1).ToString();
+        recommandLvText.text = "권장 Lv." + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].recommandLv.ToString();
+        rewardExpText.text = "보상 EXP " + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].rewardExp.ToString();
+        goalMoneyText.text = "- 목표금액 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].goalMoney.ToString();
+        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].enemyStatus.ToString() + "%";
+        normalEnhanceText.text = "- 일반 적이 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].normalEnhance.ToString() + "% 확률로 강화";
+        eliteEnhanceText.text = "- 정예 적이 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].eliteEnhance.ToString() + "% 확률로 강화";
+        dropRankText.text = "- 아이템 드롭률 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].dropRank.ToString() + "%";
+        enemyRespawnText.text = "- 적 개체수 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].enemyRespawn.ToString() + "%";
     }
 
     public void OnClickStartButton() {
@@ -170,22 +203,23 @@ public class PreparationManager : MonoBehaviour
 
 
     public void OnClickTraitButton() {
-        GameObject buttonObject = EventSystem.current.currentSelectedGameObject;
-        int traitNumber = int.Parse(buttonObject.name);
+        GameObject button = EventSystem.current.currentSelectedGameObject;
+        int traitNumber = int.Parse(button.name);
 
         DisableTraitInSameLevel(traitNumber);
 
         GameManager.instance.player.trait[traitNumber] = true;
 
-        Button traitButton = buttonObject.GetComponent<Button>();
+        Button traitButton = button.GetComponent<Button>();
         traitButton.interactable = false;
 
         Trait tempTrait = DataManager.instance.traitList.trait[traitNumber - 1];
         traitName.text = tempTrait.name;
         traitLv.text = tempTrait.requireLv.ToString() + " / " + (tempTrait.rank == 0 ? "일반" : "핵심");
         traitScript.text = tempTrait.script;
-        traitImage.sprite = buttonObject.GetComponent<Image>().sprite;
-        traitImage.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = buttonObject.transform.GetChild(1).gameObject.GetComponent<Image>().sprite;
+        traitImage.sprite = button.GetComponent<Image>().sprite;
+        traitImage.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = button.transform.GetChild(1).gameObject.GetComponent<Image>().sprite;
+
     }
 
     void DisableTraitInSameLevel(int traitNumber) {

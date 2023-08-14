@@ -28672,7 +28672,6 @@ MonoBehaviour:
   attackRangeText: {fileID: 939457621}
   moneyText: {fileID: 638564987}
   getMoneyText: {fileID: 491094164}
-  choiceDifficulty: 0
   difficultyLeftButton: {fileID: 316103771}
   difficultyRightButton: {fileID: 1257580932}
   difficultyLevelText: {fileID: 283780855}
