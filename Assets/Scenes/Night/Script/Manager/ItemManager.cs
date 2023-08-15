@@ -72,7 +72,7 @@ public class ItemManager : MonoBehaviour
 
     void SetItemIdxArr()
     {
-        for (int i = 0; i < GameManager.instance.player.item.Length; i++)
+        for (int i = 0; i < GameManager.instance.player.item.Count; i++) /////item배열에서 리스트로 변경했습니다!! Length->Count *엄지민
         {
             itemIdxArr[i] = GameManager.instance.player.item[i].itemIdx;
             itemRankArr[i] = GameManager.instance.player.item[i].rank;
