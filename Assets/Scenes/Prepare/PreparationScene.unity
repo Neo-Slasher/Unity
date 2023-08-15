@@ -3564,7 +3564,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6776605855292883745, guid: 925d49838af324766bdb4bd997bbbc73, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6776605855292883745, guid: 925d49838af324766bdb4bd997bbbc73, type: 3}
       propertyPath: m_LocalPosition.x
@@ -24640,6 +24640,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1561012862}
   m_CullTransparentMesh: 1
+--- !u!1 &1566434872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1566434874}
+  - component: {fileID: 1566434873}
+  m_Layer: 0
+  m_Name: TraitManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1566434873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566434872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98289c24d78aa4bb5816d7ba1ab2db5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dummyPlayer:
+    level: 0
+    reqExp: 0
+    curExp: 0
+    money: 0
+    startMoney: 0
+    earnMoney: 0
+    maxHp: 0
+    curHp: 0
+    attackPower: 0
+    attackSpeed: 0
+    attackRange: 0
+    moveSpeed: 0
+    shieldDuration: 0
+    shieldPoint: 0
+    immuneDuration: 0
+    immuneCount: 0
+    dashable: 0
+    dashFreq: 0
+    dashSpeed: 0
+    dashDuration: 0
+    damageReductionRate: 0
+    dealOnMaxHp: 0
+    dealOnCurHp: 0
+    healByHit: 0
+    hpRegen: 0
+    shopSlot: 0
+    shopMinRank: 0
+    shopMaxRank: 0
+    dropRank: 0
+    dropRate: 0
+    itemSlot: 0
+    trait: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    equipment: []
+    item: []
+--- !u!4 &1566434874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566434872}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1579031824
 GameObject:
   m_ObjectHideFlags: 0
@@ -27181,7 +27260,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6674970160995906163, guid: 74dfe155df71148eeb85317a6c978277, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6674970160995906163, guid: 74dfe155df71148eeb85317a6c978277, type: 3}
       propertyPath: m_LocalPosition.x
@@ -27222,6 +27301,10 @@ PrefabInstance:
     - target: {fileID: 6674970160995906163, guid: 74dfe155df71148eeb85317a6c978277, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674970160995906164, guid: 74dfe155df71148eeb85317a6c978277, type: 3}
+      propertyPath: player.level
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6674970160995906165, guid: 74dfe155df71148eeb85317a6c978277, type: 3}
       propertyPath: m_Name
@@ -28663,13 +28746,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6bbd6edbf3cf49bab50ea2f1645374b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  traitManager: {fileID: 1566434873}
   levelText: {fileID: 233103553}
   expText: {fileID: 1550526902}
   maxHpText: {fileID: 279001685}
+  addMaxHpText: {fileID: 1376987964}
   moveSpeedText: {fileID: 637484725}
+  addMoveSpeedText: {fileID: 57609850}
   attackPowerText: {fileID: 1022733319}
+  addAttackPowerText: {fileID: 1606916463}
   attackSpeedText: {fileID: 695400635}
+  addAttackSpeedText: {fileID: 1985318974}
   attackRangeText: {fileID: 939457621}
+  addAttackRangeText: {fileID: 1457371767}
   moneyText: {fileID: 638564987}
   getMoneyText: {fileID: 491094164}
   difficultyLeftButton: {fileID: 316103771}
@@ -28819,6 +28908,41 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8a7e9c8160fdf4d24941a794b971a983, type: 3}
   - {fileID: 21300000, guid: 8a7e9c8160fdf4d24941a794b971a983, type: 3}
   - {fileID: 21300000, guid: 8a7e9c8160fdf4d24941a794b971a983, type: 3}
+  addValueByTrait:
+    level: 0
+    reqExp: 0
+    curExp: 0
+    money: 0
+    startMoney: 0
+    earnMoney: 0
+    maxHp: 0
+    curHp: 0
+    attackPower: 0
+    attackSpeed: 0
+    attackRange: 0
+    moveSpeed: 0
+    shieldDuration: 0
+    shieldPoint: 0
+    immuneDuration: 0
+    immuneCount: 0
+    dashable: 0
+    dashFreq: 0
+    dashSpeed: 0
+    dashDuration: 0
+    damageReductionRate: 0
+    dealOnMaxHp: 0
+    dealOnCurHp: 0
+    healByHit: 0
+    hpRegen: 0
+    shopSlot: 0
+    shopMinRank: 0
+    shopMaxRank: 0
+    dropRank: 0
+    dropRate: 0
+    itemSlot: 0
+    trait: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    equipment: []
+    item: []
 --- !u!4 &1840047577
 Transform:
   m_ObjectHideFlags: 0
@@ -28832,7 +28956,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1847422491
 GameObject:
