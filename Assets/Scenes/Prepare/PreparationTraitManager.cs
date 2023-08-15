@@ -29,7 +29,7 @@ public class PreparationTraitManager : MonoBehaviour
             applyTrait((EffectType)trait.effectType4, trait.effectValue4, trait.effectMulti4);
     }
 
-    private void applyTrait(EffectType type, double value, double multi) {
+    private void applyTrait(EffectType type, double value, bool multi) {
         if (type == EffectType.hp) {
             dummyPlayer.maxHp += value;
         }
@@ -99,8 +99,8 @@ public class PreparationTraitManager : MonoBehaviour
             disapplyTrait((EffectType)trait.effectType4, trait.effectValue4, trait.effectMulti4);
     }
 
-    private void disapplyTrait(EffectType type, double value, double multi) {
-        applyTrait(type, -value, multi); //TODO: multi는 사용처를 몰라서 확인해 볼 필요성이 있음 
+    private void disapplyTrait(EffectType type, double value, bool multi) {
+        applyTrait(type, -value, multi);  
     }
 
     public void SaveTrait() {

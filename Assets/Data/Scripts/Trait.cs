@@ -22,14 +22,14 @@ public class Trait
     public string script;
     public int effectType1;
     public double effectValue1;
-    public double effectMulti1;
+    public bool effectMulti1;
     public int effectType2;
     public double effectValue2;
-    public double effectMulti2;
+    public bool effectMulti2;
     public int effectType3;
     public double effectValue3;
-    public double effectMulti3;
+    public bool effectMulti3;
     public int effectType4;
     public double effectValue4;
-    public double effectMulti4;
+    public bool effectMulti4;
 }
