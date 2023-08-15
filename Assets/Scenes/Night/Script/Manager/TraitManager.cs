@@ -211,7 +211,7 @@ public class TraitManager : MonoBehaviour
     //특성 인덱스 28번 게임 시작시 쉴드 생성 코드
     void SetStartShield(Trait getTrait)
     {
-        character.SetStartShieldPointData(getTrait.effectValue1);
+        character.SetStartShieldPointData((float)getTrait.effectValue1);
     }
 
     //특성 인덱스 42번 n초마다 주변 적 끌어당기기 코드
@@ -219,10 +219,10 @@ public class TraitManager : MonoBehaviour
     {
         while (!nightManager.isStageEnd)
         {
-            yield return new WaitForSeconds(getTrait.effectValue1);    //n초의 대기시간을 갖는 코드
+            yield return new WaitForSeconds((float)getTrait.effectValue1);    //n초의 대기시간을 갖는 코드
             Debug.Log("DrugEnemy");
             Collider2D[] getCols =
-                character.ReturnOverLapColliders(getTrait.effectValue3 / 100, getTrait.effectValue2 / 100);
+                character.ReturnOverLapColliders((float)getTrait.effectValue3 / 100, (float)getTrait.effectValue2 / 100);
 
             if (getCols.Length != 0)
                 //이제 당겨
@@ -239,10 +239,10 @@ public class TraitManager : MonoBehaviour
     {
         while (!nightManager.isStageEnd)
         {
-            yield return new WaitForSeconds(getTrait.effectValue1);    //n초의 대기시간을 갖는 코드
+            yield return new WaitForSeconds((float)getTrait.effectValue1);    //n초의 대기시간을 갖는 코드
             Debug.Log("ThrustEnemy");
             Collider2D[] getCols =
-                character.ReturnOverLapColliders(getTrait.effectValue2 / 100);
+                character.ReturnOverLapColliders((float)getTrait.effectValue2 / 100);
             arr = getCols;
             if (getCols != null)
                 //이제 당겨
@@ -312,7 +312,7 @@ public class TraitManager : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(getTrait.effectValue2);
+            yield return new WaitForSeconds((float)getTrait.effectValue2);
             Debug.Log("move");
             //적 오브젝트 정지
             for (int i = 0; i < enemyCloneParent.childCount; i++)
@@ -329,7 +329,7 @@ public class TraitManager : MonoBehaviour
     void AbsorbDamage(Trait getTrait)
     {
         Debug.Log("AbsorbDamage");
-        character.SetAbsorbAttackData(getTrait.effectValue2);
+        character.SetAbsorbAttackData((float)getTrait.effectValue2);
         character.canChange = true;
     }
 }
