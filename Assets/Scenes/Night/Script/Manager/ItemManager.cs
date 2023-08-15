@@ -316,11 +316,8 @@ public class ItemManager : MonoBehaviour
         railPiercerScript.nightManager = nightManager;
         railPiercerScript.SetItemRank(getRank);
 
-        double characterAttackSpeed = character.ReturnCharacterAttackSpeed();
-        double characterAttackPower = character.ReturnCharacterAttackPower();
-
         railPiercerScript.SetRailPiercerPos();
-        railPiercerScript.ShootRailPiercer(characterAttackSpeed, characterAttackPower);
+        railPiercerScript.ShootRailPiercer();
     }
 
     IEnumerator FirstAdeCoroutine(int getRank)
@@ -332,9 +329,31 @@ public class ItemManager : MonoBehaviour
 
         double nowHp = character.ReturnCharacterHitPoint();
         double firstAdeHp = character.ReturnCharacterHitPointMax() * 0.4f;
-        double healHp = character.ReturnCharacterAttackPower();
+        float healHp = (float)character.ReturnCharacterAttackPower();
+        int coolTime = 30;
 
-        while(!nightManager.isStageEnd)
+
+        switch (getRank)
+        {
+            case 0:
+                healHp *= (float)DataManager.instance.itemList.item[5].attackPowerValue;
+                coolTime = 30;
+                break;
+            case 1:
+                healHp *= (float)DataManager.instance.itemList.item[20].attackPowerValue;
+                coolTime = 25;
+                break;
+            case 2:
+                healHp *= (float)DataManager.instance.itemList.item[35].attackPowerValue;
+                coolTime = 20;
+                break;
+            case 3:
+                healHp *= (float)DataManager.instance.itemList.item[50].attackPowerValue;
+                coolTime = 15;
+                break;
+        }
+
+        while (!nightManager.isStageEnd)
         {
             while (nowHp >= firstAdeHp)
             {
@@ -344,7 +363,7 @@ public class ItemManager : MonoBehaviour
 
             character.HealHp(healHp, firstAdeParent);
 
-            yield return new WaitForSeconds(20);
+            yield return new WaitForSeconds(coolTime);
         }
     }
 
@@ -355,11 +374,32 @@ public class ItemManager : MonoBehaviour
         barriorParent.transform.position = character.transform.position;
         Barrior barriorScript = barriorParent.GetComponent<Barrior>();
 
-        double characterAttackSpeed = character.ReturnCharacterAttackSpeed();
-        double characterAttackPower = character.ReturnCharacterAttackPower();
-        float shieldPoint = (float)characterAttackPower;
+        float characterAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
+        float characterAttackPower = (float)character.ReturnCharacterAttackPower();
+        float shieldPoint = characterAttackPower;
 
         double timeCount = 50 / characterAttackSpeed;
+
+        switch(getRank)
+        {
+            case 0:
+                shieldPoint *= (float)DataManager.instance.itemList.item[6].attackPowerValue;
+                timeCount = 90 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[6].attackSpeedValue);
+                break;
+            case 1:
+                shieldPoint *= (float)DataManager.instance.itemList.item[6].attackPowerValue;
+                timeCount = 90 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[21].attackSpeedValue);
+                break;
+            case 2:
+                shieldPoint *= (float)DataManager.instance.itemList.item[6].attackPowerValue;
+                timeCount = 90 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[36].attackSpeedValue);
+                break;
+            case 3:
+                shieldPoint *= (float)DataManager.instance.itemList.item[6].attackPowerValue;
+                timeCount = 90 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[51].attackSpeedValue);
+                break;
+        }
+
         while (!nightManager.isStageEnd)
         {
             character.SetShieldPointData(shieldPoint);
@@ -376,6 +416,7 @@ public class ItemManager : MonoBehaviour
     {
         GameObject[] hologramParentArr = new GameObject[2];
         Vector3 hologramVector;
+        character.isHologramAnimate = true;
 
         for (int i = 0; i < 2; i++)
         {
@@ -395,36 +436,94 @@ public class ItemManager : MonoBehaviour
             }
 
             hologramParentArr[i].transform.position = hologramVector;
+            character.hologramAnimatorArr[i] = hologramParent.GetComponent<Animator>();
+            character.hologramRendererArr[i] = hologramParent.GetComponent<SpriteRenderer>();
         }
 
-        double characterAttackSpeed = character.ReturnCharacterAttackSpeed();
-        double characterAttackRange = character.ReturnCharacterAttackRange();
+        float characterAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
+        float characterAttackRange = (float)character.ReturnCharacterAttackRange();
 
-        double duration = characterAttackRange;
-        double timeCount = 1200 / characterAttackSpeed;
+        float duration = characterAttackRange;
+        float timeCount = 1200 / characterAttackSpeed;
 
-        while(!nightManager.isStageEnd)
+        switch (getRank)
+        {
+            case 0:
+                timeCount = 120 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[7].attackSpeedValue);
+                duration = characterAttackRange * (float)DataManager.instance.itemList.item[7].attackRangeValue;
+                break;
+            case 1:
+                timeCount = 120 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[22].attackSpeedValue);
+                duration = characterAttackRange * (float)DataManager.instance.itemList.item[22].attackRangeValue;
+                break;
+            case 2:
+                timeCount = 120 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[37].attackSpeedValue);
+                duration = characterAttackRange * (float)DataManager.instance.itemList.item[37].attackRangeValue;
+                break;
+            case 3:
+                timeCount = 120 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[52].attackSpeedValue);
+                duration = characterAttackRange * (float)DataManager.instance.itemList.item[52].attackRangeValue;
+                break;
+        }
+
+        while (!nightManager.isStageEnd)
         {
             character.isHologramTrickOn = true;
-            yield return new WaitForSeconds((float)duration);
+            yield return new WaitForSeconds(duration);
             character.isHologramTrickOn = false;
             
-            yield return new WaitForSeconds((float)timeCount);
+            yield return new WaitForSeconds(timeCount);
         }
+
+        character.isHologramAnimate = false;
     }
 
     void AntiPhenet(int getRank)
     {
         character.isAntiPhenetOn = true;
+
+        switch(getRank)
+        {
+            case 0:
+                character.SetAntiPhenetData((float)DataManager.instance.itemList.item[8].attackPowerValue);
+                break;
+            case 1:
+                character.SetAntiPhenetData((float)DataManager.instance.itemList.item[23].attackPowerValue);
+                break;
+            case 2:
+                character.SetAntiPhenetData((float)DataManager.instance.itemList.item[38].attackPowerValue);
+                break;
+            case 3:
+                character.SetAntiPhenetData((float)DataManager.instance.itemList.item[53].attackPowerValue);
+                break;
+        }
     }
 
     void RegenerationArmor(int getRank)
     {
-        double addHp = character.ReturnCharacterAttackPower();
-        double addHpRegen = character.ReturnCharacterAttackRange();
+        float addHp = (float)character.ReturnCharacterAttackPower();
+        float addHpRegen = (float)character.ReturnCharacterAttackRange();
 
-        //임시 코드
-        addHpRegen = 100;
+        switch (getRank)
+        {
+            case 0:
+                addHp *= (float)DataManager.instance.itemList.item[9].attackPowerValue;
+                addHpRegen *= (float)DataManager.instance.itemList.item[9].attackRangeValue;
+                Debug.Log(addHpRegen);
+                break;
+            case 1:
+                addHp *= (float)DataManager.instance.itemList.item[24].attackPowerValue;
+                addHpRegen *= (float)DataManager.instance.itemList.item[24].attackRangeValue;
+                break;
+            case 2:
+                addHp *= (float)DataManager.instance.itemList.item[39].attackPowerValue;
+                addHpRegen *= (float)DataManager.instance.itemList.item[39].attackRangeValue;
+                break;
+            case 3:
+                addHp *= (float)DataManager.instance.itemList.item[54].attackPowerValue;
+                addHpRegen *= (float)DataManager.instance.itemList.item[54].attackRangeValue;
+                break;
+        }
 
         character.SetCharacterHitPointMax(addHp);
         character.SetCharacterHpRegen(addHpRegen);
@@ -437,32 +536,73 @@ public class ItemManager : MonoBehaviour
         gravityBindParent.transform.localPosition = character.transform.position;
         gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().character = character;
         gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().nightManager = nightManager;
+        gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().SetItemRank(getRank);
     }
 
     IEnumerator MoveBack(int getRank)
     {
-        double getAttackSpeed = character.ReturnCharacterAttackSpeed();
-        float timeCount = (float)(200 / getAttackSpeed);
+        float getAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
+        float timeCount = 200 / getAttackSpeed;
 
-        while(!nightManager.isStageEnd)
+        switch (getRank)
+        {
+            case 0:
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.itemList.item[11].attackSpeedValue);
+                break;
+            case 1:
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.itemList.item[26].attackSpeedValue);
+                break;
+            case 2:
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.itemList.item[41].attackSpeedValue);
+                break;
+            case 3:
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.itemList.item[56].attackSpeedValue);
+                break;
+        }
+        
+        while (!nightManager.isStageEnd)
         {
             character.isMoveBackOn = true;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(timeCount);
         }
     }
 
     IEnumerator BoosterCoroutine(int getRank)
     {
-        double getBasicSpeed = character.ReturnCharacterMoveSpeed();
-        double getAttackSpeed = character.ReturnCharacterAttackSpeed();
-        double getAttackRange = character.ReturnCharacterAttackRange();
-        double getAttackPower = character.ReturnCharacterAttackPower();
+        float getBasicSpeed = (float)character.ReturnCharacterMoveSpeed();
+        float getAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
+        float getAttackRange = (float)character.ReturnCharacterAttackRange();
+        float getAttackPower = (float)character.ReturnCharacterAttackPower();
 
-        float timeCount = (float)(300 / getAttackSpeed); Debug.Log(timeCount);
-        float duration = (float)getAttackRange;
-        double speed = getAttackPower; 
-
-        while(!nightManager.isStageEnd)
+        float timeCount = 300 / getAttackSpeed;
+        float duration = getAttackRange;
+        double speed = getAttackPower;
+        
+        switch (getRank)
+        {
+            case 0:
+                timeCount = 30 / (getAttackSpeed * (float)DataManager.instance.itemList.item[12].attackSpeedValue);
+                duration = getAttackRange * (float)DataManager.instance.itemList.item[12].attackRangeValue;
+                speed = getBasicSpeed + getAttackPower * (float)DataManager.instance.itemList.item[12].attackPowerValue;
+                break;
+            case 1:
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.itemList.item[27].attackSpeedValue);
+                duration = getAttackRange * (float)DataManager.instance.itemList.item[27].attackRangeValue;
+                speed = getBasicSpeed + getAttackPower * (float)DataManager.instance.itemList.item[27].attackPowerValue;
+                break;
+            case 2:
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.itemList.item[42].attackSpeedValue);
+                duration = getAttackRange * (float)DataManager.instance.itemList.item[42].attackRangeValue;
+                speed = getBasicSpeed + getAttackPower * (float)DataManager.instance.itemList.item[42].attackPowerValue;
+                break;
+            case 3:
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.itemList.item[57].attackSpeedValue);
+                duration = getAttackRange * (float)DataManager.instance.itemList.item[57].attackRangeValue;
+                speed = getBasicSpeed + getAttackPower * (float)DataManager.instance.itemList.item[57].attackPowerValue;
+                break;
+        }
+        
+        while (!nightManager.isStageEnd)
         {
             character.SetMoveSpeed(speed);
             yield return new WaitForSeconds(duration);
@@ -474,7 +614,23 @@ public class ItemManager : MonoBehaviour
 
     void BioSnach(int getRank)
     {
-        float getAbsorbAttackData = 100;
+        float getAbsorbAttackData = 1;
+
+        switch (getRank)
+        {
+            case 0:
+                getAbsorbAttackData = 1;
+                break;
+            case 1:
+                getAbsorbAttackData = 2;
+                break;
+            case 2:
+                getAbsorbAttackData = 3;
+                break;
+            case 3:
+                getAbsorbAttackData = 5;
+                break;
+        }
         character.SetAbsorbAttackData(getAbsorbAttackData);
     }
     
@@ -485,9 +641,10 @@ public class ItemManager : MonoBehaviour
         interceptDroneParent.transform.localPosition = character.transform.position;
         interceptDroneParent.GetComponent<InterceptDrone>().character = character;
         interceptDroneParent.GetComponent<InterceptDrone>().nightManager = nightManager;
+        interceptDroneParent.GetComponent<InterceptDrone>().SetItemRank(getRank);
 
-        double getAttackSpeed = character.ReturnCharacterAttackSpeed();
-        double getAttackRange = character.ReturnCharacterAttackRange();
+        float getAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
+        float getAttackRange = (float)character.ReturnCharacterAttackRange();
 
         interceptDroneParent.GetComponent<InterceptDrone>().SetInterceptDrone(getAttackRange, getAttackSpeed);
     }

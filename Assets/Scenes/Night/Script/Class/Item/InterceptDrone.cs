@@ -23,9 +23,12 @@ public class InterceptDrone : MonoBehaviour
     float droneAngle;
     [SerializeField]
     float detectRadius;
+    float timeCount;
 
-    double getCharacterAttackSpeed;
-    double getCharacterAttackRange;
+    int itemRank;
+
+    float getCharacterAttackSpeed;
+    float getCharacterAttackRange;
 
     Projectile getProjScript;
 
@@ -33,6 +36,38 @@ public class InterceptDrone : MonoBehaviour
     {
         DetectProjectile();
         StartCoroutine(DroneRotate());
+    }
+    public void SetItemRank(int getRank)
+    {
+        itemRank = getRank;
+        SetInterceptDroneData();
+    }
+
+    void SetInterceptDroneData()
+    {
+        float characterAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
+        float characterAttackRange = (float)character.ReturnCharacterAttackRange();
+
+        switch (itemRank)
+        {
+            case 0:
+                timeCount = 40 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[14].attackSpeedValue);
+                detectRadius = characterAttackRange * 0.15f * (float)DataManager.instance.itemList.item[14].attackRangeValue;
+                break;
+            case 1:
+                timeCount = 40 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[29].attackSpeedValue);
+                detectRadius = characterAttackRange * 0.15f * (float)DataManager.instance.itemList.item[29].attackRangeValue;
+                break;
+            case 2:
+                timeCount = 40 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[44].attackSpeedValue);
+                detectRadius = characterAttackRange * 0.15f * (float)DataManager.instance.itemList.item[44].attackRangeValue;
+                break;
+            case 3:
+                timeCount = 40 / (characterAttackSpeed * (float)DataManager.instance.itemList.item[59].attackSpeedValue);
+                detectRadius = characterAttackRange * 0.15f * (float)DataManager.instance.itemList.item[59].attackRangeValue;
+                break;
+        }
+        Debug.Log(timeCount + "/ " + detectRadius);
     }
 
     IEnumerator DroneRotate()
@@ -56,7 +91,7 @@ public class InterceptDrone : MonoBehaviour
     //    centryBallImage.transform.rotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
     //}
 
-    public void SetInterceptDrone(double getAttackSpeed, double getAttackRange)
+    public void SetInterceptDrone(float getAttackSpeed, float getAttackRange)
     {
         getCharacterAttackRange = getAttackRange;
         getCharacterAttackSpeed = getAttackSpeed;
@@ -83,7 +118,7 @@ public class InterceptDrone : MonoBehaviour
                     InterceptProj(colArr[i]);
                 }
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(timeCount);
         }
     }
 
