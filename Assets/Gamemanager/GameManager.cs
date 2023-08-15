@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public bool hasSavedData;
     public Player player;
 
+    public int gameDifficulty;
 
     
     void Awake() {

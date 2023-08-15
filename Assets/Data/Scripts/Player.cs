@@ -42,9 +42,11 @@ public class Player {
     public int itemSlot;
 
     // 1~62까지 인덱스를 사용합니다.
-    public bool[] trait;
+    public bool[] trait = new bool[63];
 
     public Equipment[] equipment;
 
     public Item[] item;
+
+
 }
