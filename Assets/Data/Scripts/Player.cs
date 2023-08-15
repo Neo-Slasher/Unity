@@ -44,9 +44,7 @@ public class Player {
     // 1~62까지 인덱스를 사용합니다.
     public bool[] trait = new bool[63];
 
-    public Equipment[] equipment;
+    public List<Equipment> equipment = new List<Equipment>();
 
-    public Item[] item;
-
-
+    public List<Item> item = new List<Item>();
 }
