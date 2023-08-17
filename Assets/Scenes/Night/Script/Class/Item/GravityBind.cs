@@ -63,6 +63,7 @@ public class GravityBind : MonoBehaviour
                 break;
         }
         detectScale /= 3;   //이미지 기본 픽셀이 300px라서 100px로 맞춰주고 스케일 조절하기 위해 넣었음.
+        detectScale += 1.8f;    //기본 값 180px 추가
         this.transform.localScale = new Vector3(detectScale, detectScale, detectScale);
     }
 

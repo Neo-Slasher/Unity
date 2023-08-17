@@ -26,14 +26,9 @@ public class TraitManager : MonoBehaviour
     int nowLevel;       //임시로 레벨을 설정함
     [SerializeField]
     List<int> traitIndexList;
-    [SerializeField]
-    List<int> traitTestIndexList;
-    [SerializeField]
-    List<TraitTrash> traitOldList;
-    [SerializeField]
-    List<Trait> traitTestList;
 
     //최종 데이터매니저에서 가져오는 데이터들
+    [SerializeField]
     List<Trait> traitList;
 
     [SerializeField]
@@ -42,31 +37,9 @@ public class TraitManager : MonoBehaviour
 
     private void Start()
     {
-        //임시로 특성이 작동하는지 보기 위해 만든 임시 코드였습니다. 앞으로 쓸 일 없어요.
-        //traitTrashWrapper = JsonManager.LoadJsonData<TraitTrashWrapper>(traitJsonName);
-        //traitTrashWrapper.Parse();
-        //SetTraitIndexListTemp();
-        //TestActiveTrait(testTraitIndex);
-        //SetTrait2();
-
-        //테스트용 코드(230806)
-        //그냥 플레이어 데이터 삽입되면 주석처리하고 아래 코드 실행하면 됩니다.
-        FindActiveTraitTest();
-        SetTestTrait();
-
         //실제로 구동되는 코드 입니다. 
-        //FindActiveTrait();
-        //SetTrait();
-
-    }
-
-    void FindActiveTraitTest()
-    {
-        //index = 28, 42, 43, 44, 45, 61, 62 총 7개의 액티브가 존재.
-        for (int i = 0; i < traitTestIndexList.Count; i++)
-        {
-            traitTestList.Add(DataManager.instance.traitList.trait[traitTestIndexList[i]]);
-        }
+        FindActiveTrait();
+        SetTrait();
     }
 
     //게임매니저에서 저장된 플레이어 데이터를 가져와 특성을 저장합니다.
@@ -79,45 +52,14 @@ public class TraitManager : MonoBehaviour
         {
             if (GameManager.instance.player.trait[idxArr[i]])
             {
-                traitIndexList[i] = idxArr[i];
+                traitIndexList.Add(idxArr[i]);
                 traitList.Add(DataManager.instance.traitList.trait[idxArr[i] - 1]);
             }
         }
     }
 
-    //삭제된 코드
-    //임시로 각 레벨당 첫번째 특성을 가지도록 설정(만렙기준)
-    //void SetTraitIndexListTemp()
-    //{
-    //    int nowLevel = 1;
-    //    for (int i = 0; i < traitTrashWrapper.traitTrashArr.Length; i++)
-    //    {
-    //        if (traitTrashWrapper.traitTrashArr[i].traitReqLvl == nowLevel)
-    //        {
-    //            nowLevel++;
-    //            traitIndexList.Add(traitTrashWrapper.traitTrashArr[i].traitIdx);
-    //            traitOldList.Add(traitTrashWrapper.traitTrashArr[i]);
-    //        }
-    //    }
-    //}
-
-    //특성을 테스트하기 위해서 만들어둔 함수
-    //void TestActiveTrait(int testIndex)
-    //{
-    //    traitOldList.Add(traitTrashWrapper.traitTrashArr[testIndex]);
-    //}
-
     //선택한 특성을 실행하는 함수
-
-    void SetTestTrait()
-    {
-        Trait nowTrait;
-        for (int i = 0; i < traitTestList.Count; i++)
-        {
-            nowTrait = traitTestList[i];
-            SetActiveTrait(nowTrait);
-        }
-    }
+    
 
     void SetTrait()
     {
@@ -126,34 +68,12 @@ public class TraitManager : MonoBehaviour
         {
             nowTrait = traitList[i];
             //액티브 특성 실행
-            if (traitOldList[i].effectType1 == EffectType.active)
+            if (traitList[i].effectType1 == (int)EffectType.active)
             {
                 SetActiveTrait(nowTrait);
             }
         }
     }
-
-    //선택한 특성을 실행하는 함수(이젠 안씀)
-    //void SetOldTrait()
-    //{
-    //    TraitTrash nowTrait;
-    //    for(int i =0; i< traitOldList.Count; i++)
-    //    {
-    //        nowTrait = traitOldList[i];
-    //        //패시브 특성 설정
-    //        if (traitOldList[i].effectType1 != EffectType.active)
-    //        {
-    //            //SetPassiveTrait(nowTrait);
-    //            //패시브 특성은 밤 씬으로 들어오기 이전에 적용되어 있을 예정
-    //        }
-
-    //        //액티브 특성 설정
-    //        else
-    //        {
-    //            SetActiveTrait(nowTrait);
-    //        }
-    //    }
-    //}
 
     //각 특성에서 변화하는 값들을 대입하는 함수(낮씬에서 이미 데이터 정리되어 들어와 이제 필요 없음)
     void SetPassiveTrait(TraitTrash getTrait)

@@ -77,6 +77,7 @@ public class Character : MonoBehaviour
     }
 
     private void Start() {
+        SetHitBoxScale();
         StartAttack();
 
         if (characterData.hpRegen > 0)
@@ -86,6 +87,14 @@ public class Character : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) { 
         //캐릭터 데미지 받을 때
         CharacterDamaged(collision);
+    }
+
+    void SetHitBoxScale()
+    {
+        float goalY = (float)GameManager.instance.player.attackRange * 0.15f;
+        Vector3 goalScale = new Vector3(1, goalY, 1);
+
+        hitBox.transform.localScale = goalScale;
     }
 
     public void SetCharacterTrashData(EffectType getEffectType, float getEffectValue, bool getEffectMulti)
@@ -579,6 +588,14 @@ public class Character : MonoBehaviour
     public void UpdateKillCount()
     {
         nightManager.UpdateKillCount();
+    }
+    public void UpdateKillNormalCount()
+    {
+        nightManager.UpdateKillNormalCount();
+    }
+    public void UpdateKillEliteCount()
+    {
+        nightManager.UpdateKillEliteCount();
     }
 
     public double ReturnCharacterMoveSpeed()

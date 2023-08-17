@@ -17,11 +17,11 @@ public class FightingPower : MonoBehaviour
     void Awake()
     {
         Player = GameManager.instance.player;
-        Player.maxHp = hitPoint;
-        Player.attackPower = attackPower;
-        Player.attackSpeed = attackSpeed;
-        Player.attackRange = attackRange;
-        Player.moveSpeed = moveSpeed;
+        //Player.maxHp = hitPoint;
+        //Player.attackPower = attackPower;
+        //Player.attackSpeed = attackSpeed;
+        //Player.attackRange = attackRange;
+        //Player.moveSpeed = moveSpeed;
     }
 
     public void ChangingPower()

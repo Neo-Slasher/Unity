@@ -171,6 +171,7 @@ public class PreparationManager : MonoBehaviour
 
     public void OnClickStartButton() {
         traitManager.SaveTrait();
+        GameManager.instance.SavePlayerData();
         SceneManager.LoadScene("DayScene");
     }
 

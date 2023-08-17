@@ -214,6 +214,12 @@ public class EnemyParent : MonoBehaviour
             else
             {
                 character.GetComponent<Character>().UpdateKillCount();
+
+                if(this.gameObject.tag == "Normal")
+                    character.GetComponent<Character>().UpdateKillNormalCount();
+                else if (this.gameObject.tag == "Elite")
+                    character.GetComponent<Character>().UpdateKillEliteCount();
+
                 Destroy(this.gameObject);
             }
         }

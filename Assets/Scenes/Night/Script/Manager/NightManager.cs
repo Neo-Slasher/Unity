@@ -43,6 +43,8 @@ public class NightManager : MonoBehaviour
     AssassinationTrashData assassinationTrashData;
 
     public int killCount = 0;
+    public int killNormal = 0;
+    public int killElite = 0;
 
     private void Start()
     {
@@ -56,8 +58,8 @@ public class NightManager : MonoBehaviour
         SetEnemyArrData();
 
         //몬스터 생성 함수
-        //InstantiateEnemy();
-        TestEnemy();
+        InstantiateEnemy();
+        //TestEnemy();
     }
 
     void SetEnemyArrData()
@@ -114,8 +116,10 @@ public class NightManager : MonoBehaviour
             while (!isStageEnd && timerManager.timerCount > 1)
             {
                 //몬스터 스폰
-                normalEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, false);
+                //normalEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, false);
                 GameObject normalEnemyClone = Instantiate(normalEnemyPrefabArr[nowEnemyIndex], SetEnemyPos(), Quaternion.identity);
+                normalEnemyClone.GetComponent<EnemyParent>().SetEnforceData(nowLevel, false);
+
 
                 normalEnemyClone.transform.SetParent(enemyCloneParent);
                 normalEnemyClone.SetActive(true);
@@ -132,8 +136,10 @@ public class NightManager : MonoBehaviour
             while (!isStageEnd && timerManager.timerCount > 1)
             {
                 //몬스터 스폰
-                eliteEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, true);
+                //eliteEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, true);
                 GameObject eliteEnemyClone = Instantiate(eliteEnemyPrefabArr[nowEnemyIndex], SetEnemyPos(), Quaternion.identity);
+                eliteEnemyClone.GetComponent<EnemyParent>().SetEnforceData(nowLevel, false);
+
                 eliteEnemyClone.transform.SetParent(enemyCloneParent);
                 eliteEnemyClone.SetActive(true);
                 yield return new WaitForSeconds((float)SpawnTIme(true, nowEnemyIndex));
@@ -238,9 +244,24 @@ public class NightManager : MonoBehaviour
         endPopup.SetActive(true);
     }
 
+    //팝업창 데이터 설정
+
+    //끝난 날짜 및 데이터 조정 및 저장
+
+
     public void UpdateKillCount()
     {
         killCount++;
         itemManager.ChargingReaperGauge();  //차징 리퍼 쓰면 동작
+    }
+
+    public void UpdateKillNormalCount()
+    {
+        killNormal++;
+    }
+
+    public void UpdateKillEliteCount()
+    {
+        killElite++;
     }
 }

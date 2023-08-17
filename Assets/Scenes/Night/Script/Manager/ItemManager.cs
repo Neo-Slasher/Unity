@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public enum ItemName
 {
@@ -52,23 +52,21 @@ public class ItemManager : MonoBehaviour
     ChargingReaper chargingReaperScript;
     public bool isChargingReaperUse = false;
 
-    private void Awake()
-    {
-        //게임 매니저나 어딘가에서 아이템 인덱스 같은 거 들고오기
-        //itemIdxArr = new int[character.ReturnCharacterItemSlot()];
-    }
+    //아이템 쿨타임 전용
+    [SerializeField]
+    GameObject[] nowItemUIArr;
+    [SerializeField]
+    Sprite[] itemIconArr;
+    [SerializeField]
+    Image[] coolTimeImageArr;
+
 
     private void Start()
     {
+        SetItemIdxArr();
+        SetItemIconArr();
         StartItem();
-        //SetTempItem1();
     }
-
-    //아이템 체크하려고 만든 임시 코드
-    //void SetTempItem1()
-    //{
-    //    FindItem(tempItemIdx);
-    //}
 
     void SetItemIdxArr()
     {
@@ -78,6 +76,22 @@ public class ItemManager : MonoBehaviour
             itemRankArr[i] = GameManager.instance.player.item[i].rank;
             itemIdxArr[i] -= (itemRankArr[i] * 15);     //아이템 인덱스로 ItemName을 구분하기 때문에 강제로 만든 식입니다.
                                                         //아이템 인덱스 - 랭크*15 = itemName
+        }
+    }
+
+    void SetItemIconArr()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (i >= GameManager.instance.player.item.Count)
+            {
+                nowItemUIArr[i].SetActive(false);
+            }
+            else
+            {
+                int nowItemIconIdx = DataManager.instance.itemList.item[itemIdxArr[i] - 1].imgIdx;
+                nowItemUIArr[i].transform.GetChild(0).GetComponent<Image>().sprite = itemIconArr[nowItemIconIdx];
+            }
         }
     }
 
@@ -170,6 +184,9 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator ChargingReaperCoroutine(int getRank)
     {
+        //아이콘 인덱스 찾기
+        int iconIdx = FindIconIdx((int)ItemName.ChargingReaper);
+
         isChargingReaperUse = true;
         GameObject chargingReaperParent = Instantiate(itemPrefabArr[2]);
         chargingReaperParent.transform.SetParent(characterParent.transform);
@@ -222,6 +239,9 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator MultiSlashCoroutine(int getRank)
     {
+        //아이콘 인덱스 찾기
+        int iconIdx = FindIconIdx((int)ItemName.ChargingReaper);
+
         //랭크에 따라 다른 작업 추가
         float slashTime = 6;
         float attackPowerRate = (float)DataManager.instance.itemList.item[3].attackPowerValue;
@@ -246,6 +266,7 @@ public class ItemManager : MonoBehaviour
         //2회 연속공격 + 에너지파
         while (!nightManager.isStageEnd)
         {
+            SetCoolTime(slashTime, iconIdx);
             character.isDoubleAttack = true;
 
             while (character.isDoubleAttack)
@@ -308,6 +329,9 @@ public class ItemManager : MonoBehaviour
 
     void RailPiercer(int getRank)
     {
+        //아이콘 인덱스 찾기
+        int iconIdx = FindIconIdx((int)ItemName.ChargingReaper);
+
         GameObject railPiercerParent = Instantiate(itemPrefabArr[5]);
         railPiercerParent.transform.SetParent(characterParent.transform);
         RailPiercer railPiercerScript = railPiercerParent.GetComponent<RailPiercer>();
@@ -322,6 +346,9 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator FirstAdeCoroutine(int getRank)
     {
+        //아이콘 인덱스 찾기
+        int iconIdx = FindIconIdx((int)ItemName.ChargingReaper);
+
         GameObject firstAdeParent = Instantiate(itemPrefabArr[6]);
         firstAdeParent.transform.SetParent(character.transform);
         firstAdeParent.transform.localPosition = character.transform.position;
@@ -369,6 +396,9 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator BarriorCoroutine(int getRank)
     {
+        //아이콘 인덱스 찾기
+        int iconIdx = FindIconIdx((int)ItemName.ChargingReaper);
+
         GameObject barriorParent = Instantiate(itemPrefabArr[7]);
         barriorParent.transform.SetParent(character.transform);
         barriorParent.transform.position = character.transform.position;
@@ -414,6 +444,9 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator HologramTrickCoroutine(int getRank)
     {
+        //아이콘 인덱스 찾기
+        int iconIdx = FindIconIdx((int)ItemName.ChargingReaper);
+
         GameObject[] hologramParentArr = new GameObject[2];
         Vector3 hologramVector;
         character.isHologramAnimate = true;
@@ -541,6 +574,9 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator MoveBack(int getRank)
     {
+        //아이콘 인덱스 찾기
+        int iconIdx = FindIconIdx((int)ItemName.ChargingReaper);
+
         float getAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
         float timeCount = 200 / getAttackSpeed;
 
@@ -569,6 +605,9 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator BoosterCoroutine(int getRank)
     {
+        //아이콘 인덱스 찾기
+        int iconIdx = FindIconIdx((int)ItemName.ChargingReaper);
+
         float getBasicSpeed = (float)character.ReturnCharacterMoveSpeed();
         float getAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
         float getAttackRange = (float)character.ReturnCharacterAttackRange();
@@ -636,6 +675,9 @@ public class ItemManager : MonoBehaviour
     
     void InterceptDroneCoroutine(int getRank)
     {
+        //아이콘 인덱스 찾기
+        int iconIdx = FindIconIdx((int)ItemName.ChargingReaper);
+
         GameObject interceptDroneParent = Instantiate(itemPrefabArr[15]);
         interceptDroneParent.transform.SetParent(character.transform);
         interceptDroneParent.transform.localPosition = character.transform.position;
@@ -647,5 +689,34 @@ public class ItemManager : MonoBehaviour
         float getAttackRange = (float)character.ReturnCharacterAttackRange();
 
         interceptDroneParent.GetComponent<InterceptDrone>().SetInterceptDrone(getAttackRange, getAttackSpeed);
+    }
+
+    int FindIconIdx(int itemIdx)
+    {
+        for (int i = 0; i < itemIdxArr.Length; i++)
+        {
+            if (itemIdx == itemIdxArr[i])
+                return i;
+        }
+
+        //못찾으면 -1
+        return -1;
+    }
+
+    void SetCoolTime(float getCoolTime, int getIconIdx)
+    {
+        StartCoroutine(SetCoolTimeCoroutine(getCoolTime, getIconIdx));
+    }
+
+    IEnumerator SetCoolTimeCoroutine(float getCoolTime, int getIconIdx)
+    {
+        float nowTime = 0;
+        while (nowTime <= getCoolTime)
+        {
+            nowTime += Time.deltaTime;
+            coolTimeImageArr[getIconIdx].fillAmount = 1 - (nowTime / getCoolTime);
+
+            yield return null;
+        }
     }
 }

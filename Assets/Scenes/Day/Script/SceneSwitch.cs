@@ -18,6 +18,7 @@ public class SceneSwitch : MonoBehaviour
     }
     public void GoNight()
     {
+        GameManager.instance.SavePlayerData();
         SceneManager.LoadScene("NightScene");
     }
     public void GoDay()
