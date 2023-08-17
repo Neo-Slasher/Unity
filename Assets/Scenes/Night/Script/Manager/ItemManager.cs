@@ -60,6 +60,8 @@ public class ItemManager : MonoBehaviour
     [SerializeField]
     Image[] coolTimeImageArr;
 
+    public List<int> arr;
+
 
     private void Start()
     {

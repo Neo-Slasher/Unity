@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class NightManager : MonoBehaviour
 {
@@ -42,6 +43,10 @@ public class NightManager : MonoBehaviour
     [SerializeField]
     AssassinationTrashData assassinationTrashData;
 
+    [SerializeField]
+    TextMeshProUGUI[] killCountTextArr; //0: 노멀 킬수, 1: 엘리트 킬수, 2: 노멀 알파, 3: 엘리트 알파
+    [SerializeField]
+    TextMeshProUGUI aliveOrDieText;
     public int killCount = 0;
     public int killNormal = 0;
     public int killElite = 0;
@@ -193,11 +198,13 @@ public class NightManager : MonoBehaviour
         Vector3 instantiatePos = new Vector3(xPos, yPos, 0);
         do
         {
-            xPos = Random.Range(-11f, 11f);
-            yPos = Random.Range(-11f, 11f);
+            xPos = Random.Range(-15f, 15f);
+            yPos = Random.Range(-30f, 30f);
             instantiatePos.x = xPos;
             instantiatePos.y = yPos;
         } while (!IsPosInGround(instantiatePos));
+
+        instantiatePos += character.transform.position;
 
         return instantiatePos;
     }
@@ -206,7 +213,7 @@ public class NightManager : MonoBehaviour
     {
         if (getVector.x < -10 || getVector.x > 10)
             return true;
-        else if (getVector.y < -10 || getVector.y > 10)
+        else if (getVector.y < -20 || getVector.y > 20)
             return true;
         else
             return false;
@@ -241,13 +248,42 @@ public class NightManager : MonoBehaviour
             }
         }
 
+        SetEndPopUp();
         endPopup.SetActive(true);
     }
 
     //팝업창 데이터 설정
+    void SetEndPopUp()
+    {
+        if (timerManager.timerCount == 0)
+            aliveOrDieText.text = "생존";
+        else
+            aliveOrDieText.text = "사망";
+
+        killCountTextArr[0].text = killNormal.ToString();
+        killCountTextArr[1].text = killElite.ToString();
+        killCountTextArr[2].text = killNormal + "a";
+        killCountTextArr[3].text = killElite + "a";
+    }
 
     //끝난 날짜 및 데이터 조정 및 저장
+    public void OnTouchEndBtn()
+    {
+        //7일차가 아니면 저장하고 낮씬으로 가고 아니면 엔딩으로 갑니다.
+        if (GameManager.instance.player.day < 7)
+        {
+            GameManager.instance.player.day++;
+            //뭐 대충 재화 정리까지 다 하고 세이브
 
+            GameManager.instance.SavePlayerData();
+            UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
+        }
+        else
+        {
+            //재화 정리하고 엔딩으로
+            GameManager.instance.SavePlayerData();
+        }
+    }
 
     public void UpdateKillCount()
     {
