@@ -21,6 +21,8 @@ public class ItemManager : MonoBehaviour
     [SerializeField]
     NightManager nightManager;
     [SerializeField]
+    NightSFXManager nightSFXManager;
+    [SerializeField]
     GameObject characterParent;
     [SerializeField]
     Character character;

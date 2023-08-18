@@ -217,6 +217,8 @@ public class Character : MonoBehaviour
     }
 
     IEnumerator AttackCoroutine() {
+        float attackSpeed = 10 / (float)GameManager.instance.player.attackSpeed;
+
         while (!nightManager.isStageEnd) {
             if (!isDoubleAttack) {
                 //공격 애니메이션 진행
@@ -233,7 +235,7 @@ public class Character : MonoBehaviour
 
                 hitBox.SetActive(true);
                 SetHitbox();
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.2f);
                 hitBox.SetActive(false);
 
                 isMoveBackOn = false;
@@ -248,7 +250,7 @@ public class Character : MonoBehaviour
 
                 hitBox.SetActive(true);
                 SetHitbox();
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.2f);
                 hitBox.SetActive(false);
                 itemManager.SetMultiSlasherSprite(false);
 
@@ -257,7 +259,7 @@ public class Character : MonoBehaviour
             }
 
             //다음 공격까지 대기
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(attackSpeed);
             isAbsorb = false;
             isAttack = false;
         }

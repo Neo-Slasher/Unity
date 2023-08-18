@@ -10,6 +10,8 @@ public class NightManager : MonoBehaviour
     [SerializeField]
     TimerManager timerManager;
     [SerializeField]
+    NightSFXManager nightSFXManager;
+    [SerializeField]
     GameObject character;
     KillData killdata;  //죽인 몬스터 마리수 카운트
 
@@ -53,6 +55,7 @@ public class NightManager : MonoBehaviour
 
     private void Start()
     {
+        GameManager.instance.player.curHp = GameManager.instance.player.maxHp;
         leveltrashData = new LevelTrashData(nowLevel);
         assassinationTrashData = new AssassinationTrashData(nowAssassination);
 
@@ -274,7 +277,7 @@ public class NightManager : MonoBehaviour
         {
             GameManager.instance.player.day++;
             //뭐 대충 재화 정리까지 다 하고 세이브
-
+            GameManager.instance.player.curHp = GameManager.instance.player.maxHp;
             GameManager.instance.SavePlayerData();
             UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
         }
@@ -299,5 +302,11 @@ public class NightManager : MonoBehaviour
     public void UpdateKillEliteCount()
     {
         killElite++;
+    }
+
+    //밤이 끝나고 아이템 획득하는 함수
+    void GetItem()
+    {
+
     }
 }

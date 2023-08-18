@@ -2069,6 +2069,9 @@ MonoBehaviour:
   traitIndexList: 
   traitList: []
   testTraitIndex: 0
+  traitEffectArr:
+  - {fileID: 5155332618958625825, guid: 0786a2b26bace7141855c2d65cb63181, type: 3}
+  - {fileID: 249910879997566390, guid: b846d2e64fb978f4eb94f78325307ed5, type: 3}
   arr: []
 --- !u!1 &777884641
 GameObject:
