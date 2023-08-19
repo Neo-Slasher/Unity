@@ -67,6 +67,8 @@ public class Character : MonoBehaviour
         GameManager.instance.LoadPlayerData();          //임시코드@@@@@@@@@@@@@
 
         characterData = GameManager.instance.player;
+        if (characterData.curHp == 0)
+            characterData.curHp = characterData.maxHp;
         characterRigid = this.GetComponent<Rigidbody2D>();
         characterSpriteRanderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();

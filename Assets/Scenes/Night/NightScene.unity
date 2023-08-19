@@ -918,12 +918,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nightManager: {fileID: 1563751325}
+  nightSFXManager: {fileID: 0}
   characterParent: {fileID: 182467907}
   character: {fileID: 889106807}
   hitBox: {fileID: 1410340655}
   itemIdxArr: 000000000000000000000000
   itemRankArr: 000000000000000000000000
-  tempItemIdx: 5
+  tempItemIdxArr: 0c0000000d0000000f000000
   itemPrefabArr:
   - {fileID: 0}
   - {fileID: 6435774007306126119, guid: 5e53ae801b6353d47b55e9e30bc26a36, type: 3}
@@ -970,7 +971,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a8ef6b221b9971b4fa8661dcbf6df57a, type: 3}
   - {fileID: 21300000, guid: 12aa1459bb90809459962470ed993602, type: 3}
   - {fileID: 21300000, guid: ae5cef08d23560746916ec6d0dd52e7a, type: 3}
-  coolTimeImageArr: []
+  coolTimeImageArr:
+  - {fileID: 1485578849}
+  - {fileID: 326300860}
+  - {fileID: 631557311}
   arr: 
 --- !u!1 &403163737
 GameObject:
@@ -4502,6 +4506,7 @@ Transform:
   - {fileID: 1924763513}
   - {fileID: 701504055}
   - {fileID: 403044716}
+  - {fileID: 1657796861}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4686,6 +4691,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemManager: {fileID: 403044717}
   timerManager: {fileID: 1924763514}
+  nightSFXManager: {fileID: 0}
   character: {fileID: 889106806}
   endPopup: {fileID: 973832368}
   normalEnemyPrefabArr:
@@ -5084,6 +5090,52 @@ MonoBehaviour:
   cameraPos: {x: 0, y: 0, z: 0}
   center: {x: 0, y: 0}
   mapSize: {x: 21.5, y: 32}
+--- !u!1 &1657796860
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1657796861}
+  - component: {fileID: 1657796862}
+  m_Layer: 0
+  m_Name: NightSFXManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1657796861
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657796860}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1501833780}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1657796862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657796860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 081a9f07bd7478c459ffa07f3590fab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nightAudioSource: {fileID: 0}
+  sfxArr: []
 --- !u!1001 &1707741420
 PrefabInstance:
   m_ObjectHideFlags: 0
