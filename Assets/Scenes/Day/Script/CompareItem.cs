@@ -149,7 +149,12 @@ public class CompareItem : MonoBehaviour
 
         chosen = -1;
         FightingPower.selectNum = selectNum;
-        FightingPower.ChangingPower();
+        if(selectType == "equip")
+        {
+            FightingPower.ChangingPower();
+            FightingPower.PrintingDiff();
+        }
+        
         Cancel();
     }
     void GetInfo()
