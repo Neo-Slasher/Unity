@@ -7,6 +7,8 @@ using TMPro;
 
 public class CutSceneManager : MonoBehaviour
 {
+
+
     public TextMeshProUGUI typingText;
     public string message;
     public float speed = 0.07f;
