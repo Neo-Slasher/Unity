@@ -37,11 +37,11 @@ public class FightingPower : MonoBehaviour
     void Awake()
     {
         Player = GameManager.instance.player;
-        Player.maxHp = hitPoint;
-        Player.attackPower = attackPower;
-        Player.attackSpeed = attackSpeed;
-        Player.attackRange = attackRange;
-        Player.moveSpeed = moveSpeed;
+        //Player.maxHp = hitPoint;
+        //Player.attackPower = attackPower;
+        //Player.attackSpeed = attackSpeed;
+        //Player.attackRange = attackRange;
+        //Player.moveSpeed = moveSpeed;
         Printing();
     }
 
@@ -66,10 +66,10 @@ public class FightingPower : MonoBehaviour
     public void Printing()
     {
         hitpoint.text = Player.maxHp.ToString();
-        movespeed.text = moveSpeed.ToString();
-        attackspeed.text = attackSpeed.ToString();
-        attackpower.text = attackPower.ToString();
-        attackrange.text = attackRange.ToString();
+        movespeed.text = Player.moveSpeed.ToString();
+        attackspeed.text = Player.attackSpeed.ToString();
+        attackpower.text = Player.attackPower.ToString();
+        attackrange.text = Player.attackRange.ToString();
         
         startmoney.text = Player.startMoney.ToString();
         earnmoney.text = Player.earnMoney.ToString();

@@ -13,11 +13,6 @@ public class GameManager : MonoBehaviour
     public bool hasSavedData;
     public Player player;
 
-    public int gameDifficulty;
-    public int backGroundMusicVolume;
-    public int effectSoundVolume;
-    public int joyStickSize;
-    
     void Awake() {
         if (instance == null)  
             instance = this;
