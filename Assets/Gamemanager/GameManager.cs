@@ -14,7 +14,9 @@ public class GameManager : MonoBehaviour
     public Player player;
 
     public int gameDifficulty;
-
+    public int backGroundMusicVolume;
+    public int effectSoundVolume;
+    public int joyStickSize;
     
     void Awake() {
         if (instance == null)  
@@ -40,7 +42,7 @@ public class GameManager : MonoBehaviour
         string initData = File.ReadAllText(Application.dataPath + "/Data/Json/InitPlayer.json");
         this.player =  JsonUtility.FromJson<Player>(initData);
 
-        //ÀÛ¾÷À» À§ÇÑ Ä¡Æ®
+        //ï¿½Û¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä¡Æ®
         Cheat();
 
         SavePlayerData();

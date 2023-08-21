@@ -12,7 +12,7 @@ public class MainManager : MonoBehaviour
 
     public Button continueButton;
 
-
+    public GameObject setting;
 
 
     void Start() {
@@ -47,12 +47,12 @@ public class MainManager : MonoBehaviour
 
     public void OnClickContinueButton() {
         GameManager.instance.LoadPlayerData();
-        SceneManager.LoadScene("PreparationScene");
+        SceneManager.LoadScene("DayScene");
     }
 
 
     public void OnClickSettingButton() {
-        SceneManager.LoadScene("SettingScene");
+        setting.SetActive(true);
     }
 
 

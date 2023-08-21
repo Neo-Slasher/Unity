@@ -7,6 +7,7 @@ using UnityEngine;
 public class Player {
     // defalut
     public int day;     //정윤석: 날짜를 세이브하기 위해서 넣었습니다. 제이슨도 바꿨어요.
+    public int difficulty;
 
     public int level;
     public int reqExp;
@@ -49,4 +50,8 @@ public class Player {
     public List<Equipment> equipment = new List<Equipment>();
 
     public List<Item> item = new List<Item>();
+
+    // 사운드 데이터 저장
+    public float bgm_volume;
+    public float sfx_volume;
 }
