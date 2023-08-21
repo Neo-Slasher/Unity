@@ -12,6 +12,7 @@ public class Category : MonoBehaviour
     public Toggle Toggle;
     public GameObject[] Scenes;
     public TMP_Text SName;
+    public GameObject inform;
     /* TMP_Text Day;
     public GameObject GameManager;
 
@@ -40,6 +41,7 @@ public class Category : MonoBehaviour
                 Scenes[0].SetActive(true);
                 Scenes[1].SetActive(false);
                 Scenes[2].SetActive(false);
+                inform.SetActive(true);
                 SName.text = "상점";
             }
             if(Toggle.name.Equals("암살tog"))
@@ -47,6 +49,7 @@ public class Category : MonoBehaviour
                 Scenes[0].SetActive(false);
                 Scenes[1].SetActive(true);
                 Scenes[2].SetActive(false);
+                inform.SetActive(false);
                 SName.text = "암살";
             }
             if(Toggle.name.Equals("정비tog"))
@@ -54,6 +57,7 @@ public class Category : MonoBehaviour
                 Scenes[0].SetActive(false);
                 Scenes[1].SetActive(false);
                 Scenes[2].SetActive(true);
+                inform.SetActive(true);
                 SName.text = "정비";
             }
     }

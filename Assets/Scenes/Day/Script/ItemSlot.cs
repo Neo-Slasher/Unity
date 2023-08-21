@@ -25,7 +25,7 @@ public class ItemSlot : MonoBehaviour
 
     public int selectNum;
     public string selectType;
-    public int btnNum;
+    public int btnNum = -1;
 
     public class ShopSlot
     {

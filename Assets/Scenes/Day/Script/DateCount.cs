@@ -46,13 +46,13 @@ public class DateCount : MonoBehaviour
                 Date += 1;
                 Debug.Log("Day"+Date);
                 Day = GameObject.Find("Date").GetComponent<TMP_Text>();
-                Day.text = "Day "  + Date.ToString() + "\n" + "D-"+ (7-Date).ToString();
+                Day.text = (7-Date).ToString() + "\n" + Date.ToString() + "일차";
             }
             else
             {
                 Date = 1;
                 Day = GameObject.Find("Date").GetComponent<TMP_Text>();
-                Day.text = "Day "  + Date.ToString() + "\n" + "D-"+ (7-Date).ToString();
+                Day.text = (7-Date).ToString() + "\n" + Date.ToString() + "일차";
             }
         }
         

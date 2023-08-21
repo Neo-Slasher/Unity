@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChargingReaper : MonoBehaviour
 {
@@ -66,5 +67,17 @@ public class ChargingReaper : MonoBehaviour
         reaperAfterImage.SetActive(false) ;
         yield return new WaitForSeconds(0.1f);
         reaperAfterImage.SetActive(true);
+    }
+
+    public IEnumerator SetCoolTime(Image coolTimeImage)
+    {
+        yield return new WaitUntil(() => !this.gameObject.activeSelf);
+        coolTimeImage.gameObject.SetActive(true);
+
+        while (coolTimeImage.fillAmount > 0)
+        {
+            coolTimeImage.fillAmount = 1 - ((float)chargingGauge / 100);
+            yield return null;
+        }
     }
 }
