@@ -33,7 +33,10 @@ public class TraitManager : MonoBehaviour
 
     [SerializeField]
     int testTraitIndex;
-    
+
+    //이펙트 추가
+    [SerializeField]
+    GameObject[] traitEffectArr;    //0: 끌어오기, 1: 밀어내기
 
     private void Start()
     {
@@ -134,12 +137,34 @@ public class TraitManager : MonoBehaviour
         character.SetStartShieldPointData((float)getTrait.effectValue1);
     }
 
+    IEnumerator SetAnimatorParameter(Animator getAnimator, string animationName)
+    {
+        while(getAnimator.GetBool("isPlay"))
+        {
+            if (getAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName))
+            {
+                getAnimator.SetBool("isPlay", false);
+            }
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
     //특성 인덱스 42번 n초마다 주변 적 끌어당기기 코드
     IEnumerator DragEnemyCoroutine(Trait getTrait)
     {
+        GameObject drugEnemyEffect = Instantiate(traitEffectArr[0]);
+        drugEnemyEffect.transform.localPosition = character.transform.position;
+        drugEnemyEffect.transform.SetParent(character.transform);
+        drugEnemyEffect.SetActive(false);
+        Animator effectAnimator = drugEnemyEffect.GetComponent<Animator>();
+
         while (!nightManager.isStageEnd)
         {
             yield return new WaitForSeconds((float)getTrait.effectValue1);    //n초의 대기시간을 갖는 코드
+            //이펙트 키기
+            drugEnemyEffect.SetActive(true);
+            effectAnimator.SetBool("isPlay", true);
+
             Debug.Log("DrugEnemy");
             Collider2D[] getCols =
                 character.ReturnOverLapColliders((float)getTrait.effectValue3 / 100, (float)getTrait.effectValue2 / 100);
@@ -151,15 +176,27 @@ public class TraitManager : MonoBehaviour
                     if (getCols[i].tag == "Normal" || getCols[i].tag == "Elite")
                         getCols[i].GetComponent<EnemyParent>().DrugEnemy();
                 }
+
+            StartCoroutine(SetAnimatorParameter(effectAnimator, "DrugEnemyAnimation"));
         }
     }
     public Collider2D[] arr;
     //특성 인덱스 43번 n초마다 주변 적 밀어내기 코드
     IEnumerator ThrustEnemyCoroutine(Trait getTrait)
     {
+        GameObject thrustEnemyEffect = Instantiate(traitEffectArr[0]);
+        thrustEnemyEffect.transform.localPosition = character.transform.position;
+        thrustEnemyEffect.transform.SetParent(character.transform);
+        thrustEnemyEffect.SetActive(false);
+        Animator effectAnimator = thrustEnemyEffect.GetComponent<Animator>();
+
         while (!nightManager.isStageEnd)
         {
             yield return new WaitForSeconds((float)getTrait.effectValue1);    //n초의 대기시간을 갖는 코드
+            //이펙트
+            thrustEnemyEffect.SetActive(true);
+            effectAnimator.SetBool("isPlay", true);
+
             Debug.Log("ThrustEnemy");
             Collider2D[] getCols =
                 character.ReturnOverLapColliders((float)getTrait.effectValue2 / 100);
@@ -174,6 +211,8 @@ public class TraitManager : MonoBehaviour
                         Debug.Log(getCols.Length);
                     }
                 }
+
+            StartCoroutine(SetAnimatorParameter(effectAnimator, "ThrustEnemyAnimation"));
         }
     }
 

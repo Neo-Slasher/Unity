@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InterceptDrone : MonoBehaviour
 {
@@ -31,6 +32,9 @@ public class InterceptDrone : MonoBehaviour
     float getCharacterAttackRange;
 
     Projectile getProjScript;
+
+    //ÄðÅ¸ÀÓ
+    public Image coolTimeImage;
 
     private void Start()
     {
@@ -118,6 +122,10 @@ public class InterceptDrone : MonoBehaviour
                     InterceptProj(colArr[i]);
                 }
             }
+
+            if (coolTimeImage.fillAmount == 0)
+                coolTimeImage.fillAmount = 1;
+            StartCoroutine(SetCoolTime());
             yield return new WaitForSeconds(timeCount);
         }
     }
@@ -143,5 +151,17 @@ public class InterceptDrone : MonoBehaviour
     {
         getProjScript = getCol.GetComponent<Projectile>();
         getProjScript.SetProjPos();
+    }
+
+    public IEnumerator SetCoolTime()
+    {
+        coolTimeImage.gameObject.SetActive(true);
+        float nowTime = 0;
+        while (coolTimeImage.fillAmount > 0)
+        {
+            nowTime += Time.deltaTime;
+            coolTimeImage.fillAmount = 1 - nowTime/timeCount;
+            yield return null;
+        }
     }
 }
