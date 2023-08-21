@@ -10,12 +10,11 @@ public class AssacinationFPower : MonoBehaviour
     public FightingPower FightingPower;
     public TMP_Text StageRecCP;
     public TMP_Text CPGap;
-    public Image Bpanel;
     public int num;
 
     double stageRecCP;
     int currentCP;
-    double cpGap;
+    int cpGap;
 
     // Start is called before the first frame update
     void Start()
@@ -33,24 +32,24 @@ public class AssacinationFPower : MonoBehaviour
     {
         stageRecCP = DataManager.instance.assassinationStageList.assassinationStage[num].stageRecCP;
         Comparison();
-        if(cpGap > 10)
+         /*if(cpGap > 10)
             Bpanel.color = Color.green;
         else if(cpGap <= 10 && cpGap >= -10)
             Bpanel.color = Color.yellow;
         else if(cpGap < -10)
-            Bpanel.color = Color.red;
+            Bpanel.color = Color.red;*/
 
         StageRecCP.text = stageRecCP.ToString();
 
         if(stageRecCP <= currentCP)
-            CPGap.text = (currentCP-stageRecCP).ToString() + "▲";
+            CPGap.text = "<color=red>" + (currentCP-stageRecCP).ToString() + "</color>";
         else
-            CPGap.text = (stageRecCP - currentCP).ToString() + "▼";
+            CPGap.text = "<color=green> " + (stageRecCP - currentCP).ToString() + "</color>";
     }
 
     void Comparison()
     {
         currentCP = FightingPower.currentCP;
-        cpGap = ((currentCP - stageRecCP) / stageRecCP) * 100;
+        cpGap = (int)((currentCP - stageRecCP) / stageRecCP) * 100;
     }
 }
