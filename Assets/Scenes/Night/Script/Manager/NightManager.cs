@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class NightManager : MonoBehaviour
 {
     [SerializeField]
     ItemManager itemManager;
+    [SerializeField]
+    TraitManager traitManager;
     [SerializeField]
     TimerManager timerManager;
     [SerializeField]
@@ -52,6 +55,13 @@ public class NightManager : MonoBehaviour
     public int killCount = 0;
     public int killNormal = 0;
     public int killElite = 0;
+
+    //환경설정 추가
+    [SerializeField]
+    Button preferenceBtn;
+    [SerializeField]
+    GameObject preferenceParent;
+    //사운드 +-168.46
 
     private void Start()
     {
@@ -308,5 +318,23 @@ public class NightManager : MonoBehaviour
     void GetItem()
     {
 
+    }
+
+    //환경설정 여는 함수
+    public void OnClickPreferenceBtn()
+    {
+        preferenceParent.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void OnClickContinueBtn()
+    {
+        preferenceParent.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public void OnClickExitBtn()
+    {
+        //씬 이동
     }
 }

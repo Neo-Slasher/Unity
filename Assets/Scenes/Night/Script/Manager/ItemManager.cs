@@ -67,12 +67,12 @@ public class ItemManager : MonoBehaviour
 
     private void Start()
     {
-        //SetItemIdxArr();
-        //SetItemIconArr();
-        //StartItem();
+        SetItemIdxArr();
+        SetItemIconArr();
+        StartItem();
 
         //테스트용
-        TestItem();
+        //TestItem();
     }
 
     void TestItem()
