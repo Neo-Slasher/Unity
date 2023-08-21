@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class NightManager : MonoBehaviour
 {
     [SerializeField]
     ItemManager itemManager;
     [SerializeField]
+    TraitManager traitManager;
+    [SerializeField]
     TimerManager timerManager;
+    [SerializeField]
+    NightSFXManager nightSFXManager;
     [SerializeField]
     GameObject character;
     KillData killdata;  //죽인 몬스터 마리수 카운트
@@ -42,10 +48,24 @@ public class NightManager : MonoBehaviour
     [SerializeField]
     AssassinationTrashData assassinationTrashData;
 
+    [SerializeField]
+    TextMeshProUGUI[] killCountTextArr; //0: 노멀 킬수, 1: 엘리트 킬수, 2: 노멀 알파, 3: 엘리트 알파
+    [SerializeField]
+    TextMeshProUGUI aliveOrDieText;
     public int killCount = 0;
+    public int killNormal = 0;
+    public int killElite = 0;
+
+    //환경설정 추가
+    [SerializeField]
+    Button preferenceBtn;
+    [SerializeField]
+    GameObject preferenceParent;
+    //사운드 +-168.46
 
     private void Start()
     {
+        GameManager.instance.player.curHp = GameManager.instance.player.maxHp;
         leveltrashData = new LevelTrashData(nowLevel);
         assassinationTrashData = new AssassinationTrashData(nowAssassination);
 
@@ -56,8 +76,8 @@ public class NightManager : MonoBehaviour
         SetEnemyArrData();
 
         //몬스터 생성 함수
-        //InstantiateEnemy();
-        TestEnemy();
+        InstantiateEnemy();
+        //TestEnemy();
     }
 
     void SetEnemyArrData()
@@ -114,8 +134,10 @@ public class NightManager : MonoBehaviour
             while (!isStageEnd && timerManager.timerCount > 1)
             {
                 //몬스터 스폰
-                normalEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, false);
+                //normalEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, false);
                 GameObject normalEnemyClone = Instantiate(normalEnemyPrefabArr[nowEnemyIndex], SetEnemyPos(), Quaternion.identity);
+                normalEnemyClone.GetComponent<EnemyParent>().SetEnforceData(nowLevel, false);
+
 
                 normalEnemyClone.transform.SetParent(enemyCloneParent);
                 normalEnemyClone.SetActive(true);
@@ -132,8 +154,10 @@ public class NightManager : MonoBehaviour
             while (!isStageEnd && timerManager.timerCount > 1)
             {
                 //몬스터 스폰
-                eliteEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, true);
+                //eliteEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, true);
                 GameObject eliteEnemyClone = Instantiate(eliteEnemyPrefabArr[nowEnemyIndex], SetEnemyPos(), Quaternion.identity);
+                eliteEnemyClone.GetComponent<EnemyParent>().SetEnforceData(nowLevel, false);
+
                 eliteEnemyClone.transform.SetParent(enemyCloneParent);
                 eliteEnemyClone.SetActive(true);
                 yield return new WaitForSeconds((float)SpawnTIme(true, nowEnemyIndex));
@@ -187,11 +211,13 @@ public class NightManager : MonoBehaviour
         Vector3 instantiatePos = new Vector3(xPos, yPos, 0);
         do
         {
-            xPos = Random.Range(-11f, 11f);
-            yPos = Random.Range(-11f, 11f);
+            xPos = Random.Range(-15f, 15f);
+            yPos = Random.Range(-30f, 30f);
             instantiatePos.x = xPos;
             instantiatePos.y = yPos;
         } while (!IsPosInGround(instantiatePos));
+
+        instantiatePos += character.transform.position;
 
         return instantiatePos;
     }
@@ -200,7 +226,7 @@ public class NightManager : MonoBehaviour
     {
         if (getVector.x < -10 || getVector.x > 10)
             return true;
-        else if (getVector.y < -10 || getVector.y > 10)
+        else if (getVector.y < -20 || getVector.y > 20)
             return true;
         else
             return false;
@@ -235,12 +261,80 @@ public class NightManager : MonoBehaviour
             }
         }
 
+        SetEndPopUp();
         endPopup.SetActive(true);
+    }
+
+    //팝업창 데이터 설정
+    void SetEndPopUp()
+    {
+        if (timerManager.timerCount == 0)
+            aliveOrDieText.text = "생존";
+        else
+            aliveOrDieText.text = "사망";
+
+        killCountTextArr[0].text = killNormal.ToString();
+        killCountTextArr[1].text = killElite.ToString();
+        killCountTextArr[2].text = killNormal + "a";
+        killCountTextArr[3].text = killElite + "a";
+    }
+
+    //끝난 날짜 및 데이터 조정 및 저장
+    public void OnTouchEndBtn()
+    {
+        //7일차가 아니면 저장하고 낮씬으로 가고 아니면 엔딩으로 갑니다.
+        if (GameManager.instance.player.day < 7)
+        {
+            GameManager.instance.player.day++;
+            //뭐 대충 재화 정리까지 다 하고 세이브
+            GameManager.instance.player.curHp = GameManager.instance.player.maxHp;
+            GameManager.instance.SavePlayerData();
+            UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
+        }
+        else
+        {
+            //재화 정리하고 엔딩으로
+            GameManager.instance.SavePlayerData();
+        }
     }
 
     public void UpdateKillCount()
     {
         killCount++;
         itemManager.ChargingReaperGauge();  //차징 리퍼 쓰면 동작
+    }
+
+    public void UpdateKillNormalCount()
+    {
+        killNormal++;
+    }
+
+    public void UpdateKillEliteCount()
+    {
+        killElite++;
+    }
+
+    //밤이 끝나고 아이템 획득하는 함수
+    void GetItem()
+    {
+
+    }
+
+    //환경설정 여는 함수
+    public void OnClickPreferenceBtn()
+    {
+        preferenceParent.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void OnClickContinueBtn()
+    {
+        preferenceParent.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public void OnClickExitBtn()
+    {
+        //씬 이동
     }
 }

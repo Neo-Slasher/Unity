@@ -26,104 +26,59 @@ public class TraitManager : MonoBehaviour
     int nowLevel;       //임시로 레벨을 설정함
     [SerializeField]
     List<int> traitIndexList;
-    [SerializeField]
-    List<TraitTrash> traitOldList;
 
     //최종 데이터매니저에서 가져오는 데이터들
+    [SerializeField]
     List<Trait> traitList;
-    Trait nowTrait;
 
     [SerializeField]
     int testTraitIndex;
-    
+
+    //이펙트 추가
+    [SerializeField]
+    GameObject[] traitEffectArr;    //0: 끌어오기, 1: 밀어내기
 
     private void Start()
     {
-        //임시로 특성이 작동하는지 보기 위해 만든 임시 코드였습니다. 앞으로 쓸 일 없어요.
-        //traitTrashWrapper = JsonManager.LoadJsonData<TraitTrashWrapper>(traitJsonName);
-        //traitTrashWrapper.Parse();
-        //SetTraitIndexListTemp();
-        //TestActiveTrait(testTraitIndex);
-        //SetTrait2();
-
-
         //실제로 구동되는 코드 입니다. 
-
+        FindActiveTrait();
+        SetTrait();
     }
 
     //게임매니저에서 저장된 플레이어 데이터를 가져와 특성을 저장합니다.
-    void SetTraitList()
+    void FindActiveTrait()
     {
-        //플레이어 데이터에서 있는 인덱스 traitIndexList에 옮김
-        //traitList에 또 넣음
-    }
+        int[] idxArr = { 28, 42, 43, 44, 45, 61, 62 };
 
-    //임시로 각 레벨당 첫번째 특성을 가지도록 설정(만렙기준)
-    void SetTraitIndexListTemp()
-    {
-        int nowLevel = 1;
-        for (int i = 0; i < traitTrashWrapper.traitTrashArr.Length; i++)
+        //index = 28, 42, 43, 44, 45, 61, 62 총 7개의 액티브가 존재.
+        for(int i =0; i < idxArr.Length; i++)
         {
-            if (traitTrashWrapper.traitTrashArr[i].traitReqLvl == nowLevel)
+            if (GameManager.instance.player.trait[idxArr[i]])
             {
-                nowLevel++;
-                traitIndexList.Add(traitTrashWrapper.traitTrashArr[i].traitIdx);
-                traitOldList.Add(traitTrashWrapper.traitTrashArr[i]);
+                traitIndexList.Add(idxArr[i]);
+                traitList.Add(DataManager.instance.traitList.trait[idxArr[i] - 1]);
             }
         }
-    }
-
-    //특성을 테스트하기 위해서 만들어둔 함수
-    void TestActiveTrait(int testIndex)
-    {
-        traitOldList.Add(traitTrashWrapper.traitTrashArr[testIndex]);
     }
 
     //선택한 특성을 실행하는 함수
+    
+
     void SetTrait()
     {
         Trait nowTrait;
-        for (int i = 0; i < traitOldList.Count; i++)
+        for (int i = 0; i < traitList.Count; i++)
         {
             nowTrait = traitList[i];
-            //패시브 특성 설정
-            if (traitOldList[i].effectType1 != EffectType.active)
-            {
-                //SetPassiveTrait(nowTrait);
-                //패시브 특성은 밤 씬으로 들어오기 이전에 적용되어 있을 예정
-            }
-
-            //액티브 특성 설정
-            else
-            {
-                //SetActiveTrait(nowTrait);
-            }
-        }
-    }
-
-    //선택한 특성을 실행하는 함수(이젠 안씀)
-    void SetOldTrait()
-    {
-        TraitTrash nowTrait;
-        for(int i =0; i< traitOldList.Count; i++)
-        {
-            nowTrait = traitOldList[i];
-            //패시브 특성 설정
-            if (traitOldList[i].effectType1 != EffectType.active)
-            {
-                //SetPassiveTrait(nowTrait);
-                //패시브 특성은 밤 씬으로 들어오기 이전에 적용되어 있을 예정
-            }
-
-            //액티브 특성 설정
-            else
+            //액티브 특성 실행
+            if (traitList[i].effectType1 == (int)EffectType.active)
             {
                 SetActiveTrait(nowTrait);
             }
         }
     }
 
-    //각 특성에서 변화하는 값들을 대입하는 함수
+    //각 특성에서 변화하는 값들을 대입하는 함수(낮씬에서 이미 데이터 정리되어 들어와 이제 필요 없음)
     void SetPassiveTrait(TraitTrash getTrait)
     {
         SetPassiveCharacterData(getTrait.effectType1, getTrait.traitEffectValue1, getTrait.traitEffectMulti1);
@@ -137,15 +92,16 @@ public class TraitManager : MonoBehaviour
         character.SetCharacterTrashData(getEffectType, getEffectValue, getEffectMulti);
     }
 
-    void SetActiveTrait(TraitTrash getTrait)
+    void SetActiveTrait(Trait getTrait)
     {
         //index = 28, 42, 43, 44, 45, 61, 62 총 7개의 액티브가 존재.
         ActiveTrait nowActive;
-        nowActive = (ActiveTrait)getTrait.traitIdx;
+        nowActive = (ActiveTrait)getTrait.index;
+        Debug.Log("액티브: " +nowActive);
         StartActive(nowActive, getTrait);
     }
 
-    void StartActive(ActiveTrait getActiveTrait, TraitTrash getTrait)
+    void StartActive(ActiveTrait getActiveTrait, Trait getTrait)
     {
         switch (getActiveTrait)
         {
@@ -176,20 +132,42 @@ public class TraitManager : MonoBehaviour
     }
 
     //특성 인덱스 28번 게임 시작시 쉴드 생성 코드
-    void SetStartShield(TraitTrash getTrait)
+    void SetStartShield(Trait getTrait)
     {
-        character.SetStartShieldPointData(getTrait.traitEffectValue1);
+        character.SetStartShieldPointData((float)getTrait.effectValue1);
+    }
+
+    IEnumerator SetAnimatorParameter(Animator getAnimator, string animationName)
+    {
+        while(getAnimator.GetBool("isPlay"))
+        {
+            if (getAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName))
+            {
+                getAnimator.SetBool("isPlay", false);
+            }
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     //특성 인덱스 42번 n초마다 주변 적 끌어당기기 코드
-    IEnumerator DragEnemyCoroutine(TraitTrash getTrait)
+    IEnumerator DragEnemyCoroutine(Trait getTrait)
     {
+        GameObject drugEnemyEffect = Instantiate(traitEffectArr[0]);
+        drugEnemyEffect.transform.localPosition = character.transform.position;
+        drugEnemyEffect.transform.SetParent(character.transform);
+        drugEnemyEffect.SetActive(false);
+        Animator effectAnimator = drugEnemyEffect.GetComponent<Animator>();
+
         while (!nightManager.isStageEnd)
         {
-            yield return new WaitForSeconds(getTrait.traitEffectValue1);    //n초의 대기시간을 갖는 코드
+            yield return new WaitForSeconds((float)getTrait.effectValue1);    //n초의 대기시간을 갖는 코드
+            //이펙트 키기
+            drugEnemyEffect.SetActive(true);
+            effectAnimator.SetBool("isPlay", true);
+
             Debug.Log("DrugEnemy");
             Collider2D[] getCols =
-                character.ReturnOverLapColliders(getTrait.traitEffectValue3 / 128, getTrait.traitEffectValue2 / 128);
+                character.ReturnOverLapColliders((float)getTrait.effectValue3 / 100, (float)getTrait.effectValue2 / 100);
 
             if (getCols.Length != 0)
                 //이제 당겨
@@ -198,18 +176,30 @@ public class TraitManager : MonoBehaviour
                     if (getCols[i].tag == "Normal" || getCols[i].tag == "Elite")
                         getCols[i].GetComponent<EnemyParent>().DrugEnemy();
                 }
+
+            StartCoroutine(SetAnimatorParameter(effectAnimator, "DrugEnemyAnimation"));
         }
     }
     public Collider2D[] arr;
     //특성 인덱스 43번 n초마다 주변 적 밀어내기 코드
-    IEnumerator ThrustEnemyCoroutine(TraitTrash getTrait)
+    IEnumerator ThrustEnemyCoroutine(Trait getTrait)
     {
+        GameObject thrustEnemyEffect = Instantiate(traitEffectArr[0]);
+        thrustEnemyEffect.transform.localPosition = character.transform.position;
+        thrustEnemyEffect.transform.SetParent(character.transform);
+        thrustEnemyEffect.SetActive(false);
+        Animator effectAnimator = thrustEnemyEffect.GetComponent<Animator>();
+
         while (!nightManager.isStageEnd)
         {
-            yield return new WaitForSeconds(getTrait.traitEffectValue1);    //n초의 대기시간을 갖는 코드
+            yield return new WaitForSeconds((float)getTrait.effectValue1);    //n초의 대기시간을 갖는 코드
+            //이펙트
+            thrustEnemyEffect.SetActive(true);
+            effectAnimator.SetBool("isPlay", true);
+
             Debug.Log("ThrustEnemy");
             Collider2D[] getCols =
-                character.ReturnOverLapColliders(getTrait.traitEffectValue2 / 128);
+                character.ReturnOverLapColliders((float)getTrait.effectValue2 / 100);
             arr = getCols;
             if (getCols != null)
                 //이제 당겨
@@ -221,18 +211,20 @@ public class TraitManager : MonoBehaviour
                         Debug.Log(getCols.Length);
                     }
                 }
+
+            StartCoroutine(SetAnimatorParameter(effectAnimator, "ThrustEnemyAnimation"));
         }
     }
 
-    IEnumerator GetMoveSpeed(TraitTrash getTrait)
+    IEnumerator GetMoveSpeed(Trait getTrait)
     {
         Debug.Log("GetMoveSpeed");
         double defaultMoveSpeed = character.nowMoveSpeed;
-        double upgradeMoveSpeed = character.nowMoveSpeed * (1 + getTrait.traitEffectValue3);
+        double upgradeMoveSpeed = character.nowMoveSpeed * (1 + getTrait.effectValue3);
 
         //60~54초
         character.SetMoveSpeed(upgradeMoveSpeed);
-        while (timerManager.timerCount >= getTrait.traitEffectValue2)
+        while (timerManager.timerCount >= getTrait.effectValue2)
         {
             yield return new WaitForSeconds(0.5f);
         }
@@ -240,20 +232,20 @@ public class TraitManager : MonoBehaviour
         character.SetMoveSpeed(defaultMoveSpeed);
 
         //6~0초@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        while (timerManager.timerCount >= getTrait.traitEffectValue1 * 5)
+        while (timerManager.timerCount >= getTrait.effectValue1)
         {
             yield return new WaitForSeconds(0.5f);
         }
         character.SetMoveSpeed(upgradeMoveSpeed);
     }
 
-    IEnumerator GetAttackPower(TraitTrash getTrait)
+    IEnumerator GetAttackPower(Trait getTrait)
     {
         Debug.Log("GetAttackPower");
         double hitPointMax = character.ReturnCharacterHitPointMax();
-        double hitPointGoal = hitPointMax * getTrait.traitEffectValue1;
+        double hitPointGoal = hitPointMax * getTrait.effectValue1;
         double attackPower = character.ReturnCharacterAttackPower();
-        attackPower *= (1 + getTrait.traitEffectValue2);
+        attackPower *= (1 + getTrait.effectValue2);
 
         while (character.ReturnCharacterHitPoint() >= hitPointGoal)
             yield return new WaitForSeconds(0.1f);
@@ -261,7 +253,7 @@ public class TraitManager : MonoBehaviour
         character.SetCharacterAttackPower(attackPower);
     }
 
-    IEnumerator StopEnemy(TraitTrash getTrait)
+    IEnumerator StopEnemy(Trait getTrait)
     {
         Debug.Log("StopEnemy");
 
@@ -279,7 +271,7 @@ public class TraitManager : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(getTrait.traitEffectValue2);
+            yield return new WaitForSeconds((float)getTrait.effectValue2);
             Debug.Log("move");
             //적 오브젝트 정지
             for (int i = 0; i < enemyCloneParent.childCount; i++)
@@ -293,10 +285,10 @@ public class TraitManager : MonoBehaviour
         }
     }
 
-    void AbsorbDamage(TraitTrash getTrait)
+    void AbsorbDamage(Trait getTrait)
     {
         Debug.Log("AbsorbDamage");
-        character.SetAbsorbAttackData(getTrait.traitEffectValue2 * 200);
+        character.SetAbsorbAttackData((float)getTrait.effectValue2);
         character.canChange = true;
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RailPiercer : MonoBehaviour
 {
@@ -17,13 +18,16 @@ public class RailPiercer : MonoBehaviour
     [SerializeField]
     SpriteRenderer railPiercerImageRenderer;
     Rigidbody2D railPiercerRigid;
-    double attackPower = 500;
-    double attackSpeed;
+    [SerializeField] double attackPower = 500;
+    [SerializeField] double attackTime;
     float hitBoxScale;
     bool isWatchRight = true;
     bool isShoot = false;
 
     int itemRank;
+
+    //쿨타임
+    public Image coolTimeImage;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -36,29 +40,38 @@ public class RailPiercer : MonoBehaviour
     public void SetItemRank(int getRank)
     {
         itemRank = getRank;
+        SetRailPiercerData();
     }
 
-    void SetChargingReaperData()
+    void SetRailPiercerData()
     {
+        float characterAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
+        float characterAttackPower = (float)character.ReturnCharacterAttackPower();
+
         switch (itemRank)
         {
             case 0:
+                attackPower = characterAttackPower * DataManager.instance.itemList.item[4].attackPowerValue;
+                attackTime = 10 / (characterAttackSpeed * DataManager.instance.itemList.item[4].attackSpeedValue);
                 break;
             case 1:
+                attackPower = characterAttackPower * DataManager.instance.itemList.item[19].attackPowerValue;
+                attackTime = 10 / (characterAttackSpeed * DataManager.instance.itemList.item[19].attackSpeedValue);
                 break;
             case 2:
+                attackPower = characterAttackPower * DataManager.instance.itemList.item[34].attackPowerValue;
+                attackTime = 10 / (characterAttackSpeed * DataManager.instance.itemList.item[34].attackSpeedValue);
                 break;
             case 3:
+                attackPower = characterAttackPower * DataManager.instance.itemList.item[49].attackPowerValue;
+                attackTime = 10 / (characterAttackSpeed * DataManager.instance.itemList.item[49].attackSpeedValue);
                 break;
         }
     }
 
-    public void ShootRailPiercer(double getAttackSpeed, double getAttackDamage)
+    public void ShootRailPiercer()
     {
         railPiercerHitBox.SetActive(false);
-
-        attackSpeed = getAttackSpeed;
-        attackPower = getAttackDamage;
 
         //우측을 바라보면 우측으로 길이가 길어짐
         if (isWatchRight)
@@ -100,7 +113,9 @@ public class RailPiercer : MonoBehaviour
             railPiercerHitBox.SetActive(false);
             isShoot = false;
 
-            yield return new WaitForSeconds((float)attackSpeed / 10);
+            StartCoroutine(SetCooltimeCoroutine((float)attackTime));
+            yield return new WaitForSeconds((float)attackTime);
+            coolTimeImage.fillAmount = 1;
         }
     }
 
@@ -158,6 +173,18 @@ public class RailPiercer : MonoBehaviour
 
             this.transform.position = nowPos;
             railPiercerRigid.velocity = character.ReturnSpeed();
+            yield return null;
+        }
+    }
+
+    IEnumerator SetCooltimeCoroutine(float getCoolTime)
+    {
+        float nowTime = 0;
+        coolTimeImage.gameObject.SetActive(true);
+        while (coolTimeImage.fillAmount > 0)
+        {
+            nowTime += Time.deltaTime;
+            coolTimeImage.fillAmount = 1 - nowTime / getCoolTime;
             yield return null;
         }
     }

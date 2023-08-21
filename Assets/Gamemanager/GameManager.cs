@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public bool hasSavedData;
     public Player player;
 
+    public int gameDifficulty;
 
     
     void Awake() {
@@ -39,6 +40,9 @@ public class GameManager : MonoBehaviour
         string initData = File.ReadAllText(Application.dataPath + "/Data/Json/InitPlayer.json");
         this.player =  JsonUtility.FromJson<Player>(initData);
 
+        //작업을 위한 치트
+        Cheat();
+
         SavePlayerData();
     }
 
@@ -52,5 +56,13 @@ public class GameManager : MonoBehaviour
         string savedData = File.ReadAllText(Application.dataPath + "/UserData.json");
         //string savedData = File.ReadAllText(Application.persistentDataPath + "/UserData.json");
         this.player = JsonUtility.FromJson<Player>(savedData);
+    }
+
+    void Cheat()
+    {
+        player.maxHp = 2000;
+        player.curHp = 2000;
+        player.level = 20;
+        player.money = 100000;
     }
 }

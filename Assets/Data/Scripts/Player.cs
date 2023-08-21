@@ -6,6 +6,8 @@ using UnityEngine;
 [Serializable]
 public class Player {
     // defalut
+    public int day;     //정윤석: 날짜를 세이브하기 위해서 넣었습니다. 제이슨도 바꿨어요.
+
     public int level;
     public int reqExp;
     public int curExp;
@@ -42,7 +44,7 @@ public class Player {
     public int itemSlot;
 
     // 1~62까지 인덱스를 사용합니다.
-    public bool[] trait;
+    public bool[] trait = new bool[63];
 
     public List<Equipment> equipment = new List<Equipment>();
 

@@ -53,17 +53,22 @@ public class Character : MonoBehaviour
     //아이템 관련
     public bool isDoubleAttack = false;
     public bool isHologramTrickOn = false;
+    public bool isHologramAnimate = false;
     public bool isAntiPhenetOn = false;
     public bool isMoveBackOn = false;
 
     // 애니메이션
     private Animator animator;
+    public Animator[] hologramAnimatorArr;
+    public SpriteRenderer[] hologramRendererArr;
 
     private void Awake() {
         //characterData = new CharacterTrashData(isCheat);
         GameManager.instance.LoadPlayerData();          //임시코드@@@@@@@@@@@@@
 
         characterData = GameManager.instance.player;
+        if (characterData.curHp == 0)
+            characterData.curHp = characterData.maxHp;
         characterRigid = this.GetComponent<Rigidbody2D>();
         characterSpriteRanderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -74,6 +79,7 @@ public class Character : MonoBehaviour
     }
 
     private void Start() {
+        SetHitBoxScale();
         StartAttack();
 
         if (characterData.hpRegen > 0)
@@ -83,6 +89,14 @@ public class Character : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) { 
         //캐릭터 데미지 받을 때
         CharacterDamaged(collision);
+    }
+
+    void SetHitBoxScale()
+    {
+        float goalY = (float)GameManager.instance.player.attackRange * 0.15f;
+        Vector3 goalScale = new Vector3(1, goalY, 1);
+
+        hitBox.transform.localScale = goalScale;
     }
 
     public void SetCharacterTrashData(EffectType getEffectType, float getEffectValue, bool getEffectMulti)
@@ -158,6 +172,17 @@ public class Character : MonoBehaviour
         characterRigid.velocity = joystickDir.normalized * ConvertMoveSpeedToPixelSpeed(characterData.moveSpeed);
         animator.SetBool("move", true);
         characterSpriteRanderer.flipX = (nowDir.x < 0) ? false : true;
+
+        //홀로그램도 같이 움직이도록
+        if(isHologramAnimate)
+        {
+            for(int i =0; i<2; i++)
+            {
+                hologramAnimatorArr[i].SetBool("move", true);
+                hologramRendererArr[i].flipX = (nowDir.x < 0) ? false : true;
+            }
+        }
+
         //transform.localScale = (nowDir.x < 0) ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);     아이템도 같이 이동해서 주석처리했어
     }
 
@@ -165,6 +190,15 @@ public class Character : MonoBehaviour
         nowDir = Vector3.zero;
         characterRigid.velocity = Vector3.zero;
         animator.SetBool("move", false);
+
+        //홀로그램도 같이 움직이도록
+        if (isHologramAnimate)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                hologramAnimatorArr[i].SetBool("move", false);
+            }
+        }
     }
 
     float ConvertMoveSpeedToPixelSpeed(double getMoveSpeed) {
@@ -185,14 +219,25 @@ public class Character : MonoBehaviour
     }
 
     IEnumerator AttackCoroutine() {
+        float attackSpeed = 10 / (float)GameManager.instance.player.attackSpeed;
+
         while (!nightManager.isStageEnd) {
             if (!isDoubleAttack) {
                 //공격 애니메이션 진행
                 animator.SetTrigger("attack");
 
+                //홀로그램도 같이 움직이도록
+                if (isHologramAnimate)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        hologramAnimatorArr[i].SetTrigger("attack");
+                    }
+                }
+
                 hitBox.SetActive(true);
                 SetHitbox();
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.2f);
                 hitBox.SetActive(false);
 
                 isMoveBackOn = false;
@@ -207,7 +252,7 @@ public class Character : MonoBehaviour
 
                 hitBox.SetActive(true);
                 SetHitbox();
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.2f);
                 hitBox.SetActive(false);
                 itemManager.SetMultiSlasherSprite(false);
 
@@ -216,7 +261,7 @@ public class Character : MonoBehaviour
             }
 
             //다음 공격까지 대기
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(attackSpeed);
             isAbsorb = false;
             isAttack = false;
         }
@@ -405,6 +450,16 @@ public class Character : MonoBehaviour
                 Debug.Log("GameEnd");
                 // TODO: 죽은 모션이 나온 후 결과 창이 뜨도록 딜레이 필요
                 animator.SetTrigger("die");
+
+                //홀로그램도 같이 움직이도록
+                if (isHologramAnimate)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        hologramAnimatorArr[i].SetTrigger("die");
+                    }
+                }
+
                 characterData.curHp = 0;
                 hpBarImage.fillAmount = 0;
 
@@ -416,6 +471,16 @@ public class Character : MonoBehaviour
     //데미지를 받았을 경우 액션
     void SetDamagedAnim() {
         animator.SetTrigger("knockback");
+
+        //홀로그램도 같이 움직이도록
+        if (isHologramAnimate)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                hologramAnimatorArr[i].SetTrigger("knockback");
+            }
+        }
+
         StartCoroutine(SetDamagedAnimCoroutine());
     }
 
@@ -528,6 +593,14 @@ public class Character : MonoBehaviour
     {
         nightManager.UpdateKillCount();
     }
+    public void UpdateKillNormalCount()
+    {
+        nightManager.UpdateKillNormalCount();
+    }
+    public void UpdateKillEliteCount()
+    {
+        nightManager.UpdateKillEliteCount();
+    }
 
     public double ReturnCharacterMoveSpeed()
     {
@@ -595,11 +668,17 @@ public class Character : MonoBehaviour
     }
 
     //데미지 경감용
+
+    public void SetAntiPhenetData(float getReductionRate)
+    {
+        characterData.damageReductionRate = getReductionRate;
+    }
+
     double AntiPhenetUse(double getAttackPowerData)
     {
         if(isAntiPhenetOn)
         {
-            return getAttackPowerData / characterData.attackPower;
+            return getAttackPowerData * (1 - characterData.damageReductionRate);
         }
         else
             return getAttackPowerData;

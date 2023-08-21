@@ -21,15 +21,15 @@ public class Trait
     public int imageIndex;
     public string script;
     public int effectType1;
-    public int effectValue1;
-    public int effectMulti1;
+    public double effectValue1;
+    public bool effectMulti1;
     public int effectType2;
-    public int effectValue2;
-    public int effectMulti2;
+    public double effectValue2;
+    public bool effectMulti2;
     public int effectType3;
-    public int effectValue3;
-    public int effectMulti3;
+    public double effectValue3;
+    public bool effectMulti3;
     public int effectType4;
-    public int effectValue4;
-    public int effectMulti4;
+    public double effectValue4;
+    public bool effectMulti4;
 }
