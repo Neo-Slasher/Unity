@@ -12,6 +12,7 @@ public class RailPiercer : MonoBehaviour
     GameObject railPiercerHitBox;
 
     public NightManager nightManager;
+    public NightSFXManager nightSFXManager;
     public Character character;
     [SerializeField]
     SpriteRenderer hitBoxRenderer;
@@ -106,6 +107,7 @@ public class RailPiercer : MonoBehaviour
             SetRailPiercerViewPos();
 
             //이제 쏘는 부분
+            nightSFXManager.PlayAudioClip(AudioClipName.railPiercer);
             railPiercerHitBox.SetActive(true);
 
             yield return new WaitForSeconds(0.5f);

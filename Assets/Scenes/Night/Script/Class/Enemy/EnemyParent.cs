@@ -8,7 +8,6 @@ public class EnemyParent : MonoBehaviour
 {
     [SerializeField]
     protected EnemyTrashData enemyData;
-    public LevelTrashData levelTrashData;
 
     //적 데이터
     public double nowHp;
@@ -20,7 +19,8 @@ public class EnemyParent : MonoBehaviour
 
     protected Vector3 moveDir;
     public bool isStageEnd = false;
-    
+
+    int nowDifficulty;
     public bool isStop = false;         //오브젝트 움직임을 컨트롤하기 위해 만듦
     public bool isAttacked = false;     //공격을 했다면 2초간 true로 변환
     Coroutine moveCoroutine = null;
@@ -34,6 +34,7 @@ public class EnemyParent : MonoBehaviour
 
     protected void Start()
     {
+        nowDifficulty = GameManager.instance.player.difficulty;
         enemyRigid = GetComponent<Rigidbody2D>();
         enemyRenderer = GetComponent<SpriteRenderer>();
 
@@ -90,9 +91,9 @@ public class EnemyParent : MonoBehaviour
     void SetLevelStatus(int level)
     {
         //선택한 난이도에 따라 스테이터스 변경
-        enemyData.hitPointMax *= levelTrashData.diffStat;
-        enemyData.hitPoint *= levelTrashData.diffStat;
-        enemyData.attackPower *= levelTrashData.diffStat;
+        enemyData.hitPointMax *= DataManager.instance.difficultyList.difficulty[nowDifficulty].enemyStatus;
+        enemyData.hitPoint *= DataManager.instance.difficultyList.difficulty[nowDifficulty].enemyStatus;
+        enemyData.attackPower *= DataManager.instance.difficultyList.difficulty[nowDifficulty].enemyStatus;
     }
 
     public void SetNormalEnemyType(int nowIndex)
@@ -147,9 +148,9 @@ public class EnemyParent : MonoBehaviour
         double randomProb = Random.value;
 
         if (!isElite)
-            nowProb = levelTrashData.diffNormalEnforce;
+            nowProb = DataManager.instance.difficultyList.difficulty[nowDifficulty].normalEnhance;
         else
-            nowProb = levelTrashData.diffEliteEnforce;
+            nowProb = DataManager.instance.difficultyList.difficulty[nowDifficulty].eliteEnhance;
 
         if (randomProb < nowProb)
             return true;

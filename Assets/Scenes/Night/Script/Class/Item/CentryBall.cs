@@ -9,6 +9,8 @@ public class CentryBall : MonoBehaviour
     [SerializeField]
     NightManager nightManager;
     [SerializeField]
+    NightSFXManager nightSFXManager;
+    [SerializeField]
     Character character;
     [SerializeField]
     GameObject projectileObject;
@@ -18,7 +20,7 @@ public class CentryBall : MonoBehaviour
     GameObject sparkImage;      //발사 이미지
     [SerializeField]
     GameObject centryBallImage;
-    int pullingScale = 30;
+    int pullingScale = 100;
     int nowPullingIndex = 0;
 
     int itemRank;
@@ -41,6 +43,7 @@ public class CentryBall : MonoBehaviour
     private void Awake()
     {
         nightManager = GameObject.Find("NightManager").GetComponent<NightManager>();
+        nightSFXManager = GameObject.Find("NightSFXManager").GetComponent<NightSFXManager>();
         character = GameObject.Find("CharacterImage").GetComponent<Character>();
     }
 
@@ -111,7 +114,7 @@ public class CentryBall : MonoBehaviour
     {
         if (!isShoot)
         {
-
+            nightSFXManager.PlayAudioClip(AudioClipName.centryBall);
             StartCoroutine(CentryBallShootAnimation(getCol));
             StartCoroutine(StopCentryBallCoroutine());
 
@@ -126,7 +129,7 @@ public class CentryBall : MonoBehaviour
             projectilesPulling[nowPullingIndex].GetComponent<Rigidbody2D>().velocity
                 = moveDir.normalized * 10;
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(shootTime);
 
             if (nowPullingIndex < 30)
                 nowPullingIndex++;
