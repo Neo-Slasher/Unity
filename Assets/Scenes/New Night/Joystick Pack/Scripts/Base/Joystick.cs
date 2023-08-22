@@ -59,11 +59,13 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
+        Debug.Log(1111);
         OnDrag(eventData);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        Debug.Log(22222);
         cam = null;
         if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
             cam = canvas.worldCamera;
