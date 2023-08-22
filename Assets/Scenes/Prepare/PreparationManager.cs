@@ -63,7 +63,7 @@ public class PreparationManager : MonoBehaviour
 
     void Start() {
         LoadStatus();
-        GameManager.instance.gameDifficulty = 0;
+        GameManager.instance.player.difficulty = 0;
         LoadDifficulty();
         ActivateDifficultyButton();
         LoadTraitButton();
@@ -138,34 +138,34 @@ public class PreparationManager : MonoBehaviour
     }
 
     public void OnClickDifficultyLeftButton() {
-        GameManager.instance.gameDifficulty -= 1;
+        GameManager.instance.player.difficulty -= 1;
         LoadDifficulty();
         ActivateDifficultyButton();
     }
 
     public void OnClickDifficultyRightButton() {
-        GameManager.instance.gameDifficulty += 1;
+        GameManager.instance.player.difficulty += 1;
         LoadDifficulty();
         ActivateDifficultyButton();
     }
 
     public void ActivateDifficultyButton()
     {
-        difficultyLeftButton.interactable = (GameManager.instance.gameDifficulty == 0) ? false : true;
-        difficultyRightButton.interactable = (GameManager.instance.gameDifficulty == 6) ? false : true;
+        difficultyLeftButton.interactable = (GameManager.instance.player.difficulty == 0) ? false : true;
+        difficultyRightButton.interactable = (GameManager.instance.player.difficulty == 6) ? false : true;
     }
 
     private void LoadDifficulty()
     {
-        difficultyLevelText.text = (GameManager.instance.gameDifficulty + 1).ToString();
-        recommandLvText.text = "권장 Lv." + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].recommandLv.ToString();
-        rewardExpText.text = "보상 EXP " + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].rewardExp.ToString();
-        goalMoneyText.text = "- 목표금액 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].goalMoney.ToString();
-        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].enemyStatus.ToString() + "%";
-        normalEnhanceText.text = "- 일반 적이 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].normalEnhance.ToString() + "% 확률로 강화";
-        eliteEnhanceText.text = "- 정예 적이 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].eliteEnhance.ToString() + "% 확률로 강화";
-        dropRankText.text = "- 아이템 드롭률 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].dropRank.ToString() + "%";
-        enemyRespawnText.text = "- 적 개체수 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.gameDifficulty].enemyRespawn.ToString() + "%";
+        difficultyLevelText.text = (GameManager.instance.player.difficulty + 1).ToString();
+        recommandLvText.text = "권장 Lv." + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].recommandLv.ToString();
+        rewardExpText.text = "보상 EXP " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].rewardExp.ToString();
+        goalMoneyText.text = "- 목표금액 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].goalMoney.ToString();
+        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyStatus.ToString() + "%";
+        normalEnhanceText.text = "- 일반 적이 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].normalEnhance.ToString() + "% 확률로 강화";
+        eliteEnhanceText.text = "- 정예 적이 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].eliteEnhance.ToString() + "% 확률로 강화";
+        dropRankText.text = "- 아이템 드롭률 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].dropRank.ToString() + "%";
+        enemyRespawnText.text = "- 적 개체수 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyRespawn.ToString() + "%";
     }
 
 
