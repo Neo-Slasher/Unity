@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneSwitch : MonoBehaviour
 {
     // Start is called before the first frame update
+    public int AsscinationNum;
     void Start()
     {
         
@@ -18,8 +19,10 @@ public class SceneSwitch : MonoBehaviour
     }
     public void GoNight()
     {
+        GameManager.instance.player.assassinationCount = AsscinationNum;
         GameManager.instance.SavePlayerData();
         SceneManager.LoadScene("NightScene");
+        Debug.Log(GameManager.instance.player.assassinationCount);
     }
     public void GoDay()
     {

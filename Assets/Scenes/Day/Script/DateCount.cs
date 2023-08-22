@@ -8,30 +8,20 @@ using UnityEngine.SceneManagement;
 
 public class DateCount : MonoBehaviour
 {
-    public static DateCount Instance;
-    public int Date = 0;
     public TMP_Text Day;
+    public Player Player;
 
-    private void Awake()
-    {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        Player = GameManager.instance.player;
+        Day.text = "D-" + (7 - Player.day).ToString() + "\n" +  Player.day.ToString() + "일차";
     }
     void Update()
     {
         
     }
-    void OnEnable()
+    /*void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -60,5 +50,5 @@ public class DateCount : MonoBehaviour
     void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+    }*/
 }

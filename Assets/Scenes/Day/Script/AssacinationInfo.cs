@@ -21,6 +21,7 @@ public class AssacinationInfo : MonoBehaviour
     }
 
     // Update is called once per frame
+
     void Update()
     {
         Print();
@@ -45,4 +46,6 @@ public class AssacinationInfo : MonoBehaviour
 
         asscList.text = "-일반 적 현상금 : " + normalReward.ToString() + "α\n" + "-정예 적 현상금 : " + eliteReward.ToString() + "α\n-" + DropRank + "등급 아이템 드롭";
     }
+
+
 }
