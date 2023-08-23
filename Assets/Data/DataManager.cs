@@ -58,5 +58,7 @@ public class DataManager : MonoBehaviour
         // stroy data
         string StoryData = File.ReadAllText(Application.dataPath + "/Data/Json/Story.json");
         storyList = JsonUtility.FromJson<StoryList>(StoryData);
+
+        Debug.Log(storyList.stories[0].story[0]);
     }
 }

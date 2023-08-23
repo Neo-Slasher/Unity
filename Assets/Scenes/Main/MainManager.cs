@@ -71,4 +71,8 @@ public class MainManager : MonoBehaviour
     public void OnClickExitPopupNoButton() {
         exitPopup.SetActive(false);
     }
+
+    public void OnClickSettingExitButton() {
+        setting.SetActive(false);
+    }
 }
