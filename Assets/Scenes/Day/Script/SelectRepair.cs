@@ -29,9 +29,19 @@ public class SelectRepair : MonoBehaviour
     public int ButtonNum;
     public int mNum;
     
+    public void OnDisable()
+    {
+        change_img.gameObject.SetActive(false);
+        Name.text = " ";
+        Rank.text = " ";
+        Part.text = " ";
+        Info.text = " ";
+        checkMarks[mNum].SetActive(false);
+    }
     public void SelectEquip()
     {
         CheckMarks();
+        change_img.gameObject.SetActive(true);
         if (ButtonNum < GameManager.instance.player.equipment.Count)
         {
             change_img.sprite = Resources.Load<Sprite>("Equip/" + GameManager.instance.player.equipment[ButtonNum].name) as Sprite;
@@ -57,13 +67,13 @@ public class SelectRepair : MonoBehaviour
             else if (attackSpeed < 0)
                 speed = "공격속도 " + attackSpeed.ToString() + "\n";
 
-            if (rank == 0)
+            if (rank == 3)
                 Rank.text = "S등급";
-            else if (rank == 1)
-                Rank.text = "A등급";
             else if (rank == 2)
+                Rank.text = "A등급";
+            else if (rank == 1)
                 Rank.text = "B등급";
-            else if (rank == 3)
+            else if (rank == 0)
                 Rank.text = "C등급";
 
             if (part == 0)
@@ -78,7 +88,9 @@ public class SelectRepair : MonoBehaviour
     }
     public void SelectItem()
     {
+        mNum = 3;
         CheckMarks();
+        change_img.gameObject.SetActive(true);
         if (ButtonNum < GameManager.instance.player.item.Count)
         {
             change_img.sprite = Resources.Load<Sprite>("Item/" + GameManager.instance.player.item[ButtonNum].name) as Sprite;
@@ -103,37 +115,38 @@ public class SelectRepair : MonoBehaviour
             speedC = GameManager.instance.player.item[ButtonNum].attackSpeedCalc;
             rangeC = GameManager.instance.player.item[ButtonNum].attackRangeCalc;
 
-            if (rank == 0)
+            if (rank == 3)
                 Rank.text = "S등급";
-            else if (rank == 1)
-                Rank.text = "A등급";
             else if (rank == 2)
+                Rank.text = "A등급";
+            else if (rank == 1)
                 Rank.text = "B등급";
-            else if (rank == 3)
+            else if (rank == 0)
                 Rank.text = "C등급";
 
             if(part == 0)
                 Part.text = " / 공격";
-            else if(part == 0)
+            else if(part == 1)
                 Part.text = " / 방어";
-            else if(part == 0)
+            else if(part == 2)
                 Part.text = " / 보조";
+
+            info = script;
 
             if(powerC)
             {
                 info = script.Replace("#at#", (powerP * attackPower).ToString());
             }
-            else if(speedC)
+            if(speedC)
             {
                 info = script.Replace("#as#", (speedP * attackSpeed).ToString());
             }
-            else if(rangeC)
+            if(rangeC)
             {
                 info = script.Replace("#ar#", (rangeP * attackRange).ToString());
             }
 
-
-            Info.text = "<size=20> [+" + info + "]</size>";
+            Info.text = "<size=20> " + info + "</size>";
         }
     }
     

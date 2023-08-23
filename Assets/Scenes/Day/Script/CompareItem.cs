@@ -45,7 +45,9 @@ public class CompareItem : MonoBehaviour
     public double attackSpeed;
 
     double iattackPower, iattackSpeed, iattackRange;//아이템 관련
-
+    public int printigNum = -1;
+    List<int> itemNums = new List<int>();
+    List<int> itemRanks = new List<int>();
 
     public int chosen = -1; //비교 후 출력할 아이템 
 
@@ -82,15 +84,13 @@ public class CompareItem : MonoBehaviour
 
     public void Reset()
     {
-        ItemSlot.btnNum = -1;
-        
-        equipImage.sprite = Resources.Load<Sprite>("slotBack") as Sprite; 
+        equipImage.sprite = Resources.Load<Sprite>("slotBack") as Sprite;
         EName.text = " ";
         ERank.text = " ";
         EPart.text = " ";
         EInfo.text = " ";
 
-        itemImage.sprite = Resources.Load<Sprite>("slotBack") as Sprite; 
+        itemImage.sprite = Resources.Load<Sprite>("slotBack") as Sprite;
         IName.text = " ";
         IRank.text = " ";
         IPart.text = " ";
@@ -100,10 +100,14 @@ public class CompareItem : MonoBehaviour
     public void Cancel()
     {
         Reset();
+        chosen = -1;
+        itemImage.gameObject.SetActive(false);
         BackGround.SetActive(false);
         selectPanel.SetActive(false);
         equipPanel.SetActive(false);
         itemPanel.SetActive(false);
+
+
     }
     public void Purchase()
     {
@@ -116,10 +120,28 @@ public class CompareItem : MonoBehaviour
                     Debug.Log("selectNum" + selectNum.ToString());
                     Debug.Log(DataManager.instance.equipmentList.equipment[selectNum].index);
                     GameManager.instance.player.equipment.Add(DataManager.instance.equipmentList.equipment[selectNum]);
+                    ItemSlot.slots[ItemSlot.btnNum].interactable = false;
+                    ItemSlot.slots[ItemSlot.btnNum].GetComponent<SelectItem>().buttonNum = -1;
+                    ItemSlot.slots[ItemSlot.btnNum].GetComponent<Image>().sprite = Resources.Load<Sprite>("slotBack") as Sprite;
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("Button").gameObject.SetActive(false);
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("alpha").gameObject.SetActive(false);
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("rank").gameObject.SetActive(false);
+                    GameManager.instance.player.money -= price;
+                    ItemSlot.btnNum = -1;
+                    Cancel();
                 }
-                else if (selectType == "item" && GameManager.instance.player.item.Count <= 3)
+                else if (selectType == "item" && GameManager.instance.player.item.Count < GameManager.instance.player.itemSlot)
                 {
                     GameManager.instance.player.item.Add(DataManager.instance.itemList.item[selectNum]);
+                    ItemSlot.slots[ItemSlot.btnNum].interactable = false;
+                    ItemSlot.slots[ItemSlot.btnNum].GetComponent<SelectItem>().buttonNum = -1;
+                    ItemSlot.slots[ItemSlot.btnNum].GetComponent<Image>().sprite = Resources.Load<Sprite>("slotBack") as Sprite;
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("Button").gameObject.SetActive(false);
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("alpha").gameObject.SetActive(false);
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("rank").gameObject.SetActive(false);
+                    GameManager.instance.player.money -= price;
+                    ItemSlot.btnNum = -1;
+                    Cancel();
                 }
             }
             else
@@ -128,34 +150,44 @@ public class CompareItem : MonoBehaviour
                 {
                     Debug.Log("chosen" + chosen.ToString());
                     GameManager.instance.player.equipment[chosen] = DataManager.instance.equipmentList.equipment[selectNum];
+                    ItemSlot.slots[ItemSlot.btnNum].interactable = false;
+                    ItemSlot.slots[ItemSlot.btnNum].GetComponent<SelectItem>().buttonNum = -1;
+                    ItemSlot.slots[ItemSlot.btnNum].GetComponent<Image>().sprite = Resources.Load<Sprite>("slotBack") as Sprite;
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("Button").gameObject.SetActive(false);
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("alpha").gameObject.SetActive(false);
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("rank").gameObject.SetActive(false);
+                    GameManager.instance.player.money -= price;
+                    ItemSlot.btnNum = -1;
+                    Cancel();
                 }
                 else if (selectType == "item")
                 {
                     Debug.Log("chosen" + chosen.ToString());
                     GameManager.instance.player.item[chosen] = DataManager.instance.itemList.item[selectNum];
+                    ItemSlot.slots[ItemSlot.btnNum].interactable = false;
+                    ItemSlot.slots[ItemSlot.btnNum].GetComponent<SelectItem>().buttonNum = -1;
+                    ItemSlot.slots[ItemSlot.btnNum].GetComponent<Image>().sprite = Resources.Load<Sprite>("slotBack") as Sprite;
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("Button").gameObject.SetActive(false);
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("alpha").gameObject.SetActive(false);
+                    ItemSlot.slots[ItemSlot.btnNum].transform.Find("rank").gameObject.SetActive(false);
+                    GameManager.instance.player.money -= price;
+                    ItemSlot.btnNum = -1;
+                    Cancel();
                 }
             }
-            GameManager.instance.player.money -= price;
 
-            ItemSlot.slots[ItemSlot.btnNum].interactable = false;
-            ItemSlot.slots[ItemSlot.btnNum].GetComponent<SelectItem>().buttonNum = -1;
-            ItemSlot.slots[ItemSlot.btnNum].GetComponent<Image>().sprite = Resources.Load<Sprite>("slotBack") as Sprite;
-            ItemSlot.slots[ItemSlot.btnNum].transform.Find("Button").gameObject.SetActive(false);
-            ItemSlot.slots[ItemSlot.btnNum].transform.Find("alpha").gameObject.SetActive(false);
-            ItemSlot.slots[ItemSlot.btnNum].transform.Find("rank").gameObject.SetActive(false);
+            if (selectType == "equip")
+            {
+                FightingPower.selectNum = selectNum;
+                FightingPower.ChangingPower();
+                FightingPower.PrintingDiff();
+            }
+
         }
         else
             Debug.Log("돈이 부족합니다");
 
         chosen = -1;
-        FightingPower.selectNum = selectNum;
-        if(selectType == "equip")
-        {
-            FightingPower.ChangingPower();
-            FightingPower.PrintingDiff();
-        }
-        
-        Cancel();
     }
     void GetInfo()
     {
@@ -209,16 +241,17 @@ public class CompareItem : MonoBehaviour
                     chosen = i;
 
                     string Epower, Erange, Espeed;
+                    equipImage.gameObject.SetActive(true);
                     equipImage.sprite = Resources.Load<Sprite>("Equip/" + GameManager.instance.player.equipment[chosen].name) as Sprite;
                     EName.text = GameManager.instance.player.equipment[chosen].name;
                     int compRank = GameManager.instance.player.equipment[chosen].rank;
-                    if (rank == 0)
+                    if (rank == 3)
                         ERank.text = "S등급";
-                    else if (rank == 1)
-                        ERank.text = "A등급";
                     else if (rank == 2)
+                        ERank.text = "A등급";
+                    else if (rank == 1)
                         ERank.text = "B등급";
-                    else if (rank == 3)
+                    else if (rank == 0)
                         ERank.text = "C등급";
 
                     if (part == 0)
@@ -258,85 +291,90 @@ public class CompareItem : MonoBehaviour
     }
     void PrintingItem() //아이템 창 출력
     {
-        List<int> itemNums = new List<int>();
-        List<int> itemRanks = new List<int>();
-
         if (GameManager.instance.player.item.Count > 0)
         {
             for (int i = 0; i < GameManager.instance.player.item.Count; i++)
             {
+                havingItems[i].gameObject.SetActive(true);
                 havingItems[i].sprite = Resources.Load<Sprite>("Item/" + GameManager.instance.player.item[i].name) as Sprite;
                 itemNums.Add(GameManager.instance.player.item[i].itemIdx);
                 itemRanks.Add(GameManager.instance.player.item[i].rank);
             }
-
-            if (GameManager.instance.player.item.Count > 3)
-            {
-                for (int i = 0; i < itemNums.Count; i++)
-                {
-                    if (itemRanks[i] > itemRanks[i + 1])
-                        chosen = i;
-                    else if (chosen == -1 && GameManager.instance.player.item[i].category == DataManager.instance.itemList.item[selectNum].category)
-                        chosen = i;
-                    else if (chosen == -1)
-                        chosen = i;
-                }
-                Debug.Log("chosen" + chosen.ToString());
-                bool powerC, speedC, rangeC; //아이템 문자열 치환 여부
-                double powerP, speedP, rangeP; //플레이어 정보
-                string script; //출력할 문자열, 치환할 문자열
-
-                script = GameManager.instance.player.item[chosen].script; //치환할 문자열
-
-                powerP = GameManager.instance.player.attackPower;
-                speedP = GameManager.instance.player.attackSpeed;
-                rangeP = GameManager.instance.player.attackRange;
-
-                powerC = GameManager.instance.player.item[chosen].attackPowerCalc;
-                speedC = GameManager.instance.player.item[chosen].attackSpeedCalc;
-                rangeC = GameManager.instance.player.item[chosen].attackRangeCalc;
-
-                //출력
-                IName.text = GameManager.instance.player.item[chosen].name;
-                itemImage.sprite = Resources.Load<Sprite>("item/" + DataManager.instance.itemList.item[chosen].name) as Sprite;
-
-                int irank = GameManager.instance.player.item[chosen].rank;
-                int category = GameManager.instance.player.item[chosen].category;
-
-                if (irank == 0)
-                    IRank.text = "S등급";
-                else if (irank == 1)
-                    IRank.text = "A등급";
-                else if (irank == 2)
-                    IRank.text = "B등급";
-                else if (irank == 3)
-                    IRank.text = "C등급";
-
-                if (category == 0)
-                    IPart.text = " / 공격";
-                else if (category == 0)
-                    IPart.text = " / 방어";
-                else if (category == 0)
-                    IPart.text = " / 보조";
-
-                if (powerC)
-                {
-                    info = script.Replace("#at#", (powerP * iattackPower).ToString());
-                }
-                else if (speedC)
-                {
-                    info = script.Replace("#as#", (speedP * iattackSpeed).ToString());
-                }
-                else if (rangeC)
-                {
-                    info = script.Replace("#ar#", (rangeP * iattackRange).ToString());
-                }
-
-                IInfo.text = "<size=20> [+" + info + "]</size>";
-            }
         }
-
     }
+
+    public void ItemPrinting()
+    {
+        if (chosen != -1)
+        {
+            Debug.Log(chosen);
+            bool powerC, speedC, rangeC; //아이템 문자열 치환 여부
+            double powerP, speedP, rangeP; //플레이어 정보
+            string script; //출력할 문자열, 치환할 문자열
+
+            itemImage.gameObject.SetActive(true);
+            script = GameManager.instance.player.item[chosen].script; //치환할 문자열
+
+            powerP = GameManager.instance.player.attackPower;
+            speedP = GameManager.instance.player.attackSpeed;
+            rangeP = GameManager.instance.player.attackRange;
+
+            powerC = GameManager.instance.player.item[chosen].attackPowerCalc;
+            speedC = GameManager.instance.player.item[chosen].attackSpeedCalc;
+            rangeC = GameManager.instance.player.item[chosen].attackRangeCalc;
+
+            //출력
+            IName.text = GameManager.instance.player.item[chosen].name;
+            itemImage.sprite = Resources.Load<Sprite>("item/" + GameManager.instance.player.item[chosen].name) as Sprite;
+
+            int irank = GameManager.instance.player.item[chosen].rank;
+            int category = GameManager.instance.player.item[chosen].category;
+
+            if (irank == 3)
+                IRank.text = "S등급";
+            else if (irank == 2)
+                IRank.text = "A등급";
+            else if (irank == 1)
+                IRank.text = "B등급";
+            else if (irank == 0)
+                IRank.text = "C등급";
+
+            if (category == 0)
+                IPart.text = " / 공격";
+            else if (category == 1)
+                IPart.text = " / 방어";
+            else if (category == 2)
+                IPart.text = " / 보조";
+
+            info = script;
+
+            if (powerC)
+            {
+                info = script.Replace("#at#", (powerP * iattackPower).ToString());
+            }
+            if (speedC)
+            {
+                info = script.Replace("#as#", (speedP * iattackSpeed).ToString());
+            }
+            if (rangeC)
+            {
+                info = script.Replace("#ar#", (rangeP * iattackRange).ToString());
+            }
+
+            IInfo.text = "<size=20>" + info + "</size>";
+
+            Debug.Log("chosen" + chosen.ToString());
+        }
+        else if (chosen == -1)
+        {
+            itemImage.gameObject.SetActive(false);
+            IName.text = " ";
+            IRank.text = " ";
+            IPart.text = " ";
+            IInfo.text = " ";
+        }
+    }
+
 
     void PrintingSelect()
     {
@@ -344,13 +382,13 @@ public class CompareItem : MonoBehaviour
         {
             selectImage.sprite = Resources.Load<Sprite>("Equip/" + iname) as Sprite;
             SName.text = iname;
-            if (rank == 0)
+            if (rank == 3)
                 SRank.text = "S등급";
-            else if (rank == 1)
-                SRank.text = "A등급";
             else if (rank == 2)
+                SRank.text = "A등급";
+            else if (rank == 1)
                 SRank.text = "B등급";
-            else if (rank == 3)
+            else if (rank == 0)
                 SRank.text = "C등급";
 
             if (part == 0)
@@ -382,36 +420,42 @@ public class CompareItem : MonoBehaviour
             SName.text = iname;
             selectImage.sprite = Resources.Load<Sprite>("item/" + iname) as Sprite;
 
-            if (rank == 0)
+            if (rank == 3)
                 SRank.text = "S등급";
-            else if (rank == 1)
-                SRank.text = "A등급";
             else if (rank == 2)
+                SRank.text = "A등급";
+            else if (rank == 1)
                 SRank.text = "B등급";
-            else if (rank == 3)
+            else if (rank == 0)
                 SRank.text = "C등급";
 
             if (part == 0)
                 SPart.text = " / 공격";
-            else if (part == 0)
+            else if (part == 1)
                 SPart.text = " / 방어";
-            else if (part == 0)
+            else if (part == 2)
                 SPart.text = " / 보조";
+
+            info = script;
 
             if (powerC)
             {
                 info = script.Replace("#at#", (powerP * attackPower).ToString());
             }
-            else if (speedC)
+            if (speedC)
             {
                 info = script.Replace("#as#", (speedP * attackSpeed).ToString());
             }
-            else if (rangeC)
+            if (rangeC)
             {
                 info = script.Replace("#ar#", (rangeP * attackRange).ToString());
             }
 
-            SInfo.text = "<size=20> [+" + info + "]</size>";
+            SInfo.text = "<size=20>" + info + "</size>";
         }
     }
 }
+
+
+
+

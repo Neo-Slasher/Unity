@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 using TMPro;
 
 public class ItemSlot : MonoBehaviour
 {
     //특성에 따른 아이템 슬롯 개수 변화와 장비 및 아이템의 랜덤 출력
 
-    public int slotNum = 1;
+    public int slotNum;
     public Button[] slots;
     public TMP_Text ItemRank;
     public TMP_Text ItemAlpha;
     public Image ItemImage;
 
-    public int shopMinRank = 3;
-    public int shopMaxRank = 2;
+    public int shopMinRank;
+    public int shopMaxRank;
     public List<int> equips = new List<int>(); //랭크 기준에 부합하는 장비들 모음
 
     private int totalEquip = 48; //전체 장비 개수
@@ -36,9 +37,9 @@ public class ItemSlot : MonoBehaviour
 
     void Start()
     {
-        /*slotNum = GameManager.instance.player.shopSlot;
+        slotNum = 3; //GameManager.instance.player.shopSlot;
         shopMinRank = GameManager.instance.player.shopMinRank;
-        shopMaxRank = GameManager.instance.player.shopMaxRank;*/ //값 넘겨받을 수 있을 때 고치기
+        shopMaxRank = GameManager.instance.player.shopMaxRank; //값 넘겨받을 수 있을 때 고치기
 
         GetTraitInfo();
 
@@ -62,13 +63,15 @@ public class ItemSlot : MonoBehaviour
         for (int i = 0; i < totalEquip; i++) //아이템 랭크
         {
             equipRank = DataManager.instance.equipmentList.equipment[i].rank;
-            if (equipRank <= shopMinRank && equipRank >= shopMaxRank)
+            if (equipRank >= shopMinRank && equipRank <= shopMaxRank)
                 equips.Add(i);
         }
     }
 
     void RandomItem() //장비 및 아이템 종류 랜덤으로 선택
     {
+        List<int> E = new List<int>();
+        List<int> I = new List<int>();
         for (int i = 0; i < slotNum; i++)
         {
             equipORitem = Random.Range(0, 10);
@@ -76,11 +79,25 @@ public class ItemSlot : MonoBehaviour
             if (equipORitem < 6)
             {
                 int equipNum = Random.Range(0, equips.Count);
-                shopslot.Add(new ShopSlot() { shopType = "equip", shopNum = equips[equipNum] });
+                if(E.Contains(equipNum))
+                    equipNum = Random.Range(0, equips.Count);
+                else
+                {
+                    shopslot.Add(new ShopSlot() { shopType = "equip", shopNum = equips[equipNum] });
+                    E.Add(equipNum);
+                } 
             }
             else if (equipORitem >= 6 && equipORitem <= 9)
             {
-                shopslot.Add(new ShopSlot() { shopType = "item", shopNum = Random.Range(0, totalItem) });
+                int itemNum = Random.Range(0, totalItem);
+                if(I.Contains(itemNum))
+                    itemNum = Random.Range(0, totalItem);
+                else
+                {
+                    shopslot.Add(new ShopSlot() { shopType = "item", shopNum = itemNum });
+                    I.Add(itemNum);
+                }
+                
             }
             Debug.Log("shopType " + shopslot[i].shopType);
             Debug.Log("shopNum " + shopslot[i].shopNum.ToString());
@@ -104,31 +121,31 @@ public class ItemSlot : MonoBehaviour
                 ItemImage.sprite = Resources.Load<Sprite>("Equip/" + imageName) as Sprite;
                 ItemAlpha.text = DataManager.instance.equipmentList.equipment[shopslot[i].shopNum].price + "α";
 
-                if (DataManager.instance.equipmentList.equipment[shopslot[i].shopNum].rank == 0)
+                if (DataManager.instance.equipmentList.equipment[shopslot[i].shopNum].rank == 3)
                     iRank = "S";
-                else if (DataManager.instance.equipmentList.equipment[shopslot[i].shopNum].rank == 1)
-                    iRank = "A";
                 else if (DataManager.instance.equipmentList.equipment[shopslot[i].shopNum].rank == 2)
+                    iRank = "A";
+                else if (DataManager.instance.equipmentList.equipment[shopslot[i].shopNum].rank == 1)
                     iRank = "B";
-                else if (DataManager.instance.equipmentList.equipment[shopslot[i].shopNum].rank == 3)
+                else if (DataManager.instance.equipmentList.equipment[shopslot[i].shopNum].rank == 0)
                     iRank = "C";
 
                 ItemRank.text = iRank;
             }
-            else if (shopslot[i].shopType == "item") //아이템 파일 만들어지면 수정!
+            else if (shopslot[i].shopType == "item") 
             {
                 string imageName = DataManager.instance.itemList.item[shopslot[i].shopNum].name;
                 Debug.Log(imageName);
-                ItemImage.sprite = Resources.Load<Sprite>("Item/" + imageName) as Sprite; ////이미지 들어오면 경로 변경해야함!!!!!!
+                ItemImage.sprite = Resources.Load<Sprite>("Item/" + imageName) as Sprite; 
                 ItemAlpha.text = DataManager.instance.itemList.item[shopslot[i].shopNum].price + "α";
 
-                if (DataManager.instance.itemList.item[shopslot[i].shopNum].rank == 0)
+                if (DataManager.instance.itemList.item[shopslot[i].shopNum].rank == 3)
                     iRank = "S";
-                else if (DataManager.instance.itemList.item[shopslot[i].shopNum].rank == 1)
-                    iRank = "A";
                 else if (DataManager.instance.itemList.item[shopslot[i].shopNum].rank == 2)
+                    iRank = "A";
+                else if (DataManager.instance.itemList.item[shopslot[i].shopNum].rank == 1)
                     iRank = "B";
-                else if (DataManager.instance.itemList.item[shopslot[i].shopNum].rank == 3)
+                else if (DataManager.instance.itemList.item[shopslot[i].shopNum].rank == 0)
                     iRank = "C";
 
                 ItemRank.text = iRank;

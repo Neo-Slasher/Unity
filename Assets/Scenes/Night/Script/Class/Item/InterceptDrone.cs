@@ -7,6 +7,7 @@ public class InterceptDrone : MonoBehaviour
 {
     public NightManager nightManager;
     public Character character;
+    public NightSFXManager nightSFXManager;
     LayerMask projLayer;
 
     [SerializeField]
@@ -116,6 +117,7 @@ public class InterceptDrone : MonoBehaviour
 
             if (colArr.Length > 0)
             {
+                nightSFXManager.PlayAudioClip(AudioClipName.interceptDrone);
                 for (int i = 0; i < colArr.Length; i++)
                 {
                     StartCoroutine(SearchIngProjEffectCoroutine());
