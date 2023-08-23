@@ -5,50 +5,49 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CutSceneManager : MonoBehaviour
-{
-
-
+public class CutSceneManager : MonoBehaviour {
     public TextMeshProUGUI typingText;
-    public string message;
+    public List<string> stories;
+    public int storyNumber;
     public float speed = 0.07f;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        message = "당신은 돈을 모아 성공적으로 인공 신체 시술을 받을 수 있었습니다. 그러나 당신은 지금까지 '화타'가 불안정한 인공 신체를 고의로 제공하고 있었다는 사실을 밝혀내었습니다.";
-        StartCoroutine(Typing(typingText, message, speed));
+    void Start() {
+        stories = DataManager.instance.storyList.stories[GameManager.instance.player.day - 1].story;
+        StartStory();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     public void OnClickSkipButton() {
         SceneManager.LoadScene("PreparationScene");
     }
 
 
-    public void OnClickAutoButton()
-    {
-        Debug.Log(DataManager.instance.difficultyList.difficulty[0].goalMoney);
-        Debug.Log(DataManager.instance.traitList.trait[0].index);
-        Debug.Log(DataManager.instance.equipmentList.equipment[0].index);
-        Debug.Log(DataManager.instance.assassinationStageList.assassinationStage[0].stageNo);
+    public void OnClickAutoButton() {
 
     }
 
-    IEnumerator Typing(TextMeshProUGUI typingText, string message, float speed)
-    {
-        for (int i = 0; i < message.Length; i++)
-        {
+    IEnumerator Typing(TextMeshProUGUI typingText, string message, float speed) {
+        for (int i = 0; i < message.Length; i++) {
             typingText.text = message.Substring(0, i + 1);
             yield return new WaitForSeconds(speed);
         }
+
+        yield return new WaitForSeconds(1.5f);
+        storyNumber++;
+        NextStory();
+    }
+
+    public void StartStory() {
+        storyNumber = 0;
+        NextStory();
+    }
+
+    public void NextStory() {
+        if (storyNumber == stories.Count) { // debug
+            storyNumber = 0;
+            return;
+        }
+        StartCoroutine(Typing(typingText, stories[storyNumber], speed));
     }
 }
-
 
