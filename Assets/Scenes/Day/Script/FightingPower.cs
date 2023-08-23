@@ -6,11 +6,11 @@ using TMPro;
 
 public class FightingPower : MonoBehaviour
 {
-    public double hitPoint = 20;
-    public double moveSpeed = 10;
-    public double attackPower = 5;
-    public double attackSpeed = 10;
-    public double attackRange = 10;
+    public double hitPoint;
+    public double moveSpeed;
+    public double attackPower;
+    public double attackSpeed;
+    public double attackRange;
 
     public int currentCP;
     public int selectNum;
@@ -37,11 +37,7 @@ public class FightingPower : MonoBehaviour
     void Awake()
     {
         Player = GameManager.instance.player;
-        //Player.maxHp = hitPoint;
-        //Player.attackPower = attackPower;
-        //Player.attackSpeed = attackSpeed;
-        //Player.attackRange = attackRange;
-        //Player.moveSpeed = moveSpeed;
+        
         Printing();
     }
 
@@ -74,7 +70,7 @@ public class FightingPower : MonoBehaviour
         startmoney.text = Player.startMoney.ToString();
         earnmoney.text = Player.earnMoney.ToString();
 
-        money.text = Player.money.ToString();
+        money.text = Player.money.ToString() + "a / " + DataManager.instance.difficultyList.difficulty[Player.difficulty].goalMoney + "a";
         currentcp.text = currentCP.ToString();
     }
     public void PrintingDiff()

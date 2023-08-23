@@ -12,9 +12,9 @@
             "attackPowerCalc": 1,
             "attackPowerValue": 0.50,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 1.20,
+            "attackSpeedValue": 1.50,
             "attackRangeCalc": 1,
-            "attackRangeValue": 1.50
+            "attackRangeValue": 1.20
         },
         {
             "itemIdx": 2,
@@ -43,10 +43,10 @@
             "category": 0,
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
-            "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.30,
-            "attackRangeCalc": 0,
-            "attackRangeValue": 0.00
+            "attackSpeedCalc": 0,
+            "attackSpeedValue": 0.00,
+            "attackRangeCalc": 1,
+            "attackRangeValue": 0.30
         },
         {
             "itemIdx": 4,
@@ -59,10 +59,10 @@
             "category": 0,
             "attackPowerCalc": 1,
             "attackPowerValue": 0.30,
-            "attackSpeedCalc": 1,
-            "attackSpeedValue": 1.00,
-            "attackRangeCalc": 0,
-            "attackRangeValue": 0.00
+            "attackSpeedCalc": 0,
+            "attackSpeedValue": 0.00,
+            "attackRangeCalc": 1,
+            "attackRangeValue": 1.00
         },
         {
             "itemIdx": 5,
@@ -124,9 +124,9 @@
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.10,
+            "attackSpeedValue": -0.10,
             "attackRangeCalc": 1,
-            "attackRangeValue": -0.10
+            "attackRangeValue": 0.10
         },
         {
             "itemIdx": 9,
@@ -188,9 +188,9 @@
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.30,
+            "attackSpeedValue": -0.10,
             "attackRangeCalc": 1,
-            "attackRangeValue": -0.10
+            "attackRangeValue": 0.30
         },
         {
             "itemIdx": 13,
@@ -252,9 +252,9 @@
             "attackPowerCalc": 1,
             "attackPowerValue": 0.70,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 1.45,
+            "attackSpeedValue": 1.80,
             "attackRangeCalc": 1,
-            "attackRangeValue": 1.80
+            "attackRangeValue": 1.45
         },
         {
             "itemIdx": 17,
@@ -283,10 +283,10 @@
             "category": 0,
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
-            "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.40,
+            "attackSpeedCalc": 0,
+            "attackSpeedValue": 0.00,
             "attackRangeCalc": 0,
-            "attackRangeValue": 0.00
+            "attackRangeValue": 0.40
         },
         {
             "itemIdx": 19,
@@ -299,10 +299,10 @@
             "category": 0,
             "attackPowerCalc": 1,
             "attackPowerValue": 0.40,
-            "attackSpeedCalc": 1,
-            "attackSpeedValue": 1.25,
+            "attackSpeedCalc": 0,
+            "attackSpeedValue": 0.00,
             "attackRangeCalc": 0,
-            "attackRangeValue": 0.00
+            "attackRangeValue": 1.25
         },
         {
             "itemIdx": 20,
@@ -364,9 +364,9 @@
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.15,
+            "attackSpeedValue": -0.13,
             "attackRangeCalc": 1,
-            "attackRangeValue": -0.13
+            "attackRangeValue": 0.15
         },
         {
             "itemIdx": 24,
@@ -397,7 +397,7 @@
             "attackPowerValue": 0.15,
             "attackSpeedCalc": 0,
             "attackSpeedValue": 0.00,
-            "attackRangeCalc": 0,
+            "attackRangeCalc": 1,
             "attackRangeValue": 0.15
         },
         {
@@ -412,9 +412,9 @@
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.70,
+            "attackSpeedValue": 0.60,
             "attackRangeCalc": 1,
-            "attackRangeValue": 0.60
+            "attackRangeValue": 0.70
         },
         {
             "itemIdx": 27,
@@ -428,9 +428,9 @@
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.45,
+            "attackSpeedValue": -0.13,
             "attackRangeCalc": 1,
-            "attackRangeValue": -0.13
+            "attackRangeValue": 0.45
         },
         {
             "itemIdx": 28,
@@ -444,9 +444,9 @@
             "attackPowerCalc": 1,
             "attackPowerValue": 0.60,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.15,
+            "attackSpeedValue": 0.13,
             "attackRangeCalc": 1,
-            "attackRangeValue": 0.13
+            "attackRangeValue": 0.15
         },
         {
             "itemIdx": 29,
@@ -492,9 +492,9 @@
             "attackPowerCalc": 1,
             "attackPowerValue": 1.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 1.75,
+            "attackSpeedValue": 2.20,
             "attackRangeCalc": 1,
-            "attackRangeValue": 2.20
+            "attackRangeValue": 1.75
         },
         {
             "itemIdx": 32,
@@ -523,10 +523,10 @@
             "category": 0,
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
-            "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.75,
-            "attackRangeCalc": 0,
-            "attackRangeValue": 0.00
+            "attackSpeedCalc": 0,
+            "attackSpeedValue": 0.00,
+            "attackRangeCalc": 1,
+            "attackRangeValue": 0.60
         },
         {
             "itemIdx": 34,
@@ -539,10 +539,10 @@
             "category": 0,
             "attackPowerCalc": 1,
             "attackPowerValue": 0.60,
-            "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.60,
-            "attackRangeCalc": 0,
-            "attackRangeValue": 0.00
+            "attackSpeedCalc": 0,
+            "attackSpeedValue": 0.00,
+            "attackRangeCalc": 1,
+            "attackRangeValue": 1.50
         },
         {
             "itemIdx": 35,
@@ -604,9 +604,9 @@
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.20,
+            "attackSpeedValue": -0.17,
             "attackRangeCalc": 1,
-            "attackRangeValue": -0.17
+            "attackRangeValue": 0.20
         },
         {
             "itemIdx": 39,
@@ -652,9 +652,9 @@
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.95,
+            "attackSpeedValue": 0.80,
             "attackRangeCalc": 1,
-            "attackRangeValue": 0.80
+            "attackRangeValue": 0.95
         },
         {
             "itemIdx": 42,
@@ -668,9 +668,9 @@
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.70,
+            "attackSpeedValue": -0.17,
             "attackRangeCalc": 1,
-            "attackRangeValue": -0.17
+            "attackRangeValue": 0.70
         },
         {
             "itemIdx": 43,
@@ -684,9 +684,9 @@
             "attackPowerCalc": 1,
             "attackPowerValue": 0.85,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.20,
+            "attackSpeedValue": 0.17,
             "attackRangeCalc": 1,
-            "attackRangeValue": 0.17
+            "attackRangeValue": 0.20
         },
         {
             "itemIdx": 44,
@@ -732,9 +732,9 @@
             "attackPowerCalc": 1,
             "attackPowerValue": 1.30,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 2.20,
+            "attackSpeedValue": 2.70,
             "attackRangeCalc": 1,
-            "attackRangeValue": 2.70
+            "attackRangeValue": 2.20
         },
         {
             "itemIdx": 47,
@@ -763,10 +763,10 @@
             "category": 0,
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
-            "attackSpeedCalc": 1,
-            "attackSpeedValue": 1.00,
-            "attackRangeCalc": 0,
-            "attackRangeValue": 0.00
+            "attackSpeedCalc": 0,
+            "attackSpeedValue": 0.00,
+            "attackRangeCalc": 1,
+            "attackRangeValue": 1.00
         },
         {
             "itemIdx": 49,
@@ -779,10 +779,10 @@
             "category": 0,
             "attackPowerCalc": 1,
             "attackPowerValue": 0.85,
-            "attackSpeedCalc": 1,
-            "attackSpeedValue": 2.05,
-            "attackRangeCalc": 0,
-            "attackRangeValue": 0.00
+            "attackSpeedCalc": 0,
+            "attackSpeedValue": 0.00,
+            "attackRangeCalc": 1,
+            "attackRangeValue": 2.05
         },
         {
             "itemIdx": 50,
@@ -844,9 +844,9 @@
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.25,
+            "attackSpeedValue": -0.22,
             "attackRangeCalc": 1,
-            "attackRangeValue": -0.22
+            "attackRangeValue": 0.25
         },
         {
             "itemIdx": 54,
@@ -892,9 +892,9 @@
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 1.30,
+            "attackSpeedValue": 1.00,
             "attackRangeCalc": 1,
-            "attackRangeValue": 1.00
+            "attackRangeValue": 1.30
         },
         {
             "itemIdx": 57,
@@ -908,9 +908,9 @@
             "attackPowerCalc": 0,
             "attackPowerValue": 0.00,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 1.00,
+            "attackSpeedValue": -0.22,
             "attackRangeCalc": 1,
-            "attackRangeValue": -0.22
+            "attackRangeValue": 1.00
         },
         {
             "itemIdx": 58,
@@ -924,9 +924,9 @@
             "attackPowerCalc": 1,
             "attackPowerValue": 1.15,
             "attackSpeedCalc": 1,
-            "attackSpeedValue": 0.30,
+            "attackSpeedValue": 0.22,
             "attackRangeCalc": 1,
-            "attackRangeValue": 0.22
+            "attackRangeValue": 0.30
         },
         {
             "itemIdx": 59,

@@ -41,6 +41,11 @@ public class SelectItem : MonoBehaviour
         thisimg = GetComponent<Image>();
     }
 
+    void OnDisable()
+    {
+        CloseInfo();
+    }
+
     // Update is called once per frame
     public void ItemSelect()
     {
@@ -106,13 +111,13 @@ public class SelectItem : MonoBehaviour
         GetStack();
 
         Name.text = iname;
-        if(rank == 0)
+        if(rank == 3)
             Rank.text = "S등급";
-        else if(rank == 1)
-            Rank.text = "A등급";
         else if(rank == 2)
+            Rank.text = "A등급";
+        else if(rank == 1)
             Rank.text = "B등급";
-        else if(rank == 3)
+        else if(rank == 0)
             Rank.text = "C등급";
         if(ItemSlot.shopslot[buttonNum].shopType == "equip")
         {
@@ -144,25 +149,27 @@ public class SelectItem : MonoBehaviour
             //출력
             if(part == 0)
                 Part.text = " / 공격";
-            else if(part == 0)
+            else if(part == 1)
                 Part.text = " / 방어";
-            else if(part == 0)
+            else if(part == 2)
                 Part.text = " / 보조";
+
+            info = script;
 
             if(powerC)
             {
                 info = script.Replace("#at#", (powerP * attackPower).ToString());
             }
-            else if(speedC)
+            if(speedC)
             {
                 info = script.Replace("#as#", (speedP * attackSpeed).ToString());
             }
-            else if(rangeC)
+            if(rangeC)
             {
                 info = script.Replace("#ar#", (rangeP * attackRange).ToString());
             }
 
-            Info.text = "<size=20> [+" + info + "]</size>";
+            Info.text = "<size=20>" + info + "</size>";
         }  
     }
 
@@ -173,6 +180,7 @@ public class SelectItem : MonoBehaviour
         Rank.text = "";
         Part.text = "";
         Info.text = "";
+        checkMarks[buttonNum].SetActive(false);
     }
     public void CompareInfo()
     {
