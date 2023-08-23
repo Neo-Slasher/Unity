@@ -10,8 +10,6 @@ public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     NightManager nightManager;
 
     [SerializeField]
-    Character character;
-    [SerializeField]
     RectTransform joystick;
     [SerializeField]
     RectTransform rectTransform;    //조이스틱 기본 위치
@@ -36,7 +34,6 @@ public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 currPos : currPos.normalized * joystickRange;
 
             joystick.anchoredPosition = clampedPos;
-            character.StartMove(joystick.anchoredPosition);
         }
         else
             joystick.anchoredPosition = Vector3.zero;
@@ -54,7 +51,6 @@ public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 currPos : currPos.normalized * joystickRange;
 
             joystick.anchoredPosition = clampedPos;
-            character.StartMove(joystick.anchoredPosition);
         }
         else
             joystick.anchoredPosition = Vector3.zero;
@@ -64,7 +60,6 @@ public class JoyStick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         if (!nightManager.isStageEnd)
         {
-            character.EndMove();
             joystick.anchoredPosition = Vector3.zero;
         }
         else

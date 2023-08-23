@@ -40,14 +40,6 @@ public class NightManager : MonoBehaviour
     //전투시 필요한 데이터
     public bool isStageEnd = false; //밤이 끝났는지 알아보는 변수
 
-    //tempData
-    public int nowLevel = 1;
-    public int nowAssassination = 1;
-    [SerializeField]
-    LevelTrashData leveltrashData;
-    [SerializeField]
-    AssassinationTrashData assassinationTrashData;
-
     [SerializeField]
     TextMeshProUGUI[] killCountTextArr; //0: 노멀 킬수, 1: 엘리트 킬수, 2: 노멀 알파, 3: 엘리트 알파
     [SerializeField]
@@ -58,16 +50,21 @@ public class NightManager : MonoBehaviour
 
     //환경설정 추가
     [SerializeField]
-    Button preferenceBtn;
+    Button settingBtn;
     [SerializeField]
-    GameObject preferenceParent;
-    //사운드 +-168.46
+    GameObject settingParent;
+
+    //게임 종료 팝업
+    [SerializeField]
+    Sprite[] itemSpriteArr;
+    [SerializeField]
+    Image getItemImage;
+    [SerializeField]
+    TextMeshProUGUI getItemName;
 
     private void Start()
     {
         GameManager.instance.player.curHp = GameManager.instance.player.maxHp;
-        leveltrashData = new LevelTrashData(nowLevel);
-        assassinationTrashData = new AssassinationTrashData(nowAssassination);
 
         //적 배열 생성
         normalEnemyArr = new NormalEnemy[normalEnemyCount];
@@ -82,16 +79,13 @@ public class NightManager : MonoBehaviour
 
     void SetEnemyArrData()
     {
-        for(int i =0; i<normalEnemyCount; i++)
+        for (int i = 0; i < normalEnemyCount; i++)
         {
             normalEnemyArr[i] = normalEnemyPrefabArr[i].GetComponent<NormalEnemy>();
             normalEnemyArr[i].SetCharacter(character);
 
-            //임시로 박아둠
-            normalEnemyArr[i].levelTrashData = leveltrashData;
-
             normalEnemyArr[i].SetNormalEnemyType(i);    //적들의 기본데이터 불러오기
-            normalEnemyArr[i].SetEnemyStatus(nowLevel);
+            normalEnemyArr[i].SetEnemyStatus(GameManager.instance.player.level);
         }
 
         for (int i = 0; i < eliteEnemyCount; i++)
@@ -99,11 +93,8 @@ public class NightManager : MonoBehaviour
             eliteEnemyArr[i] = eliteEnemyPrefabArr[i].GetComponent<EliteEnemy>();
             eliteEnemyArr[i].SetCharacter(character);
 
-            //임시로 박아둠
-            eliteEnemyArr[i].levelTrashData = leveltrashData;
-
             eliteEnemyArr[i].SetEliteEnemyType(i);  //적들의 기본데이터 불러오기
-            eliteEnemyArr[i].SetEnemyStatus(nowLevel);
+            eliteEnemyArr[i].SetEnemyStatus(GameManager.instance.player.level);
         }
     }
 
@@ -111,7 +102,7 @@ public class NightManager : MonoBehaviour
     void InstantiateEnemy()
     {
         //노멀 적과 엘리트 적 소환하는 함수
-        for(int normalEnemyDataIndex =0; normalEnemyDataIndex<normalEnemyCount; normalEnemyDataIndex++)
+        for (int normalEnemyDataIndex = 0; normalEnemyDataIndex < normalEnemyCount; normalEnemyDataIndex++)
             StartCoroutine(InstantiateNormalEnemyCoroutine(normalEnemyDataIndex));
         for (int eliteEnemyDataIndex = 0; eliteEnemyDataIndex < eliteEnemyCount; eliteEnemyDataIndex++)
             StartCoroutine(InstantiateEliteEnemyCoroutine(eliteEnemyDataIndex));
@@ -119,7 +110,7 @@ public class NightManager : MonoBehaviour
 
     void TestEnemy()
     {
-        eliteEnemyArr[1].SetEnforceData(nowLevel, true);
+        eliteEnemyArr[1].SetEnforceData(GameManager.instance.player.level, true);
         GameObject eliteEnemyClone = Instantiate(normalEnemyPrefabArr[0], SetEnemyPos(), Quaternion.identity);
         eliteEnemyClone.transform.SetParent(enemyCloneParent);
         eliteEnemyClone.SetActive(true);
@@ -134,9 +125,8 @@ public class NightManager : MonoBehaviour
             while (!isStageEnd && timerManager.timerCount > 1)
             {
                 //몬스터 스폰
-                //normalEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, false);
                 GameObject normalEnemyClone = Instantiate(normalEnemyPrefabArr[nowEnemyIndex], SetEnemyPos(), Quaternion.identity);
-                normalEnemyClone.GetComponent<EnemyParent>().SetEnforceData(nowLevel, false);
+                normalEnemyClone.GetComponent<EnemyParent>().SetEnforceData(GameManager.instance.player.level, false);
 
 
                 normalEnemyClone.transform.SetParent(enemyCloneParent);
@@ -154,9 +144,8 @@ public class NightManager : MonoBehaviour
             while (!isStageEnd && timerManager.timerCount > 1)
             {
                 //몬스터 스폰
-                //eliteEnemyArr[nowEnemyIndex].SetEnforceData(nowLevel, true);
                 GameObject eliteEnemyClone = Instantiate(eliteEnemyPrefabArr[nowEnemyIndex], SetEnemyPos(), Quaternion.identity);
-                eliteEnemyClone.GetComponent<EnemyParent>().SetEnforceData(nowLevel, false);
+                eliteEnemyClone.GetComponent<EnemyParent>().SetEnforceData(GameManager.instance.player.level, false);
 
                 eliteEnemyClone.transform.SetParent(enemyCloneParent);
                 eliteEnemyClone.SetActive(true);
@@ -179,23 +168,24 @@ public class NightManager : MonoBehaviour
 
     double GetSpawn(bool isElite, int getIndex)
     {
-        switch(getIndex)
+        int nowAssassination = GameManager.instance.player.assassinationCount;
+        switch (getIndex)
         {
             case 0:
                 if (isElite)
-                    return assassinationTrashData.elite1Spawn;
+                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].elite1Spawn;
                 else
-                    return assassinationTrashData.normal1Spawn;
+                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].normal1Spawn;
             case 1:
                 if (isElite)
-                    return assassinationTrashData.elite2Spawn;
+                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].elite2Spawn;
                 else
-                    return assassinationTrashData.normal2Spawn;
+                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].normal2Spawn;
             case 2:
                 if (isElite)
-                    return assassinationTrashData.elite3Spawn;
+                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].elite3Spawn;
                 else
-                    return assassinationTrashData.normal3Spawn;
+                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].normal3Spawn;
             default:
                 return -1;
         }
@@ -275,8 +265,10 @@ public class NightManager : MonoBehaviour
 
         killCountTextArr[0].text = killNormal.ToString();
         killCountTextArr[1].text = killElite.ToString();
-        killCountTextArr[2].text = killNormal + "a";
-        killCountTextArr[3].text = killElite + "a";
+
+        GetItem();
+        GetMoney();
+        GameManager.instance.SavePlayerData();
     }
 
     //끝난 날짜 및 데이터 조정 및 저장
@@ -294,7 +286,20 @@ public class NightManager : MonoBehaviour
         else
         {
             //재화 정리하고 엔딩으로
+            int nowDifficulty = GameManager.instance.player.difficulty;
+            if (nowDifficulty != 7)
+            {
+                Player player = GameManager.instance.player;
+                GameManager.instance.player.curExp += DataManager.instance.difficultyList.difficulty[nowDifficulty].rewardExp;
+                if(player.reqExp< player.curExp)
+                {
+                    GameManager.instance.player.curExp -= GameManager.instance.player.reqExp;
+                    GameManager.instance.player.level++;
+                }
+                
+            }
             GameManager.instance.SavePlayerData();
+            UnityEngine.SceneManagement.SceneManager.LoadScene("CutScene");
         }
     }
 
@@ -317,24 +322,95 @@ public class NightManager : MonoBehaviour
     //밤이 끝나고 아이템 획득하는 함수
     void GetItem()
     {
+        //(처치한 일반 몬스터 수 × 해당 단계에서의 일반 드랍 확률) +
+        //(처치한 정예 몬스터 수 × 해당 단계에서의 정예 드랍 확률) = (장비 및 아이템을 획득할 확률)
+        int nowDifficulty = GameManager.instance.player.difficulty;
+        int nowAssassination = GameManager.instance.player.assassinationCount;
+        int nowRank = GameManager.instance.player.dropRank + DataManager.instance.difficultyList.difficulty[nowDifficulty].dropRank
+                        + DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].stageDropRank;
+        int getItemRank = SetItemRank(nowRank);
 
+        double normalRate = DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].normalDropRate * killNormal;
+        double eliteRate = DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].eliteDropRate * killElite;
+        
+        float rate = (float)(normalRate + eliteRate);
+        
+        float nowProb = (float)Random.Range(0, 100) / 100;
+        Debug.Log(rate + " / "+ nowProb);
+        if (nowProb < rate)
+        {
+            //아이템 획득
+            int getItemIdx = Random.Range(0 + getItemRank * 15, 14 + getItemRank * 15);
+            Item getItem = DataManager.instance.itemList.item[getItemIdx];
+
+            getItemImage.sprite = itemSpriteArr[getItem.imgIdx];
+            getItemName.text = getItem.name;
+
+            SetPlayerItem(getItem);
+        }
+        else
+        {
+            //획득 x
+            getItemImage.gameObject.SetActive(false);
+            getItemName.text = "없음";
+        }
+    }
+
+    int SetItemRank(int nowRank)
+    {
+        if (nowRank < 8)
+            return 0;
+        else if (nowRank < 17)
+            return 1;
+        else if (nowRank < 31)
+            return 2;
+        else
+            return 3;
+    }
+
+    void SetPlayerItem(Item getItem)
+    {
+        if(GameManager.instance.player.item.Count < GameManager.instance.player.itemSlot)
+        {
+            GameManager.instance.player.item.Add(getItem);
+        }
+    }
+
+    void GetMoney()
+    {
+        //(처치한 일반 적 수 * 일반 적 현상금 + 정예 적 수 * 적 현상금) * 획득 재화값
+        int nowDifficulty = GameManager.instance.player.difficulty;
+        int nowAssassination = GameManager.instance.player.assassinationCount;
+
+        int normalMoney = DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].normalReward * killNormal;
+        int eliteMoney = DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].eliteReward * killElite;
+
+        int resultMoney = (int)((normalMoney + eliteMoney) * (1+ GameManager.instance.player.earnMoney));
+        Debug.Log(resultMoney);
+        GameManager.instance.player.money += resultMoney;
+
+        killCountTextArr[2].text = normalMoney + "a";
+        killCountTextArr[3].text = eliteMoney + "a";
     }
 
     //환경설정 여는 함수
     public void OnClickPreferenceBtn()
     {
-        preferenceParent.SetActive(true);
+        settingParent.SetActive(true);
         Time.timeScale = 0;
     }
 
     public void OnClickContinueBtn()
     {
-        preferenceParent.SetActive(false);
+        settingParent.SetActive(false);
         Time.timeScale = 1;
     }
 
     public void OnClickExitBtn()
     {
-        //씬 이동
+        //씬 이동  
+        settingParent.SetActive(false);
+        SetEndPopUp();
+        endPopup.SetActive(true);
     }
 }

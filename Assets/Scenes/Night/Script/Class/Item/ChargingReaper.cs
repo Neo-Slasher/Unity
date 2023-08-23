@@ -74,7 +74,7 @@ public class ChargingReaper : MonoBehaviour
         yield return new WaitUntil(() => !this.gameObject.activeSelf);
         coolTimeImage.gameObject.SetActive(true);
 
-        while (coolTimeImage.fillAmount > 0)
+        while (coolTimeImage.fillAmount >= 0)
         {
             coolTimeImage.fillAmount = 1 - ((float)chargingGauge / 100);
             yield return null;

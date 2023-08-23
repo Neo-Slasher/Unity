@@ -64,6 +64,9 @@ public class ItemManager : MonoBehaviour
 
     public List<int> arr;
 
+    //사운드 변수
+    bool isReaperSoundPlay = false;
+
 
     private void Start()
     {
@@ -203,10 +206,13 @@ public class ItemManager : MonoBehaviour
         centryBall.transform.localPosition = centryBallPos;
         while (!nightManager.isStageEnd)
         {
-            centryBall.transform.RotateAround(character.transform.position, Vector3.back, centryBallAngle);
-            if (!centryBallScript.StopCentryBall())
+            if (Time.timeScale != 0)
             {
-                centryBall.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+                centryBall.transform.RotateAround(character.transform.position, Vector3.back, centryBallAngle);
+                if (!centryBallScript.StopCentryBall())
+                {
+                    centryBall.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+                }
             }
             yield return null;
         }
@@ -230,6 +236,11 @@ public class ItemManager : MonoBehaviour
         {
             if (chargingReaperScript.IsChargingGaugeFull())
             {
+                if(!isReaperSoundPlay)
+                {
+                    isReaperSoundPlay = true;
+                    nightSFXManager.PlayAudioClip(AudioClipName.chargingReaper);
+                }
                 reaperDeg += Time.deltaTime * reaperSpeed;
                 if (reaperDeg < 360)
                 {
@@ -249,6 +260,8 @@ public class ItemManager : MonoBehaviour
             }
             else
             {
+                if (isReaperSoundPlay)
+                    isReaperSoundPlay = false;
                 coolTimeImageArr[iconIdx].fillAmount = 1 - (float)chargingReaperScript.chargingGauge / 100;
                 yield return new WaitUntil(() => chargingReaperScript.IsChargingGaugeFull());
             }
@@ -307,6 +320,8 @@ public class ItemManager : MonoBehaviour
                 yield return null;
             }
             Debug.Log("end");
+
+            nightSFXManager.PlayAudioClip(AudioClipName.multiSlash);
             ShootSwordAura(slashAttackPower);
 
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
@@ -375,6 +390,7 @@ public class ItemManager : MonoBehaviour
 
         railPiercerScript.character = character;
         railPiercerScript.nightManager = nightManager;
+        railPiercerScript.nightSFXManager = nightSFXManager;
 
         railPiercerScript.coolTimeImage = coolTimeImageArr[iconIdx];
         railPiercerScript.SetItemRank(getRank);
@@ -436,6 +452,7 @@ public class ItemManager : MonoBehaviour
             coolTimeImageArr[iconIdx].fillAmount = 1;
             character.HealHp(healHp, firstAdeParent);
 
+            nightSFXManager.PlayAudioClip(AudioClipName.firstAde);
             StartCoroutine(SetCooltimeCoroutine(iconIdx, coolTime));
             yield return new WaitForSeconds(coolTime);
         }
@@ -480,6 +497,7 @@ public class ItemManager : MonoBehaviour
         while (!nightManager.isStageEnd)
         {
             character.SetShieldPointData(shieldPoint);
+            nightSFXManager.PlayAudioClip(AudioClipName.barrior);
             barriorScript.CreateBarrior();
             
             yield return new WaitUntil(() => character.ReturnCharacterShieldPoint() == 0);
@@ -551,6 +569,7 @@ public class ItemManager : MonoBehaviour
 
         while (!nightManager.isStageEnd)
         {
+            nightSFXManager.PlayAudioClip(AudioClipName.hologramTrick);
             character.isHologramTrickOn = true;
             yield return new WaitForSeconds(duration);
             character.isHologramTrickOn = false;
@@ -652,6 +671,7 @@ public class ItemManager : MonoBehaviour
         
         while (!nightManager.isStageEnd)
         {
+            nightSFXManager.PlayAudioClip(AudioClipName.moveBack);
             character.isMoveBackOn = true;
 
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
@@ -701,6 +721,7 @@ public class ItemManager : MonoBehaviour
 
         while (!nightManager.isStageEnd)
         {
+            nightSFXManager.PlayAudioClip(AudioClipName.booster);
             character.SetMoveSpeed(speed);
             yield return new WaitForSeconds(duration);
             character.SetMoveSpeed(getBasicSpeed);
@@ -746,6 +767,7 @@ public class ItemManager : MonoBehaviour
         interceptDroneParent.transform.localPosition = character.transform.position;
         interceptDroneParent.GetComponent<InterceptDrone>().character = character;
         interceptDroneParent.GetComponent<InterceptDrone>().nightManager = nightManager;
+        interceptDroneParent.GetComponent<InterceptDrone>().nightSFXManager = nightSFXManager;
         interceptDroneParent.GetComponent<InterceptDrone>().coolTimeImage = coolTimeImageArr[iconIdx];
         interceptDroneParent.GetComponent<InterceptDrone>().SetItemRank(getRank);
 
