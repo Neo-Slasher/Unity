@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         this.player =  JsonUtility.FromJson<Player>(initData);
 
         //�۾��� ���� ġƮ
-        Cheat();
+        //Cheat();
 
         SavePlayerData();
     }
