@@ -5,6 +5,7 @@ using UnityEngine;
 
 [Serializable]
 public class Player {
+    public int newGame; // 회차를 나타냅니다. 1회차=1, 2회차=2  
     // defalut
     public int day;     //정윤석: 날짜를 세이브하기 위해서 넣었습니다. 제이슨도 바꿨어요.
     public int difficulty;
