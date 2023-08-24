@@ -15,6 +15,7 @@ public class DataManager : MonoBehaviour
     public ItemList itemList;
     public MonsterList monsterList;
     public StoryList storyList;
+    public ExpList expList;
 
     
     void Awake()
@@ -59,6 +60,9 @@ public class DataManager : MonoBehaviour
         string StoryData = File.ReadAllText(Application.dataPath + "/Data/Json/Story.json");
         storyList = JsonUtility.FromJson<StoryList>(StoryData);
 
-        Debug.Log(storyList.stories[0].story[0]);
+        // exp data
+        string ExpData = File.ReadAllText(Application.dataPath + "/Data/Json/Exp.json");
+        expList = JsonUtility.FromJson<ExpList>(ExpData);
+
     }
 }
