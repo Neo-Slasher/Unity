@@ -10,10 +10,12 @@ public class CutSceneManager : MonoBehaviour {
     public List<string> stories;
     public int storyNumber;
     public float speed = 0.07f;
+    public bool autoStory = false;
+    public bool touchScreen = false;
 
     // Start is called before the first frame update
     void Start() {
-        stories = DataManager.instance.storyList.stories[GameManager.instance.player.day - 1].story;
+        stories = DataManager.instance.storyList.stories[GameManager.instance.player.newGame - 1].story;
         StartStory();
     }
 
@@ -23,8 +25,13 @@ public class CutSceneManager : MonoBehaviour {
 
 
     public void OnClickAutoButton() {
-
+        autoStory = !autoStory;
     }
+
+    public void OnClickScreen() {
+        touchScreen = true;
+    }
+  
 
     IEnumerator Typing(TextMeshProUGUI typingText, string message, float speed) {
         for (int i = 0; i < message.Length; i++) {
@@ -32,7 +39,11 @@ public class CutSceneManager : MonoBehaviour {
             yield return new WaitForSeconds(speed);
         }
 
-        yield return new WaitForSeconds(1.5f);
+        touchScreen = false;
+        if (autoStory)
+            yield return new WaitForSeconds(1.5f);
+        else
+            yield return new WaitUntil(() => touchScreen == true);
         storyNumber++;
         NextStory();
     }
