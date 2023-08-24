@@ -16,7 +16,12 @@ public class MainManager : MonoBehaviour
 
 
     void Start() {
-        GameManager.instance.LoadPlayerData();
+        if (GameManager.instance.hasSavedData) {
+            GameManager.instance.LoadPlayerData();
+        }
+        else {
+            GameManager.instance.InitPlayerData();
+        }
         if (GameManager.instance.player.day == 1) {
             continueButton.interactable = false;
         }
@@ -27,7 +32,7 @@ public class MainManager : MonoBehaviour
 
     public void StartNewGame() {
         GameManager.instance.player.day = 1;
-        // TODO: 특성 아이템 초기화 해야할 수도
+        // TODO: 특성 아이템 초기화 해야할 수
         SceneManager.LoadScene("CutScene"); 
     }
 

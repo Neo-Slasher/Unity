@@ -56,6 +56,7 @@ public class CutSceneManager : MonoBehaviour {
     public void NextStory() {
         if (storyNumber == stories.Count) { // debug
             storyNumber = 0;
+            SceneManager.LoadScene("PreparationScene");
             return;
         }
         StartCoroutine(Typing(typingText, stories[storyNumber], speed));
