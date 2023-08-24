@@ -394,7 +394,7 @@ public class NightManager : MonoBehaviour
     }
 
     //환경설정 여는 함수
-    public void OnClickPreferenceBtn()
+    public void OnClickSettingBtn()
     {
         settingParent.SetActive(true);
         Time.timeScale = 0;

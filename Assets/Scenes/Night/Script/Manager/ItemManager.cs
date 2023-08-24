@@ -567,6 +567,8 @@ public class ItemManager : MonoBehaviour
                 break;
         }
 
+        timeCount *= -1;
+
         while (!nightManager.isStageEnd)
         {
             nightSFXManager.PlayAudioClip(AudioClipName.hologramTrick);
