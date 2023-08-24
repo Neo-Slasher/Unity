@@ -15,7 +15,7 @@ public class CutSceneManager : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        stories = DataManager.instance.storyList.stories[GameManager.instance.player.newGame - 1].story;
+        stories = DataManager.instance.storyList.stories[GameManager.instance.player.difficulty].story;
         StartStory();
     }
 

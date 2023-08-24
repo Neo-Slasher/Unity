@@ -37,9 +37,6 @@ public class GameManager : MonoBehaviour
         string initData = File.ReadAllText(Application.dataPath + "/Data/Json/InitPlayer.json");
         this.player =  JsonUtility.FromJson<Player>(initData);
 
-        //�۾��� ���� ġƮ
-        //Cheat();
-
         SavePlayerData();
     }
 

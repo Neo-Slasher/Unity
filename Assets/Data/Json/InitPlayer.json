@@ -1,5 +1,5 @@
 {
-    "newGame": 1,
+    "playingGame": false,
     "day": 1,
     "difficulty": 0,
     "assassinationCount": 0,
