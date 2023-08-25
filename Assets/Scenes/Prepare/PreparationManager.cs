@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.U2D.Animation;
 using static PreparationManager;
 
 public class PreparationManager : MonoBehaviour
@@ -49,7 +48,21 @@ public class PreparationManager : MonoBehaviour
     public GameObject traitBoard2;
     public GameObject traitBoard3;
     public GameObject traitBoard4;
-    public Image traitImage;        
+    public Image traitImage;
+
+    public Image levelSelect1;
+    public Image levelSelect2;
+    public Image levelSelect3;
+    public Image levelSelect4;
+    public Sprite levelBackground1;
+    public Sprite levelBackgroundSelect1;
+    public Sprite levelBackground2;
+    public Sprite levelBackgroundSelect2;
+    public Sprite levelBackground3;
+    public Sprite levelBackgroundSelect3;
+    public Sprite levelBackground4;
+    public Sprite levelBackgroundSelect4;
+
 
     public Button[] traitButtons;
     private GameObject[] traitButtonss = new GameObject[63];
@@ -58,8 +71,6 @@ public class PreparationManager : MonoBehaviour
 
     public Player addValueByTrait;
 
-    void Awake() {
-    }
 
     void Start() {
         LoadStatus();
@@ -70,6 +81,8 @@ public class PreparationManager : MonoBehaviour
         LoadSelectedTraitUI();
         UnActiveTraitButton();
         UnActiveTraitBoard();
+
+        OnClickFirstTraitButton();
     }
 
     // GameObject.Find는 Active된 오브젝트만 찾을 수 있으므로 주
@@ -196,6 +209,10 @@ public class PreparationManager : MonoBehaviour
         traitBoard2.SetActive(false);
         traitBoard3.SetActive(false);
         traitBoard4.SetActive(false);
+        levelSelect1.sprite = levelBackgroundSelect1;
+        levelSelect2.sprite = levelBackground2;
+        levelSelect3.sprite = levelBackground3;
+        levelSelect4.sprite = levelBackground4;
     }
 
     public void OnClickSecondTraitButton() {
@@ -203,6 +220,10 @@ public class PreparationManager : MonoBehaviour
         traitBoard2.SetActive(true);
         traitBoard3.SetActive(false);
         traitBoard4.SetActive(false);
+        levelSelect1.sprite = levelBackground1;
+        levelSelect2.sprite = levelBackgroundSelect2;
+        levelSelect3.sprite = levelBackground3;
+        levelSelect4.sprite = levelBackground4;
     }
 
     public void OnClickThirdTraitButton() {
@@ -210,6 +231,10 @@ public class PreparationManager : MonoBehaviour
         traitBoard2.SetActive(false);
         traitBoard3.SetActive(true);
         traitBoard4.SetActive(false);
+        levelSelect1.sprite = levelBackground1;
+        levelSelect2.sprite = levelBackground2;
+        levelSelect3.sprite = levelBackgroundSelect3;
+        levelSelect4.sprite = levelBackground4;
     }
 
     public void OnClickFourthTraitButton() {
@@ -217,6 +242,10 @@ public class PreparationManager : MonoBehaviour
         traitBoard2.SetActive(false);
         traitBoard3.SetActive(false);
         traitBoard4.SetActive(true);
+        levelSelect1.sprite = levelBackground1;
+        levelSelect2.sprite = levelBackground2;
+        levelSelect3.sprite = levelBackground3;
+        levelSelect4.sprite = levelBackgroundSelect4;
     }
 
 

@@ -59,4 +59,8 @@ public class GameManager : MonoBehaviour
         player.level = 20;
         player.money = 100000;
     }
+
+    public void ChangeJoyStickSize(float value) {
+        GameManager.instance.player.joyStickSize = value;
+    }
 }

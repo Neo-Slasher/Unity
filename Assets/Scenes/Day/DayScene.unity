@@ -10779,6 +10779,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1500686427}
     m_Modifications:
+    - target: {fileID: 2312053015389467832, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
+      propertyPath: m_MaxValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312053015389467832, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312053015389467832, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312053015389467832, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1249736952}
+    - target: {fileID: 2312053015389467832, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312053015389467832, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeJoyStickSize
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312053015389467832, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312053015389467832, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2312053015481032124, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
       propertyPath: m_MaxValue
       value: 20
@@ -11691,6 +11723,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74dfe155df71148eeb85317a6c978277, type: 3}
+--- !u!114 &1249736952 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6674970160995906164, guid: 74dfe155df71148eeb85317a6c978277, type: 3}
+  m_PrefabInstance: {fileID: 1249736951}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebcd3106b5ee841be99077c37b4254bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1262733889
 GameObject:
   m_ObjectHideFlags: 0
@@ -16441,13 +16484,10 @@ MonoBehaviour:
   currentCP: 0
   selectNum: 0
   Player:
-    newGame: 0
+    playingGame: 0
     day: 0
     difficulty: 0
     assassinationCount: 0
-    backGroundMusicVolume: 0
-    effectSoundVolume: 0
-    joyStickSize: 0
     level: 0
     reqExp: 0
     curExp: 0
@@ -16484,6 +16524,7 @@ MonoBehaviour:
     item: []
     bgm_volume: 0
     sfx_volume: 0
+    joyStickSize: 0
   hitpoint: {fileID: 963434415}
   movespeed: {fileID: 983055410}
   attackpower: {fileID: 1007526242}
@@ -16534,13 +16575,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Day: {fileID: 1783176526}
   Player:
-    newGame: 0
+    playingGame: 0
     day: 0
     difficulty: 0
     assassinationCount: 0
-    backGroundMusicVolume: 0
-    effectSoundVolume: 0
-    joyStickSize: 0
     level: 0
     reqExp: 0
     curExp: 0
@@ -16577,6 +16615,7 @@ MonoBehaviour:
     item: []
     bgm_volume: 0
     sfx_volume: 0
+    joyStickSize: 0
 --- !u!114 &1715013365
 MonoBehaviour:
   m_ObjectHideFlags: 0
