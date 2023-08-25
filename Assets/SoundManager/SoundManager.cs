@@ -8,15 +8,16 @@ using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
 {
-    public AudioMixer audioMixer;
+    public AudioMixer bgmMixer;
+    public AudioMixer sfxMixer;
 
     public void ChangeBgmVolume(float value) {
-        audioMixer.SetFloat("BGM", value);
+        bgmMixer.SetFloat("BGM", value);
         GameManager.instance.player.bgm_volume = value;
     }
 
     public void ChangeSfxVolume(float value) {
-        audioMixer.SetFloat("SFX", value);
+        sfxMixer.SetFloat("SFX", value);
         GameManager.instance.player.sfx_volume = value;
     }
 }

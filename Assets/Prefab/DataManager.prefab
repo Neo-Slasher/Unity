@@ -44,3 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0e4f308bbf424e8b493ac214eb858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  difficultyList:
+    difficulty: []
+  traitList:
+    trait: []
+  equipmentList:
+    equipment: []
+  assassinationStageList:
+    assassinationStage: []
+  itemList:
+    item: []
+  monsterList:
+    monster: []
+  storyList:
+    stories: []
+  expList:
+    exp: []

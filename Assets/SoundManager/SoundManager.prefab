@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b57b6f7a13143a78c878bdf8a377ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgm_slider: {fileID: 0}
-  sfx_slider: {fileID: 0}
+  bgmMixer: {fileID: 24100000, guid: f17250268b98f4e9e810e495ef3b1681, type: 2}
+  sfxMixer: {fileID: 24100000, guid: 47babc0110f594ca0b26814e6be3a90c, type: 2}

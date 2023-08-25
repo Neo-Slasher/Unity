@@ -46,10 +46,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasSavedData: 0
   player:
+    playingGame: 0
+    day: 0
+    difficulty: 0
+    assassinationCount: 0
     level: 0
     reqExp: 0
     curExp: 0
     money: 0
+    startMoney: 0
+    earnMoney: 0
     maxHp: 0
     curHp: 0
     attackPower: 0
@@ -69,4 +75,15 @@ MonoBehaviour:
     dealOnCurHp: 0
     healByHit: 0
     hpRegen: 0
+    shopSlot: 0
+    shopMinRank: 0
+    shopMaxRank: 0
+    dropRank: 0
+    dropRate: 0
+    itemSlot: 0
     trait: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    equipment: []
+    item: []
+    bgm_volume: 0
+    sfx_volume: 0
+    joyStickSize: 0
