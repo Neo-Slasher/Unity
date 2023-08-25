@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
 
-        if (!File.Exists(Application.dataPath + "/UserData.json")) {
+        if (!File.Exists(Application.persistentDataPath + "/UserData.json")) {
             hasSavedData = false;
         } else {
             hasSavedData = true;
@@ -34,21 +35,26 @@ public class GameManager : MonoBehaviour
     public void InitPlayerData() {
         // init player
         this.player = new Player();
+#if UNITY_EDITOR
         string initData = File.ReadAllText(Application.dataPath + "/Data/Json/InitPlayer.json");
-        this.player =  JsonUtility.FromJson<Player>(initData);
-
+        this.player = JsonUtility.FromJson<Player>(initData);
+#endif
+#if UNITY_ANDROID
+        this.player = ResourceDataLoad<Player>("InitPlayer");
+#endif
         SavePlayerData();
     }
 
     public void SavePlayerData() {
         string json = JsonUtility.ToJson(this.player);
-        File.WriteAllText(Application.dataPath + "/UserData.json", json);
-        // File.WriteAllText(Application.persistentDataPath + "/UserData.json", json);
+
+        File.WriteAllText(Application.persistentDataPath + "/UserData.json", json);
+
     }
 
     public void LoadPlayerData() {
-        string savedData = File.ReadAllText(Application.dataPath + "/UserData.json");
-        //string savedData = File.ReadAllText(Application.persistentDataPath + "/UserData.json");
+        string savedData = File.ReadAllText(Application.persistentDataPath + "/UserData.json");
+
         this.player = JsonUtility.FromJson<Player>(savedData);
     }
 
@@ -62,5 +68,22 @@ public class GameManager : MonoBehaviour
 
     public void ChangeJoyStickSize(float value) {
         GameManager.instance.player.joyStickSize = value;
+    }
+
+    public T ResourceDataLoad<T>(string name) {
+        T gameData;
+
+        string directory = "Json/";
+        string appender1 = name;
+
+        StringBuilder builder = new StringBuilder(directory);
+        builder.Append(appender1);
+
+        TextAsset jsonString = Resources.Load<TextAsset>(builder.ToString());
+
+        gameData = JsonUtility.FromJson<T>(jsonString.ToString());
+
+
+        return gameData;
     }
 }
