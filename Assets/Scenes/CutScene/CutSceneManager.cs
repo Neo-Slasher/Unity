@@ -8,6 +8,8 @@ using TMPro;
 public class CutSceneManager : MonoBehaviour {
     public TextMeshProUGUI typingText;
     public List<string> stories;
+    public Image background;
+    public List<Sprite> backgrounds;
     public int storyNumber;
     public float speed = 0.07f;
     public bool autoStory = false;
@@ -16,6 +18,7 @@ public class CutSceneManager : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         stories = DataManager.instance.storyList.stories[GameManager.instance.player.difficulty].story;
+        background.sprite = backgrounds[GameManager.instance.player.difficulty];
         StartStory();
     }
 
