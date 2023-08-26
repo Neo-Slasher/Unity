@@ -131,20 +131,20 @@ public class SelectRepair : MonoBehaviour
             else if(part == 2)
                 Part.text = " / 보조";
 
-            info = script;
-
             if(powerC)
             {
-                info = script.Replace("#at#", (powerP * attackPower).ToString());
+                script = script.Replace("#at#", (powerP * attackPower).ToString());
             }
             if(speedC)
             {
-                info = script.Replace("#as#", (speedP * attackSpeed).ToString());
+                script = script.Replace("#as#", (speedP * attackSpeed).ToString());
             }
             if(rangeC)
             {
-                info = script.Replace("#ar#", (rangeP * attackRange).ToString());
+                script = script.Replace("#ar#", (rangeP * attackRange).ToString());
             }
+
+            info = script;
 
             Info.text = "<size=20> " + info + "</size>";
         }
