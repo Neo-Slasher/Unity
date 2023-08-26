@@ -502,7 +502,7 @@ public class ItemManager : MonoBehaviour
             
             yield return new WaitUntil(() => character.ReturnCharacterShieldPoint() == 0);
             barriorScript.SetBarriorActive(false);
-
+            Debug.Log(timeCount);
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
                 coolTimeImageArr[iconIdx].fillAmount = 1;
             StartCoroutine(SetCooltimeCoroutine(iconIdx, (float)timeCount));

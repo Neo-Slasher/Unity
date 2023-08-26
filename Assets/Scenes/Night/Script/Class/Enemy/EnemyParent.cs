@@ -74,6 +74,12 @@ public class EnemyParent : MonoBehaviour
 
             nowCharPos = character.transform.position;
             moveDir = nowCharPos - this.transform.position;
+
+            if (moveDir.x >= 0)
+                this.transform.localScale = new Vector3(-1, 1, 1);
+            else
+                this.transform.localScale = new Vector3(1, 1, 1);
+
             enemyRigid.velocity = moveDir.normalized * SetMoveSpeed(enemyData.moveSpeed);
             yield return new WaitForSeconds(1);
         }

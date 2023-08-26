@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     public void InitPlayerData() {
         // init player
         this.player = new Player();
+        GameManager.instance.player.item.Add(DataManager.instance.itemList.item[6]);
 #if UNITY_EDITOR
         string initData = File.ReadAllText(Application.dataPath + "/Data/Json/InitPlayer.json");
         this.player = JsonUtility.FromJson<Player>(initData);
