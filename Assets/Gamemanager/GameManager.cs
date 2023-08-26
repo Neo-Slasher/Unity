@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void SavePlayerData() {
+        player.playingGame = true;
         string json = JsonUtility.ToJson(this.player);
 
         File.WriteAllText(Application.persistentDataPath + "/UserData.json", json);

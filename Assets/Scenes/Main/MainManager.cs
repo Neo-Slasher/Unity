@@ -28,12 +28,19 @@ public class MainManager : MonoBehaviour
 
         startPopup.SetActive(false);
         exitPopup.SetActive(false);
+
     }
 
     public void StartNewGame() {
-        GameManager.instance.player.day = 1;
-        // TODO: 특성 아이템 초기화 해야할 수
+        // 초기화
         SceneManager.LoadScene("CutScene"); 
+    }
+
+    public void ResetPlayer() {
+        GameManager.instance.player.difficulty = 0;
+        GameManager.instance.player.money = 0;
+        GameManager.instance.player.item = new List<Item>();
+        GameManager.instance.player.equipment = new List<Equipment>();
     }
 
     public void OnClickStartButton() {

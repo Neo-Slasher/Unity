@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DayManager : MonoBehaviour
 {
@@ -10,7 +11,12 @@ public class DayManager : MonoBehaviour
         setting.SetActive(true);
     }
 
-    public void OnClickSettingExitButton() {
+    public void OnClickSettingContinueButton() {
         setting.SetActive(false);
+    }
+
+    public void OnClickSettingExitButton() {
+        GameManager.instance.SavePlayerData();
+        SceneManager.LoadScene("MainScene");
     }
 }

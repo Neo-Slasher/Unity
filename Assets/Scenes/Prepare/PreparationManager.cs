@@ -24,7 +24,7 @@ public class PreparationManager : MonoBehaviour
     public TextMeshProUGUI addAttackSpeedText;
     public TextMeshProUGUI attackRangeText;
     public TextMeshProUGUI addAttackRangeText;
-    public TextMeshProUGUI moneyText;
+    public TextMeshProUGUI startMoneyText;
     public TextMeshProUGUI getMoneyText;    
 
     public Button difficultyLeftButton;
@@ -71,10 +71,13 @@ public class PreparationManager : MonoBehaviour
 
     public Player addValueByTrait;
 
+    public Button startButton;
+    public int traitCount;
 
     void Start() {
+        traitCount = 0;
         LoadStatus();
-        GameManager.instance.player.difficulty = 0;
+        LoadAddStatus();
         LoadDifficulty();
         ActivateDifficultyButton();
         LoadTraitButton();
@@ -83,6 +86,7 @@ public class PreparationManager : MonoBehaviour
         UnActiveTraitBoard();
 
         OnClickFirstTraitButton();
+        CheckStartButton();
     }
 
     // GameObject.Find는 Active된 오브젝트만 찾을 수 있으므로 주
@@ -102,30 +106,40 @@ public class PreparationManager : MonoBehaviour
         traitImage.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = traitButtonss[1].transform.GetChild(1).gameObject.GetComponent<Image>().sprite;
     }
 
+    private int GetMaxTraitCount() {
+        int level = GameManager.instance.player.level;
+        if (level == 1) return 2;
+        else if (level == 2) return 5;
+        else if (level == 3) return 8;
+        else if (level == 4) return 10;
+        else if (level == 5) return 13;
+        else if (level == 6) return 15;
+        else if (level == 7) return 19;
+        else if (level == 8) return 22;
+        else if (level == 9) return 25;
+        else if (level == 10) return 29;
+        else if (level == 11) return 32;
+        else if (level == 12) return 35;
+        else if (level == 13) return 38;
+        else if (level == 14) return 41;
+        else if (level == 15) return 45;
+        else if (level == 16) return 48;
+        else if (level == 17) return 52;
+        else if (level == 18) return 55;
+        else if (level == 19) return 58;
+        else if (level == 20) return 62;
+        return 0;
+    }
+
     // 본인 레벨 이하의 특성만 선택 가능하도록 버튼 off
     private void UnActiveTraitButton() {
-        int level = GameManager.instance.player.level;
-        int maxTraitButton = 0;
-        if (level == 1) maxTraitButton = 2;
-        else if (level == 2) maxTraitButton = 5;
-        else if (level == 3) maxTraitButton = 8;
-        else if (level == 4) maxTraitButton = 10;
-        else if (level == 5) maxTraitButton = 13;
-        else if (level == 6) maxTraitButton = 15;
-        else if (level == 7) maxTraitButton = 19;
-        else if (level == 8) maxTraitButton = 22;
-        else if (level == 9) maxTraitButton = 25;
-        else if (level == 10) maxTraitButton = 29;
-        else if (level == 11) maxTraitButton = 32;
-        else if (level == 12) maxTraitButton = 35;
-        else if (level == 13) maxTraitButton = 38;
-        else if (level == 14) maxTraitButton = 41;
-        else if (level == 15) maxTraitButton = 45;
-        else if (level == 16) maxTraitButton = 48;
-        else if (level == 17) maxTraitButton = 52;
-        else if (level == 18) maxTraitButton = 55;
-        else if (level == 19) maxTraitButton = 58;
-        else if (level == 20) maxTraitButton = 62;
+        int maxTraitButton = GetMaxTraitCount();
+        for (int i = 1; i <= maxTraitButton; ++i) {
+            if (GameManager.instance.player.trait[i]) {
+                traitCount++;
+                traitButtonss[i].GetComponent<Button>().interactable = false;
+            }
+        }
         for (int i = maxTraitButton + 1; i <= 62; ++i) {
             traitButtonss[i].GetComponent<Button>().interactable = false;
         }
@@ -147,7 +161,7 @@ public class PreparationManager : MonoBehaviour
         attackPowerText.text = GameManager.instance.player.attackPower.ToString();
         attackSpeedText.text = GameManager.instance.player.attackSpeed.ToString();
         attackRangeText.text = GameManager.instance.player.attackRange.ToString();
-        moneyText.text = GameManager.instance.player.money.ToString();
+        startMoneyText.text = GameManager.instance.player.startMoney.ToString();
     }
 
     public void OnClickDifficultyLeftButton() {
@@ -174,11 +188,11 @@ public class PreparationManager : MonoBehaviour
         recommandLvText.text = "권장 Lv." + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].recommandLv.ToString();
         rewardExpText.text = "보상 EXP " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].rewardExp.ToString();
         goalMoneyText.text = "- 목표금액 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].goalMoney.ToString();
-        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyStatus.ToString() + "%";
-        normalEnhanceText.text = "- 일반 적이 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].normalEnhance.ToString() + "% 확률로 강화";
-        eliteEnhanceText.text = "- 정예 적이 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].eliteEnhance.ToString() + "% 확률로 강화";
-        dropRankText.text = "- 아이템 드롭률 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].dropRank.ToString() + "%";
-        enemyRespawnText.text = "- 적 개체수 +" + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyRespawn.ToString() + "%";
+        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyStatus.ToString() + "%";
+        normalEnhanceText.text = "- 일반 적이 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].normalEnhance * 100f).ToString() + "% 확률로 강화";
+        eliteEnhanceText.text = "- 정예 적이 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].eliteEnhance * 100f).ToString() + "% 확률로 강화";
+        dropRankText.text = "- 아이템 드롭률 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].dropRank * 100f).ToString() + "%";
+        enemyRespawnText.text = "- 적 개체수 +" + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyRespawn * 100f).ToString() + "%";
     }
 
 
@@ -194,11 +208,12 @@ public class PreparationManager : MonoBehaviour
     }
 
     public void LoadAddStatus() {
-        addMaxHpText.text = "+" + traitManager.dummyPlayer.maxHp;
-        addMoveSpeedText.text = "+" + traitManager.dummyPlayer.moveSpeed;
-        addAttackPowerText.text = "+" + traitManager.dummyPlayer.attackPower;
-        addAttackSpeedText.text = "+" + traitManager.dummyPlayer.attackSpeed;
-        addAttackRangeText.text = "+" + traitManager.dummyPlayer.attackRange;
+        addMaxHpText.text = (traitManager.dummyPlayer.maxHp > 0 ? "+" : "") + traitManager.dummyPlayer.maxHp;
+        addMoveSpeedText.text = (traitManager.dummyPlayer.moveSpeed > 0 ? "+" : "") + traitManager.dummyPlayer.moveSpeed;
+        addAttackPowerText.text = (traitManager.dummyPlayer.attackPower > 0 ? "+" : "") + traitManager.dummyPlayer.attackPower;
+        addAttackSpeedText.text = (traitManager.dummyPlayer.attackSpeed > 0 ? "+" : "") + traitManager.dummyPlayer.attackSpeed;
+        addAttackRangeText.text = (traitManager.dummyPlayer.attackRange > 0 ? "+" : "") + traitManager.dummyPlayer.attackRange;
+        startMoneyText.text = (GameManager.instance.player.startMoney + traitManager.dummyPlayer.startMoney).ToString();
         getMoneyText.text = (GameManager.instance.player.earnMoney + traitManager.dummyPlayer.earnMoney).ToString();
     }
 
@@ -267,7 +282,14 @@ public class PreparationManager : MonoBehaviour
         traitImage.sprite = button.GetComponent<Image>().sprite;
         traitImage.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = button.transform.GetChild(1).gameObject.GetComponent<Image>().sprite;
 
+        traitCount++;
         LoadAddStatus();
+
+        CheckStartButton();
+    }
+
+    void CheckStartButton() {
+        startButton.interactable = (traitCount == GameManager.instance.player.level) ? true : false;
     }
 
 
@@ -275,6 +297,7 @@ public class PreparationManager : MonoBehaviour
         traitManager.unactiveTrait(DataManager.instance.traitList.trait[traitNumber - 1]);
         traitButtons[traitNumber].interactable = true;
         GameManager.instance.player.trait[traitNumber] = false;
+        traitCount--;
     }
 
     void DisableTraitInSameLevel(int traitNumber) {

@@ -6,6 +6,7 @@ public class PreparationTraitManager : MonoBehaviour
 {
     public Player dummyPlayer;
 
+
     public enum EffectType {
         none, hp, moveSpeed, attackPower, attackSpeed,
         attackRange, startMoney, earnMoney, shopSlot,

@@ -23,7 +23,7 @@
         },
         {
             "index": 2,
-            "name": "'어설픈 기습''",
+            "name": "어설픈 기습",
             "requireLv": 1,
             "rank": 0,
             "imageIndex": 2,
@@ -359,7 +359,7 @@
         },
         {
             "index": 18,
-            "name": "'중급 골격 강화''",
+            "name": "중급 골격 강화",
             "requireLv": 7,
             "rank": 0,
             "imageIndex": 1,
@@ -1010,7 +1010,7 @@
         },
         {
             "index": 49,
-            "name": "'고급 골격 강화''",
+            "name": "고급 골격 강화",
             "requireLv": 17,
             "rank": 0,
             "imageIndex": 1,
