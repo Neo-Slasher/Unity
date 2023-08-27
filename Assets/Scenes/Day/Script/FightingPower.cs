@@ -16,28 +16,17 @@ public class FightingPower : MonoBehaviour
     public int selectNum;
     public Player Player;
 
-    public TMP_Text hitpoint;
-    public TMP_Text movespeed;
-    public TMP_Text attackpower;
-    public TMP_Text attackspeed;
-    public TMP_Text attackrange;
-    
-    public TMP_Text startmoney;
-    public TMP_Text earnmoney;
-
-    public TMP_Text mdiff;
-    public TMP_Text pdiff;
-    public TMP_Text sdiff;
-    public TMP_Text rdiff;
-
     public TMP_Text money;
     public TMP_Text currentcp;
-    
+
+    public TMP_Text stacks;
+    public TMP_Text diffs;
     // Start is called before the first frame update
     void Awake()
     {
         Player = GameManager.instance.player;
         
+        CalculatePower();
         Printing();
     }
 
@@ -57,44 +46,48 @@ public class FightingPower : MonoBehaviour
         
         SwitchInfo();
         CalculatePower();
+        PrintingDiff();
     }
 
     public void Printing()
     {
-        hitpoint.text = Player.maxHp.ToString();
-        movespeed.text = Player.moveSpeed.ToString();
-        attackspeed.text = Player.attackSpeed.ToString();
-        attackpower.text = Player.attackPower.ToString();
-        attackrange.text = Player.attackRange.ToString();
+        CalculatePower();
         
-        startmoney.text = Player.startMoney.ToString();
-        earnmoney.text = Player.earnMoney.ToString();
-
         money.text = Player.money.ToString() + "a / " + DataManager.instance.difficultyList.difficulty[Player.difficulty].goalMoney + "a";
         currentcp.text = currentCP.ToString();
+
+        stacks.text = Player.maxHp.ToString() + "\n";
+        stacks.text += Player.moveSpeed.ToString() + "\n";
+        stacks.text += Player.attackSpeed.ToString() + "\n";
+        stacks.text += Player.attackPower.ToString() + "\n";
+        stacks.text += Player.attackRange.ToString() + "\n";
+        stacks.text += "\n" + Player.startMoney.ToString() + "\n";
+        stacks.text += Player.earnMoney.ToString() + "\n";
+        
     }
     public void PrintingDiff()
     {
         Printing();
+       
         if(DataManager.instance.equipmentList.equipment[selectNum].attackPower > 0)
-            pdiff.text = "+" + DataManager.instance.equipmentList.equipment[selectNum].attackPower.ToString();
+            diffs.text = "\n" + "+" +  DataManager.instance.equipmentList.equipment[selectNum].attackPower.ToString() + "\n";
         else if(DataManager.instance.equipmentList.equipment[selectNum].attackPower < 0)
-            pdiff.text = DataManager.instance.equipmentList.equipment[selectNum].attackPower.ToString();
+            diffs.text = "\n" + DataManager.instance.equipmentList.equipment[selectNum].attackPower.ToString() + "\n";
         
         if(DataManager.instance.equipmentList.equipment[selectNum].attackSpeed > 0)
-            sdiff.text = "+" + DataManager.instance.equipmentList.equipment[selectNum].attackSpeed.ToString();
+            diffs.text += "+" + DataManager.instance.equipmentList.equipment[selectNum].attackSpeed.ToString() + "\n";
         else if(DataManager.instance.equipmentList.equipment[selectNum].attackSpeed < 0)
-            sdiff.text = DataManager.instance.equipmentList.equipment[selectNum].attackSpeed.ToString();
+            diffs.text += DataManager.instance.equipmentList.equipment[selectNum].attackSpeed.ToString() + "\n";
         
         if(DataManager.instance.equipmentList.equipment[selectNum].attackRange > 0)
-            rdiff.text = "+" + DataManager.instance.equipmentList.equipment[selectNum].attackRange.ToString();
+            diffs.text += "+" + DataManager.instance.equipmentList.equipment[selectNum].attackRange.ToString() + "\n";
         else if(DataManager.instance.equipmentList.equipment[selectNum].attackRange < 0)
-            rdiff.text = DataManager.instance.equipmentList.equipment[selectNum].attackRange.ToString();
+            diffs.text += DataManager.instance.equipmentList.equipment[selectNum].attackRange.ToString() + "\n";
 
         if(DataManager.instance.equipmentList.equipment[selectNum].moveSpeed > 0)
-            mdiff.text = "+" + DataManager.instance.equipmentList.equipment[selectNum].moveSpeed.ToString();
+            diffs.text += "+" + DataManager.instance.equipmentList.equipment[selectNum].moveSpeed.ToString() + "\n";
         else if(DataManager.instance.equipmentList.equipment[selectNum].moveSpeed < 0)
-            mdiff.text = DataManager.instance.equipmentList.equipment[selectNum].moveSpeed.ToString();
+            diffs.text += DataManager.instance.equipmentList.equipment[selectNum].moveSpeed.ToString() + "\n";
     }
     void CalculatePower()
     {

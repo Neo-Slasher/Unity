@@ -7,6 +7,7 @@ public class CompareItem : MonoBehaviour
 {
     public FightingPower FightingPower;
     public ItemSlot ItemSlot;
+    public GameObject Pbutton;
     //////////////////////////////////////// 출력할 것들
     public GameObject BackGround;
     public GameObject equipPanel;
@@ -78,6 +79,9 @@ public class CompareItem : MonoBehaviour
             }
             selectPanel.SetActive(true);
             PrintingSelect();
+
+            if(GameManager.instance.player.money < price)
+                Pbutton.GetComponent<Button>().interactable = false;
         }
 
     }
@@ -106,12 +110,12 @@ public class CompareItem : MonoBehaviour
         selectPanel.SetActive(false);
         equipPanel.SetActive(false);
         itemPanel.SetActive(false);
-
+        Debug.Log(GameManager.instance.player.money);
 
     }
     public void Purchase()
     {
-        if (GameManager.instance.player.money > price)
+        if (GameManager.instance.player.money >= price)
         {
             if (chosen == -1)
             {
@@ -180,7 +184,10 @@ public class CompareItem : MonoBehaviour
             {
                 FightingPower.selectNum = selectNum;
                 FightingPower.ChangingPower();
-                FightingPower.PrintingDiff();
+            }
+            if(selectType == "item")
+            {
+                FightingPower.Printing();
             }
 
         }
@@ -346,20 +353,20 @@ public class CompareItem : MonoBehaviour
             else if (category == 2)
                 IPart.text = " / 보조";
 
-            info = script;
+            if(powerC)
+            {
+                script = script.Replace("#at#", (powerP * attackPower).ToString());
+            }
+            if(speedC)
+            {
+                script = script.Replace("#as#", (speedP * attackSpeed).ToString());
+            }
+            if(rangeC)
+            {
+                script = script.Replace("#ar#", (rangeP * attackRange).ToString());
+            }
 
-            if (powerC)
-            {
-                info = script.Replace("#at#", (powerP * iattackPower).ToString());
-            }
-            if (speedC)
-            {
-                info = script.Replace("#as#", (speedP * iattackSpeed).ToString());
-            }
-            if (rangeC)
-            {
-                info = script.Replace("#ar#", (rangeP * iattackRange).ToString());
-            }
+            info = script;
 
             IInfo.text = "<size=20>" + info + "</size>";
 
@@ -436,20 +443,20 @@ public class CompareItem : MonoBehaviour
             else if (part == 2)
                 SPart.text = " / 보조";
 
-            info = script;
+            if(powerC)
+            {
+                script = script.Replace("#at#", (powerP * attackPower).ToString());
+            }
+            if(speedC)
+            {
+                script = script.Replace("#as#", (speedP * attackSpeed).ToString());
+            }
+            if(rangeC)
+            {
+                script = script.Replace("#ar#", (rangeP * attackRange).ToString());
+            }
 
-            if (powerC)
-            {
-                info = script.Replace("#at#", (powerP * attackPower).ToString());
-            }
-            if (speedC)
-            {
-                info = script.Replace("#as#", (speedP * attackSpeed).ToString());
-            }
-            if (rangeC)
-            {
-                info = script.Replace("#ar#", (rangeP * attackRange).ToString());
-            }
+            info = script;
 
             SInfo.text = "<size=20>" + info + "</size>";
         }

@@ -17,12 +17,17 @@ public class ItemSlot : MonoBehaviour
 
     public int shopMinRank;
     public int shopMaxRank;
+
     public List<int> equips = new List<int>(); //랭크 기준에 부합하는 장비들 모음
+    public List<int> items = new List<int>();
 
     private int totalEquip = 48; //전체 장비 개수
     private int totalItem = 60; //전체 아이템 개수
+
     private int equipORitem; //장비와 아이템 랜덤 계수
+
     private int equipRank; //장비의 랭크(최대, 최소 랭크와 비교용)
+    private int itemRank;
 
     public int selectNum;
     public string selectType;
@@ -37,7 +42,7 @@ public class ItemSlot : MonoBehaviour
 
     void Start()
     {
-        slotNum = 3; //GameManager.instance.player.shopSlot;
+        slotNum = GameManager.instance.player.shopSlot;
         shopMinRank = GameManager.instance.player.shopMinRank;
         shopMaxRank = GameManager.instance.player.shopMaxRank; //값 넘겨받을 수 있을 때 고치기
 
@@ -66,6 +71,12 @@ public class ItemSlot : MonoBehaviour
             if (equipRank >= shopMinRank && equipRank <= shopMaxRank)
                 equips.Add(i);
         }
+        for (int i = 0; i < totalItem; i++)
+        {
+            itemRank = DataManager.instance.itemList.item[i].rank;
+            if(itemRank >= shopMinRank && itemRank <= shopMaxRank)
+                items.Add(i);
+        }
     }
 
     void RandomItem() //장비 및 아이템 종류 랜덤으로 선택
@@ -89,12 +100,12 @@ public class ItemSlot : MonoBehaviour
             }
             else if (equipORitem >= 6 && equipORitem <= 9)
             {
-                int itemNum = Random.Range(0, totalItem);
+                int itemNum = Random.Range(0, items.Count);
                 if(I.Contains(itemNum))
-                    itemNum = Random.Range(0, totalItem);
+                    itemNum = Random.Range(0, items.Count);
                 else
                 {
-                    shopslot.Add(new ShopSlot() { shopType = "item", shopNum = itemNum });
+                    shopslot.Add(new ShopSlot() { shopType = "item", shopNum = items[itemNum] });
                     I.Add(itemNum);
                 }
                 

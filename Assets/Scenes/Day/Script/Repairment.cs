@@ -66,7 +66,8 @@ public class Repairment : MonoBehaviour
         for(int i = GameManager.instance.player.item.Count; i < 3; i++)
         {
             items[i].interactable = false;
-            items[i].transform.Find("Image").gameObject.SetActive(true);
+            for(int j = GameManager.instance.player.shopSlot; j < 3; j++)
+                items[j].transform.Find("Image").gameObject.SetActive(true);
         }
 
     }

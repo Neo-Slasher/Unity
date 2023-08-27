@@ -12,6 +12,7 @@ public class AssacinationFPower : MonoBehaviour
 
     public TMP_Text StageRecCP;
     public TMP_Text CPGap;
+    public GameObject CheckMark;
     public int num;
 
     double stageRecCP;
@@ -25,10 +26,15 @@ public class AssacinationFPower : MonoBehaviour
     }
 
     // Update is called once per frame
-
+    void OnDisable()
+    {
+        CheckMark.SetActive(false);
+    }
     void Update()
     {
         BattlePower();
+        if(SceneSwitch.AsscinationNum != num)
+            CheckMark.SetActive(false);
     }
 
     void BattlePower()
@@ -61,5 +67,6 @@ public class AssacinationFPower : MonoBehaviour
     public void SelectRank()
     {
         SceneSwitch.AsscinationNum = num;
+        CheckMark.SetActive(true);
     }
 }
