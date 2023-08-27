@@ -291,8 +291,10 @@ public class NightManager : MonoBehaviour
             {
                 Player player = GameManager.instance.player;
                 GameManager.instance.player.curExp += DataManager.instance.difficultyList.difficulty[nowDifficulty].rewardExp;
+                GameManager.instance.player.day = 1;
+                GameManager.instance.player.playingGame = false;
 
-                while(player.reqExp < player.curExp)
+                while (player.reqExp < player.curExp)
                 {
                     GameManager.instance.player.curExp -= GameManager.instance.player.reqExp;
                     GameManager.instance.player.level++;

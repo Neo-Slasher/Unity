@@ -71,6 +71,7 @@ public class Character : MonoBehaviour
             characterData.curHp = characterData.maxHp;
         characterRigid = this.GetComponent<Rigidbody2D>();
         characterSpriteRanderer = GetComponent<SpriteRenderer>();
+        characterSpriteRanderer.flipX = false;
         animator = GetComponent<Animator>();
 
         //캐릭터의 스테이터스를 장비 등 변화에 따라 변화시킨다.
