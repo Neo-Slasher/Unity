@@ -5424,6 +5424,7 @@ MonoBehaviour:
   killElite: 0
   settingBtn: {fileID: 480298949}
   settingParent: {fileID: 782604556}
+  dayText: {fileID: 1383702050}
   itemSpriteArr:
   - {fileID: 0}
   - {fileID: 21300000, guid: ee654467a16a06e4caba57a50b66c0d7, type: 3}

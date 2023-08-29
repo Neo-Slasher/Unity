@@ -62,6 +62,8 @@ public class NightManager : MonoBehaviour
 
     //게임 종료 팝업
     [SerializeField]
+    TextMeshProUGUI dayText;
+    [SerializeField]
     Sprite[] itemSpriteArr;
     [SerializeField]
     Image getItemImage;
@@ -291,6 +293,10 @@ public class NightManager : MonoBehaviour
 
         killCountTextArr[0].text = killNormal.ToString();
         killCountTextArr[1].text = killElite.ToString();
+
+        int getDay = GameManager.instance.player.day;
+
+        dayText.text = getDay + "일차 D-" + (7 - getDay);
 
         GetItem();
         GetMoney();
