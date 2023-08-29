@@ -1208,7 +1208,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 7827755809980893889, guid: 3f68c9d86c27439419ce96ab5a64ccd5, type: 3}
   - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 3329251177511539448, guid: 7f394a0546f89814caeb3a1ee2f4e237, type: 3}
   - {fileID: 0}
   - {fileID: 4046387680933216036, guid: 1564826ccad48f447a218afe1bbb970d, type: 3}
   centryBallAngle: 0.4
@@ -5396,6 +5396,12 @@ MonoBehaviour:
   timerManager: {fileID: 1924763514}
   nightSFXManager: {fileID: 1657796862}
   character: {fileID: 889106806}
+  backGround: {fileID: 2135326778}
+  backGroundSpriteArr:
+  - {fileID: 21300000, guid: af8580b9f8ece4d8da11e3d191dc8b0a, type: 3}
+  - {fileID: 21300000, guid: 0507c25db172b43ab8061467bb8ee2ce, type: 3}
+  - {fileID: 21300000, guid: 1e39012fac6004ef5aea960c95b020d3, type: 3}
+  - {fileID: 21300000, guid: 67e0b7e848e7c41d481fa65c6b4c2db0, type: 3}
   endPopup: {fileID: 973832368}
   normalEnemyPrefabArr:
   - {fileID: 24583802718368516, guid: e8f4b731dcb7e48f5a42daca34c90c4a, type: 3}
@@ -5841,9 +5847,10 @@ MonoBehaviour:
   bgmSlider: {fileID: 843761576}
   sfxSlider: {fileID: 1042009112}
   bgmArr:
-  - {fileID: 8300000, guid: e06bad42248b444f3bf65b4fdd5fb13f, type: 3}
-  - {fileID: 8300000, guid: 8b94de1e09b17424bbad005d70e282df, type: 3}
-  - {fileID: 8300000, guid: eca386390c81f4cc1a2fd390ce7c15a4, type: 3}
+  - {fileID: 8300000, guid: b36d0389d79ae06459f7e9c6c8d8edea, type: 3}
+  - {fileID: 8300000, guid: 6030ec4dc3a8aac4fa588914fb745968, type: 3}
+  - {fileID: 8300000, guid: 0c4abe21cee05b347bd38149136303ea, type: 3}
+  - {fileID: 8300000, guid: 3edaf0db6f2e3f748827eedb56f36b98, type: 3}
   sfxArr:
   - {fileID: 0}
   - {fileID: 8300000, guid: b88e98049a51a4806a09286e3a1fd091, type: 3}

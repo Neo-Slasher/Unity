@@ -670,6 +670,8 @@ public class ItemManager : MonoBehaviour
                 timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.itemList.item[56].attackSpeedValue);
                 break;
         }
+
+        timeCount *= -1;
         
         while (!nightManager.isStageEnd)
         {
@@ -679,12 +681,17 @@ public class ItemManager : MonoBehaviour
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
                 coolTimeImageArr[iconIdx].fillAmount = 1;
             StartCoroutine(SetCooltimeCoroutine(iconIdx, timeCount));
+            Debug.Log("MoveBack CoolTime: " + timeCount);
             yield return new WaitForSeconds(timeCount);
         }
     }
 
     IEnumerator BoosterCoroutine(int getRank)
     {
+        GameObject boosterParent = Instantiate(itemPrefabArr[13]);
+        boosterParent.transform.SetParent(character.transform);
+        boosterParent.transform.localPosition = character.transform.position + new Vector3(2.13f,0,0);
+        boosterParent.GetComponent<Booster>().character = character.GetComponent<SpriteRenderer>();
         //아이콘 인덱스 찾기
         int iconIdx = FindIconIdx((int)ItemName.Booster);
 
@@ -725,8 +732,10 @@ public class ItemManager : MonoBehaviour
         {
             nightSFXManager.PlayAudioClip(AudioClipName.booster);
             character.SetMoveSpeed(speed);
+            boosterParent.SetActive(true);
             yield return new WaitForSeconds(duration);
             character.SetMoveSpeed(getBasicSpeed);
+            boosterParent.SetActive(false);
 
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
                 coolTimeImageArr[iconIdx].fillAmount = 1;

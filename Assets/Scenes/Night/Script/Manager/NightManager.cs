@@ -18,6 +18,12 @@ public class NightManager : MonoBehaviour
     GameObject character;
     KillData killdata;  //죽인 몬스터 마리수 카운트
 
+    //백그라운드
+    [SerializeField]
+    GameObject backGround;
+    [SerializeField]
+    Sprite[] backGroundSpriteArr;
+
     //UI
     [SerializeField]
     GameObject endPopup;
@@ -64,6 +70,7 @@ public class NightManager : MonoBehaviour
 
     private void Start()
     {
+        SetBackGround();
         GameManager.instance.player.curHp = GameManager.instance.player.maxHp;
 
         //적 배열 생성
@@ -75,6 +82,25 @@ public class NightManager : MonoBehaviour
         //몬스터 생성 함수
         InstantiateEnemy();
         //TestEnemy();
+    }
+
+    void SetBackGround()
+    {
+        switch (GameManager.instance.player.assassinationCount)
+        {
+            case 1:
+                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[0];
+                break;
+            case 2:
+                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[1];
+                break;
+            case 3:
+                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[2];
+                break;
+            case 4:
+                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[3];
+                break;
+        }
     }
 
     void SetEnemyArrData()

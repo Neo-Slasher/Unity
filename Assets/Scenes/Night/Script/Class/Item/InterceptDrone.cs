@@ -128,7 +128,8 @@ public class InterceptDrone : MonoBehaviour
             if (coolTimeImage.fillAmount == 0)
                 coolTimeImage.fillAmount = 1;
             StartCoroutine(SetCoolTime());
-            yield return new WaitForSeconds(timeCount);
+            Debug.Log("InterCept CoolTime: " + timeCount);
+            yield return new WaitForSeconds(timeCount/40);
         }
     }
 

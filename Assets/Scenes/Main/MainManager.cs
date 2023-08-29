@@ -28,7 +28,6 @@ public class MainManager : MonoBehaviour
 
         startPopup.SetActive(false);
         exitPopup.SetActive(false);
-
     }
 
     public void StartNewGame() {

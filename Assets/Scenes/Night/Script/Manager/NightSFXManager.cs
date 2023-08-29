@@ -33,6 +33,8 @@ public class NightSFXManager : MonoBehaviour
 
         sfxPlayer.volume = GameManager.instance.player.sfx_volume;
         sfxSlider.value = GameManager.instance.player.sfx_volume;
+
+        PlayNightBGM();
     }
 
     public void SetBGMPlayerVolume()
@@ -47,6 +49,29 @@ public class NightSFXManager : MonoBehaviour
         sfxPlayer.volume = sfxSlider.value;
         GameManager.instance.player.sfx_volume = sfxSlider.value;
         GameManager.instance.SavePlayerData();
+    }
+
+    void PlayNightBGM()
+    {
+        switch(GameManager.instance.player.assassinationCount)
+        {
+            case 1:
+                bgmPlayer.clip = bgmArr[0];
+                bgmPlayer.Play();
+                break;
+            case 2:
+                bgmPlayer.clip = bgmArr[1];
+                bgmPlayer.Play();
+                break;
+            case 3:
+                bgmPlayer.clip = bgmArr[2];
+                bgmPlayer.Play();
+                break;
+            case 4:
+                bgmPlayer.clip = bgmArr[3];
+                bgmPlayer.Play();
+                break;
+        }
     }
 
     public void PlayAudioClip(AudioClipName getName)
