@@ -53,6 +53,9 @@ public class DisasterDrone : MonoBehaviour
                 enemyDamageRate = 0.16f;
                 break;
         }
+        detectRadius += 1.95f;
+
+        this.transform.localScale = new Vector3(detectRadius / 3, detectRadius / 3, detectRadius / 3);
     }
 
     void DetectEnemy()

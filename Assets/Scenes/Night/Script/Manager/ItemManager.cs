@@ -293,6 +293,7 @@ public class ItemManager : MonoBehaviour
         float slashTime = 6;
         float attackPowerRate = (float)DataManager.instance.itemList.item[3].attackPowerValue;
         float slashAttackPower = (float)character.ReturnCharacterAttackPower() * attackPowerRate;
+        float attackRange = (float)character.ReturnCharacterAttackRange();
 
         switch (getRank)
         {
@@ -322,7 +323,7 @@ public class ItemManager : MonoBehaviour
             Debug.Log("end");
 
             nightSFXManager.PlayAudioClip(AudioClipName.multiSlash);
-            ShootSwordAura(slashAttackPower);
+            ShootSwordAura(slashAttackPower, attackRange, getRank);
 
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
                 coolTimeImageArr[iconIdx].fillAmount = 1;
@@ -342,12 +343,14 @@ public class ItemManager : MonoBehaviour
             hitBoxSpriteRenderer.sprite = multiSlasherSprite[1];   //멀티 슬레쉬 스프라이트
     }
 
-    void ShootSwordAura(float getSlashAttackPower)
+    void ShootSwordAura(float getSlashAttackPower, float getSlashAttackRange, int getItemRank)
     {
         GameObject swordAura = Instantiate(itemPrefabArr[4]);
         swordAura.transform.SetParent(characterParent.transform);
         swordAura.transform.position = hitBox.transform.position;
         swordAura.GetComponent<SwordAura>().attackDamage = getSlashAttackPower;
+        swordAura.GetComponent<SwordAura>().attackRange = getSlashAttackRange;
+        swordAura.GetComponent<SwordAura>().itemRank = getItemRank;
 
         //Color swordAuraColor = Color.blue;
         //swordAuraColor.a = 0.5f;
@@ -677,6 +680,8 @@ public class ItemManager : MonoBehaviour
         {
             nightSFXManager.PlayAudioClip(AudioClipName.moveBack);
             character.isMoveBackOn = true;
+            GameObject moveBackImage = Instantiate(itemPrefabArr[12]);
+            moveBackImage.GetComponent<MoveBackImage>().character = character.transform;
 
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
                 coolTimeImageArr[iconIdx].fillAmount = 1;

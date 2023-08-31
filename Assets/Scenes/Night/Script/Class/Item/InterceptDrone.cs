@@ -72,6 +72,7 @@ public class InterceptDrone : MonoBehaviour
                 detectRadius = characterAttackRange * 0.15f * (float)DataManager.instance.itemList.item[59].attackRangeValue;
                 break;
         }
+        detectRadius += 1.95f;
         Debug.Log(timeCount + "/ " + detectRadius);
     }
 

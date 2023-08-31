@@ -269,7 +269,7 @@ public class EnemyParent : MonoBehaviour
         //    yield return null;
         //}
 
-        //본인 초기 위치 기준 128px 앞으로 당겨짐
+        //본인 초기 위치 기준 150px 앞으로 당겨짐
         while ((start - this.transform.position).magnitude <= 1.5f)
         {
             enemyRigid.AddForceAtPosition(moveDir, this.transform.position);

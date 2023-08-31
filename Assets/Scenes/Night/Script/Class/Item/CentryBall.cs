@@ -151,6 +151,7 @@ public class CentryBall : MonoBehaviour
         int layerMask = (1 << enemyLayer);
         Collider2D shortestCol = null;
         detectRadius = (float)character.ReturnCharacterAttackRange() * 15 * 0.01f * attackRangeRate;
+        detectRadius += 1.95f;
         shootTime = 10 / ((float)character.ReturnCharacterAttackSpeed() * attackSpeedRate);
 
         while (!nightManager.isStageEnd)
