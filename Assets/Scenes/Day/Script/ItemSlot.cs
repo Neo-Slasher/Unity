@@ -42,7 +42,7 @@ public class ItemSlot : MonoBehaviour
 
     void Start()
     {
-        slotNum = 3; //GameManager.instance.player.shopSlot;
+        slotNum = GameManager.instance.player.shopSlot;
         shopMinRank = GameManager.instance.player.shopMinRank;
         shopMaxRank = GameManager.instance.player.shopMaxRank; //값 넘겨받을 수 있을 때 고치기
 
