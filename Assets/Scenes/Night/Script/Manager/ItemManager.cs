@@ -57,8 +57,7 @@ public class ItemManager : MonoBehaviour
     //아이템 쿨타임 전용
     [SerializeField]
     GameObject[] nowItemUIArr;
-    [SerializeField]
-    Sprite[] itemIconArr;
+    public Sprite[] itemIconArr;
     [SerializeField]
     List<Image> coolTimeImageArr;
 
@@ -105,6 +104,9 @@ public class ItemManager : MonoBehaviour
     {
         for (int i = 0; i < GameManager.instance.player.item.Count; i++) /////item배열에서 리스트로 변경했습니다!! Length->Count *엄지민
         {
+            if (i == 3)
+                return;
+
             itemIdxArr[i] = GameManager.instance.player.item[i].itemIdx;
             itemRankArr[i] = GameManager.instance.player.item[i].rank;
             itemIdxArr[i] -= (itemRankArr[i] * 15);     //아이템 인덱스로 ItemName을 구분하기 때문에 강제로 만든 식입니다.

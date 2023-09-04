@@ -70,6 +70,34 @@ public class NightManager : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI getItemName;
 
+    //230904 추가된 팝업 (아이템을 획득했을 때 나타나는 창)
+    [SerializeField]
+    GameObject itemChangePopupParent;
+    [SerializeField]
+    Image[] characterItemImageArr;
+    [SerializeField]
+    Image selectItemImage;
+    [SerializeField]
+    TextMeshProUGUI selectItemNameText;
+    [SerializeField]
+    TextMeshProUGUI selectItemRankText;
+    [SerializeField]
+    TextMeshProUGUI selectItemPartText;
+    [SerializeField]
+    TextMeshProUGUI selectItemInfoText;
+    [SerializeField]
+    Image getItemPopupImage;
+    [SerializeField]
+    TextMeshProUGUI getItemPopupNameText;
+    [SerializeField]
+    TextMeshProUGUI getItemPopupRankText;
+    [SerializeField]
+    TextMeshProUGUI getItemPopupPartText;
+    [SerializeField]
+    TextMeshProUGUI getItemPopupInfoText;
+    int selectItemIdx;
+
+
     private void Start()
     {
         SetBackGround();
@@ -313,7 +341,12 @@ public class NightManager : MonoBehaviour
             //뭐 대충 재화 정리까지 다 하고 세이브
             GameManager.instance.player.curHp = GameManager.instance.player.maxHp;
             GameManager.instance.SavePlayerData();
-            UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
+
+            //아이템을 비교해야하면 팝업창이 뜨게 작업
+            if(GameManager.instance.player.item.Count <= GameManager.instance.player.itemSlot)
+                UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
+            else
+                SetItemChangePopup();
         }
         else
         {
@@ -337,7 +370,12 @@ public class NightManager : MonoBehaviour
                 
             }
             GameManager.instance.SavePlayerData();
-            UnityEngine.SceneManagement.SceneManager.LoadScene("CutScene");
+
+            //아이템을 비교해야하면 팝업창이 뜨게 작업
+            if (GameManager.instance.player.item.Count <= GameManager.instance.player.itemSlot)
+                UnityEngine.SceneManagement.SceneManager.LoadScene("CutScene");
+            else
+                SetItemChangePopup();
         }
     }
 
@@ -373,7 +411,7 @@ public class NightManager : MonoBehaviour
         
         float rate = (float)(normalRate + eliteRate);
         
-        float nowProb = (float)Random.Range(0, 100) / 100;
+        float nowProb = (float)Random.Range(0, 0) / 100;
         Debug.Log(rate + " / "+ nowProb);
         if (nowProb < rate)
         {
@@ -384,7 +422,7 @@ public class NightManager : MonoBehaviour
             getItemImage.sprite = itemSpriteArr[getItem.imgIdx];
             getItemName.text = getItem.name;
 
-            SetPlayerItem(getItem);
+            GameManager.instance.player.item.Add(getItem);
         }
         else
         {
@@ -404,14 +442,6 @@ public class NightManager : MonoBehaviour
             return 2;
         else
             return 3;
-    }
-
-    void SetPlayerItem(Item getItem)
-    {
-        if(GameManager.instance.player.item.Count < GameManager.instance.player.itemSlot)
-        {
-            GameManager.instance.player.item.Add(getItem);
-        }
     }
 
     void GetMoney()
@@ -450,5 +480,58 @@ public class NightManager : MonoBehaviour
         settingParent.SetActive(false);
         SetEndPopUp();
         endPopup.SetActive(true);
+    }
+
+    //마지막 추가된 팝업 함수
+    void SetItemChangePopup()
+    {
+        int itemSlotCount = GameManager.instance.player.itemSlot;
+        for (int i = 0; i < GameManager.instance.player.itemSlot; i++)
+        {
+            characterItemImageArr[i].sprite = itemManager.itemIconArr[GameManager.instance.player.item[i].imgIdx];
+            characterItemImageArr[i].gameObject.SetActive(true);
+        }
+
+        getItemPopupImage.sprite = itemManager.itemIconArr[GameManager.instance.player.item[itemSlotCount].imgIdx];
+        getItemPopupNameText.text = GameManager.instance.player.item[itemSlotCount].name;
+        getItemPopupRankText.text = GameManager.instance.player.item[itemSlotCount].rank + "등급";
+        getItemPopupInfoText.text = GameManager.instance.player.item[itemSlotCount].script;
+
+        itemChangePopupParent.SetActive(true);
+    }
+
+    public void OnClickItemChangePopupBtn(int itemIdx)
+    {
+        if (itemIdx >= GameManager.instance.player.itemSlot)
+            return;
+
+        selectItemIdx = itemIdx;
+        selectItemImage.sprite = itemManager.itemIconArr[GameManager.instance.player.item[itemIdx].imgIdx];
+        selectItemImage.gameObject.SetActive(true);
+        selectItemNameText.text = GameManager.instance.player.item[itemIdx].name;
+        selectItemRankText.text = GameManager.instance.player.item[itemIdx].rank + "등급";
+        selectItemInfoText.text = GameManager.instance.player.item[itemIdx].script;
+    }
+
+    public void OnClickItemThrowBtn()
+    {
+        GameManager.instance.player.item.RemoveAt(GameManager.instance.player.itemSlot);
+
+        GameManager.instance.SavePlayerData();
+
+        //7일차가 아니면 저장하고 낮씬으로 가고 아니면 엔딩으로 갑니다.
+        if (GameManager.instance.player.day < 7)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("CutScene");
+        }
+    }
+
+    public void OnClickItemChangeBtn()
+    {
+        GameManager.instance.player.item.RemoveAt(selectItemIdx);
     }
 }
