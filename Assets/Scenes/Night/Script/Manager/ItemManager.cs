@@ -772,7 +772,7 @@ public class ItemManager : MonoBehaviour
                 getAbsorbAttackData = 5;
                 break;
         }
-        character.SetAbsorbAttackData(getAbsorbAttackData);
+        character.SetItemAbsorbAttackData(getAbsorbAttackData);
     }
     
     void InterceptDroneCoroutine(int getRank)

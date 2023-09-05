@@ -95,12 +95,14 @@ public class NightManager : MonoBehaviour
     TextMeshProUGUI getItemPopupPartText;
     [SerializeField]
     TextMeshProUGUI getItemPopupInfoText;
+    [SerializeField]
     int selectItemIdx;
 
 
     private void Start()
     {
         SetBackGround();
+        SetItemError();
         GameManager.instance.player.curHp = GameManager.instance.player.maxHp;
 
         //적 배열 생성
@@ -340,7 +342,6 @@ public class NightManager : MonoBehaviour
             GameManager.instance.player.day++;
             //뭐 대충 재화 정리까지 다 하고 세이브
             GameManager.instance.player.curHp = GameManager.instance.player.maxHp;
-            GameManager.instance.SavePlayerData();
 
             //아이템을 비교해야하면 팝업창이 뜨게 작업
             if(GameManager.instance.player.item.Count <= GameManager.instance.player.itemSlot)
@@ -369,7 +370,6 @@ public class NightManager : MonoBehaviour
                 }
                 
             }
-            GameManager.instance.SavePlayerData();
 
             //아이템을 비교해야하면 팝업창이 뜨게 작업
             if (GameManager.instance.player.item.Count <= GameManager.instance.player.itemSlot)
@@ -411,12 +411,20 @@ public class NightManager : MonoBehaviour
         
         float rate = (float)(normalRate + eliteRate);
         
-        float nowProb = (float)Random.Range(0, 0) / 100;
+        float nowProb = (float)Random.Range(0, 100) / 100;
         Debug.Log(rate + " / "+ nowProb);
         if (nowProb < rate)
         {
             //아이템 획득
             int getItemIdx = Random.Range(0 + getItemRank * 15, 14 + getItemRank * 15);
+
+            //아이템 중복 확인
+            while(IsItemDuplication(getItemIdx))
+            {
+                Debug.Log("Now Item idx = " + getItemIdx);
+                getItemIdx = Random.Range(0 + getItemRank * 15, 14 + getItemRank * 15);
+            }
+
             Item getItem = DataManager.instance.itemList.item[getItemIdx];
 
             getItemImage.sprite = itemSpriteArr[getItem.imgIdx];
@@ -430,6 +438,19 @@ public class NightManager : MonoBehaviour
             getItemImage.gameObject.SetActive(false);
             getItemName.text = "없음";
         }
+    }
+
+    bool IsItemDuplication(int getNowItemIdx)
+    {
+        Debug.Log("getNowItemIdx = " + getNowItemIdx);
+        for(int i=0; i< GameManager.instance.player.item.Count;i++)
+        {
+            int currItemIdx = GameManager.instance.player.item[i].itemIdx - 1 - (GameManager.instance.player.item[i].rank * 15);
+            Debug.Log("currItemIdx = " + currItemIdx);
+            if (getNowItemIdx == currItemIdx)
+                return true;
+        }
+        return false;
     }
 
     int SetItemRank(int nowRank)
@@ -494,8 +515,28 @@ public class NightManager : MonoBehaviour
 
         getItemPopupImage.sprite = itemManager.itemIconArr[GameManager.instance.player.item[itemSlotCount].imgIdx];
         getItemPopupNameText.text = GameManager.instance.player.item[itemSlotCount].name;
-        getItemPopupRankText.text = GameManager.instance.player.item[itemSlotCount].rank + "등급";
-        getItemPopupInfoText.text = GameManager.instance.player.item[itemSlotCount].script;
+
+        string rankText = null;
+        switch (GameManager.instance.player.item[itemSlotCount].rank)
+        {
+            case 0:
+                rankText = "C등급";
+                break;
+            case 1:
+                rankText = "B등급";
+                break;
+            case 2:
+                rankText = "A등급";
+                break;
+            case 3:
+                rankText = "S등급";
+                break;
+        }
+
+        getItemPopupRankText.text = rankText;
+        string nowInfo = GameManager.instance.player.item[itemSlotCount].script;
+
+        getItemPopupInfoText.text = SetItemScript(nowInfo, itemSlotCount);
 
         itemChangePopupParent.SetActive(true);
     }
@@ -509,8 +550,28 @@ public class NightManager : MonoBehaviour
         selectItemImage.sprite = itemManager.itemIconArr[GameManager.instance.player.item[itemIdx].imgIdx];
         selectItemImage.gameObject.SetActive(true);
         selectItemNameText.text = GameManager.instance.player.item[itemIdx].name;
-        selectItemRankText.text = GameManager.instance.player.item[itemIdx].rank + "등급";
-        selectItemInfoText.text = GameManager.instance.player.item[itemIdx].script;
+
+        string rankText = null;
+        switch(GameManager.instance.player.item[itemIdx].rank)
+        {
+            case 0:
+                rankText = "C등급";
+                break;
+            case 1:
+                rankText = "B등급";
+                break;
+            case 2:
+                rankText = "A등급";
+                break;
+            case 3:
+                rankText = "S등급";
+                break;
+        }
+
+        selectItemRankText.text = rankText;
+        string nowInfo = GameManager.instance.player.item[itemIdx].script;
+
+        selectItemInfoText.text = SetItemScript(nowInfo, itemIdx);
     }
 
     public void OnClickItemThrowBtn()
@@ -520,7 +581,7 @@ public class NightManager : MonoBehaviour
         GameManager.instance.SavePlayerData();
 
         //7일차가 아니면 저장하고 낮씬으로 가고 아니면 엔딩으로 갑니다.
-        if (GameManager.instance.player.day < 7)
+        if (GameManager.instance.player.day <= 7)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
         }
@@ -533,5 +594,56 @@ public class NightManager : MonoBehaviour
     public void OnClickItemChangeBtn()
     {
         GameManager.instance.player.item.RemoveAt(selectItemIdx);
+
+        GameManager.instance.SavePlayerData();
+
+        //7일차가 아니면 저장하고 낮씬으로 가고 아니면 엔딩으로 갑니다.
+        if (GameManager.instance.player.day <= 7)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("CutScene");
+        }
+    }
+
+    string SetItemScript(string getString, int getItemIdx)
+    {
+        double powerP = GameManager.instance.player.attackPower;
+        double speedP = GameManager.instance.player.attackSpeed;
+        double rangeP = GameManager.instance.player.attackRange;
+
+        bool powerC = GameManager.instance.player.item[getItemIdx].attackPowerCalc;
+        bool speedC = GameManager.instance.player.item[getItemIdx].attackSpeedCalc;
+        bool rangeC = GameManager.instance.player.item[getItemIdx].attackRangeCalc;
+
+        double itemAttackPowerValue = GameManager.instance.player.item[getItemIdx].attackPowerValue;
+        double itemAttackSpeedValue = GameManager.instance.player.item[getItemIdx].attackSpeedValue;
+        double itemAttackRangeValue = GameManager.instance.player.item[getItemIdx].attackRangeValue;
+
+        if (powerC)
+        {
+            getString = getString.Replace("#at#", (powerP * itemAttackPowerValue).ToString());
+        }
+        if (speedC)
+        {
+            getString = getString.Replace("#as#", (speedP * itemAttackSpeedValue).ToString());
+        }
+        if (rangeC)
+        {
+            getString = getString.Replace("#ar#", (rangeP * itemAttackRangeValue).ToString());
+        }
+
+        return getString;
+    }
+
+    void SetItemError()
+    {
+        if (GameManager.instance.player.item.Count > GameManager.instance.player.itemSlot)
+        {
+            for(int i= GameManager.instance.player.itemSlot; i< GameManager.instance.player.item.Count; i++)
+                GameManager.instance.player.item.RemoveAt(i);
+        }
     }
 }
