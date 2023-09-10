@@ -8,7 +8,7 @@ public class EliteEnemy : EnemyParent
     GameObject projectileObject;
     [SerializeField]
     GameObject[] projectilesPulling;
-    int pullingScale = 20;
+    int pullingScale = 100;
     [SerializeField]int nowPullingIndex = 0;
 
     bool isShoot = false;
