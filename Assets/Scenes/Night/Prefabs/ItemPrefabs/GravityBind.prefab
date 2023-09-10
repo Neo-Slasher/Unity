@@ -106,7 +106,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: c548e6debbf833e45a6e37d9d965d91c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.36078432}
   m_FlipX: 0
@@ -148,6 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nightManager: {fileID: 0}
   character: {fileID: 0}
-  detectRadius: 0
+  detectScale: 0
   getEnemySpeed: 0
   spinSpeed: 30
+  slowRate: 0

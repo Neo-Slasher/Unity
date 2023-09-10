@@ -57,8 +57,7 @@ public class ItemManager : MonoBehaviour
     //아이템 쿨타임 전용
     [SerializeField]
     GameObject[] nowItemUIArr;
-    [SerializeField]
-    Sprite[] itemIconArr;
+    public Sprite[] itemIconArr;
     [SerializeField]
     List<Image> coolTimeImageArr;
 
@@ -105,6 +104,9 @@ public class ItemManager : MonoBehaviour
     {
         for (int i = 0; i < GameManager.instance.player.item.Count; i++) /////item배열에서 리스트로 변경했습니다!! Length->Count *엄지민
         {
+            if (i == 3)
+                return;
+
             itemIdxArr[i] = GameManager.instance.player.item[i].itemIdx;
             itemRankArr[i] = GameManager.instance.player.item[i].rank;
             itemIdxArr[i] -= (itemRankArr[i] * 15);     //아이템 인덱스로 ItemName을 구분하기 때문에 강제로 만든 식입니다.
@@ -293,6 +295,7 @@ public class ItemManager : MonoBehaviour
         float slashTime = 6;
         float attackPowerRate = (float)DataManager.instance.itemList.item[3].attackPowerValue;
         float slashAttackPower = (float)character.ReturnCharacterAttackPower() * attackPowerRate;
+        float attackRange = (float)character.ReturnCharacterAttackRange();
 
         switch (getRank)
         {
@@ -322,7 +325,7 @@ public class ItemManager : MonoBehaviour
             Debug.Log("end");
 
             nightSFXManager.PlayAudioClip(AudioClipName.multiSlash);
-            ShootSwordAura(slashAttackPower);
+            ShootSwordAura(slashAttackPower, attackRange, getRank);
 
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
                 coolTimeImageArr[iconIdx].fillAmount = 1;
@@ -342,12 +345,14 @@ public class ItemManager : MonoBehaviour
             hitBoxSpriteRenderer.sprite = multiSlasherSprite[1];   //멀티 슬레쉬 스프라이트
     }
 
-    void ShootSwordAura(float getSlashAttackPower)
+    void ShootSwordAura(float getSlashAttackPower, float getSlashAttackRange, int getItemRank)
     {
         GameObject swordAura = Instantiate(itemPrefabArr[4]);
         swordAura.transform.SetParent(characterParent.transform);
         swordAura.transform.position = hitBox.transform.position;
         swordAura.GetComponent<SwordAura>().attackDamage = getSlashAttackPower;
+        swordAura.GetComponent<SwordAura>().attackRange = getSlashAttackRange;
+        swordAura.GetComponent<SwordAura>().itemRank = getItemRank;
 
         //Color swordAuraColor = Color.blue;
         //swordAuraColor.a = 0.5f;
@@ -670,21 +675,30 @@ public class ItemManager : MonoBehaviour
                 timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.itemList.item[56].attackSpeedValue);
                 break;
         }
+
+        timeCount *= -1;
         
         while (!nightManager.isStageEnd)
         {
             nightSFXManager.PlayAudioClip(AudioClipName.moveBack);
             character.isMoveBackOn = true;
+            GameObject moveBackImage = Instantiate(itemPrefabArr[12]);
+            moveBackImage.GetComponent<MoveBackImage>().character = character.transform;
 
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
                 coolTimeImageArr[iconIdx].fillAmount = 1;
             StartCoroutine(SetCooltimeCoroutine(iconIdx, timeCount));
+            Debug.Log("MoveBack CoolTime: " + timeCount);
             yield return new WaitForSeconds(timeCount);
         }
     }
 
     IEnumerator BoosterCoroutine(int getRank)
     {
+        GameObject boosterParent = Instantiate(itemPrefabArr[13]);
+        boosterParent.transform.SetParent(character.transform);
+        boosterParent.transform.localPosition = character.transform.position + new Vector3(2.13f,0,0);
+        boosterParent.GetComponent<Booster>().character = character.GetComponent<SpriteRenderer>();
         //아이콘 인덱스 찾기
         int iconIdx = FindIconIdx((int)ItemName.Booster);
 
@@ -725,8 +739,10 @@ public class ItemManager : MonoBehaviour
         {
             nightSFXManager.PlayAudioClip(AudioClipName.booster);
             character.SetMoveSpeed(speed);
+            boosterParent.SetActive(true);
             yield return new WaitForSeconds(duration);
             character.SetMoveSpeed(getBasicSpeed);
+            boosterParent.SetActive(false);
 
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
                 coolTimeImageArr[iconIdx].fillAmount = 1;
@@ -756,7 +772,7 @@ public class ItemManager : MonoBehaviour
                 getAbsorbAttackData = 5;
                 break;
         }
-        character.SetAbsorbAttackData(getAbsorbAttackData);
+        character.SetItemAbsorbAttackData(getAbsorbAttackData);
     }
     
     void InterceptDroneCoroutine(int getRank)

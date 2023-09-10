@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
         } else {
             hasSavedData = true;
         }
-
     }
 
 

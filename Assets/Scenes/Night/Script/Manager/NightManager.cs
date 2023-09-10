@@ -18,6 +18,12 @@ public class NightManager : MonoBehaviour
     GameObject character;
     KillData killdata;  //죽인 몬스터 마리수 카운트
 
+    //백그라운드
+    [SerializeField]
+    GameObject backGround;
+    [SerializeField]
+    Sprite[] backGroundSpriteArr;
+
     //UI
     [SerializeField]
     GameObject endPopup;
@@ -56,14 +62,47 @@ public class NightManager : MonoBehaviour
 
     //게임 종료 팝업
     [SerializeField]
+    TextMeshProUGUI dayText;
+    [SerializeField]
     Sprite[] itemSpriteArr;
     [SerializeField]
     Image getItemImage;
     [SerializeField]
     TextMeshProUGUI getItemName;
 
+    //230904 추가된 팝업 (아이템을 획득했을 때 나타나는 창)
+    [SerializeField]
+    GameObject itemChangePopupParent;
+    [SerializeField]
+    Image[] characterItemImageArr;
+    [SerializeField]
+    Image selectItemImage;
+    [SerializeField]
+    TextMeshProUGUI selectItemNameText;
+    [SerializeField]
+    TextMeshProUGUI selectItemRankText;
+    [SerializeField]
+    TextMeshProUGUI selectItemPartText;
+    [SerializeField]
+    TextMeshProUGUI selectItemInfoText;
+    [SerializeField]
+    Image getItemPopupImage;
+    [SerializeField]
+    TextMeshProUGUI getItemPopupNameText;
+    [SerializeField]
+    TextMeshProUGUI getItemPopupRankText;
+    [SerializeField]
+    TextMeshProUGUI getItemPopupPartText;
+    [SerializeField]
+    TextMeshProUGUI getItemPopupInfoText;
+    [SerializeField]
+    int selectItemIdx;
+
+
     private void Start()
     {
+        SetBackGround();
+        SetItemError();
         GameManager.instance.player.curHp = GameManager.instance.player.maxHp;
 
         //적 배열 생성
@@ -75,6 +114,25 @@ public class NightManager : MonoBehaviour
         //몬스터 생성 함수
         InstantiateEnemy();
         //TestEnemy();
+    }
+
+    void SetBackGround()
+    {
+        switch (GameManager.instance.player.assassinationCount)
+        {
+            case 1:
+                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[0];
+                break;
+            case 2:
+                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[1];
+                break;
+            case 3:
+                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[2];
+                break;
+            case 4:
+                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[3];
+                break;
+        }
     }
 
     void SetEnemyArrData()
@@ -266,6 +324,10 @@ public class NightManager : MonoBehaviour
         killCountTextArr[0].text = killNormal.ToString();
         killCountTextArr[1].text = killElite.ToString();
 
+        int getDay = GameManager.instance.player.day;
+
+        dayText.text = getDay + "일차 D-" + (7 - getDay);
+
         GetItem();
         GetMoney();
         GameManager.instance.SavePlayerData();
@@ -280,8 +342,12 @@ public class NightManager : MonoBehaviour
             GameManager.instance.player.day++;
             //뭐 대충 재화 정리까지 다 하고 세이브
             GameManager.instance.player.curHp = GameManager.instance.player.maxHp;
-            GameManager.instance.SavePlayerData();
-            UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
+
+            //아이템을 비교해야하면 팝업창이 뜨게 작업
+            if(GameManager.instance.player.item.Count <= GameManager.instance.player.itemSlot)
+                UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
+            else
+                SetItemChangePopup();
         }
         else
         {
@@ -304,8 +370,12 @@ public class NightManager : MonoBehaviour
                 }
                 
             }
-            GameManager.instance.SavePlayerData();
-            UnityEngine.SceneManagement.SceneManager.LoadScene("CutScene");
+
+            //아이템을 비교해야하면 팝업창이 뜨게 작업
+            if (GameManager.instance.player.item.Count <= GameManager.instance.player.itemSlot)
+                UnityEngine.SceneManagement.SceneManager.LoadScene("CutScene");
+            else
+                SetItemChangePopup();
         }
     }
 
@@ -347,12 +417,20 @@ public class NightManager : MonoBehaviour
         {
             //아이템 획득
             int getItemIdx = Random.Range(0 + getItemRank * 15, 14 + getItemRank * 15);
+
+            //아이템 중복 확인
+            while(IsItemDuplication(getItemIdx))
+            {
+                Debug.Log("Now Item idx = " + getItemIdx);
+                getItemIdx = Random.Range(0 + getItemRank * 15, 14 + getItemRank * 15);
+            }
+
             Item getItem = DataManager.instance.itemList.item[getItemIdx];
 
             getItemImage.sprite = itemSpriteArr[getItem.imgIdx];
             getItemName.text = getItem.name;
 
-            SetPlayerItem(getItem);
+            GameManager.instance.player.item.Add(getItem);
         }
         else
         {
@@ -360,6 +438,19 @@ public class NightManager : MonoBehaviour
             getItemImage.gameObject.SetActive(false);
             getItemName.text = "없음";
         }
+    }
+
+    bool IsItemDuplication(int getNowItemIdx)
+    {
+        Debug.Log("getNowItemIdx = " + getNowItemIdx);
+        for(int i=0; i< GameManager.instance.player.item.Count;i++)
+        {
+            int currItemIdx = GameManager.instance.player.item[i].itemIdx - 1 - (GameManager.instance.player.item[i].rank * 15);
+            Debug.Log("currItemIdx = " + currItemIdx);
+            if (getNowItemIdx == currItemIdx)
+                return true;
+        }
+        return false;
     }
 
     int SetItemRank(int nowRank)
@@ -372,14 +463,6 @@ public class NightManager : MonoBehaviour
             return 2;
         else
             return 3;
-    }
-
-    void SetPlayerItem(Item getItem)
-    {
-        if(GameManager.instance.player.item.Count < GameManager.instance.player.itemSlot)
-        {
-            GameManager.instance.player.item.Add(getItem);
-        }
     }
 
     void GetMoney()
@@ -418,5 +501,149 @@ public class NightManager : MonoBehaviour
         settingParent.SetActive(false);
         SetEndPopUp();
         endPopup.SetActive(true);
+    }
+
+    //마지막 추가된 팝업 함수
+    void SetItemChangePopup()
+    {
+        int itemSlotCount = GameManager.instance.player.itemSlot;
+        for (int i = 0; i < GameManager.instance.player.itemSlot; i++)
+        {
+            characterItemImageArr[i].sprite = itemManager.itemIconArr[GameManager.instance.player.item[i].imgIdx];
+            characterItemImageArr[i].gameObject.SetActive(true);
+        }
+
+        getItemPopupImage.sprite = itemManager.itemIconArr[GameManager.instance.player.item[itemSlotCount].imgIdx];
+        getItemPopupNameText.text = GameManager.instance.player.item[itemSlotCount].name;
+
+        string rankText = null;
+        switch (GameManager.instance.player.item[itemSlotCount].rank)
+        {
+            case 0:
+                rankText = "C등급";
+                break;
+            case 1:
+                rankText = "B등급";
+                break;
+            case 2:
+                rankText = "A등급";
+                break;
+            case 3:
+                rankText = "S등급";
+                break;
+        }
+
+        getItemPopupRankText.text = rankText;
+        string nowInfo = GameManager.instance.player.item[itemSlotCount].script;
+
+        getItemPopupInfoText.text = SetItemScript(nowInfo, itemSlotCount);
+
+        itemChangePopupParent.SetActive(true);
+    }
+
+    public void OnClickItemChangePopupBtn(int itemIdx)
+    {
+        if (itemIdx >= GameManager.instance.player.itemSlot)
+            return;
+
+        selectItemIdx = itemIdx;
+        selectItemImage.sprite = itemManager.itemIconArr[GameManager.instance.player.item[itemIdx].imgIdx];
+        selectItemImage.gameObject.SetActive(true);
+        selectItemNameText.text = GameManager.instance.player.item[itemIdx].name;
+
+        string rankText = null;
+        switch(GameManager.instance.player.item[itemIdx].rank)
+        {
+            case 0:
+                rankText = "C등급";
+                break;
+            case 1:
+                rankText = "B등급";
+                break;
+            case 2:
+                rankText = "A등급";
+                break;
+            case 3:
+                rankText = "S등급";
+                break;
+        }
+
+        selectItemRankText.text = rankText;
+        string nowInfo = GameManager.instance.player.item[itemIdx].script;
+
+        selectItemInfoText.text = SetItemScript(nowInfo, itemIdx);
+    }
+
+    public void OnClickItemThrowBtn()
+    {
+        GameManager.instance.player.item.RemoveAt(GameManager.instance.player.itemSlot);
+
+        GameManager.instance.SavePlayerData();
+
+        //7일차가 아니면 저장하고 낮씬으로 가고 아니면 엔딩으로 갑니다.
+        if (GameManager.instance.player.day <= 7)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("CutScene");
+        }
+    }
+
+    public void OnClickItemChangeBtn()
+    {
+        GameManager.instance.player.item.RemoveAt(selectItemIdx);
+
+        GameManager.instance.SavePlayerData();
+
+        //7일차가 아니면 저장하고 낮씬으로 가고 아니면 엔딩으로 갑니다.
+        if (GameManager.instance.player.day <= 7)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("CutScene");
+        }
+    }
+
+    string SetItemScript(string getString, int getItemIdx)
+    {
+        double powerP = GameManager.instance.player.attackPower;
+        double speedP = GameManager.instance.player.attackSpeed;
+        double rangeP = GameManager.instance.player.attackRange;
+
+        bool powerC = GameManager.instance.player.item[getItemIdx].attackPowerCalc;
+        bool speedC = GameManager.instance.player.item[getItemIdx].attackSpeedCalc;
+        bool rangeC = GameManager.instance.player.item[getItemIdx].attackRangeCalc;
+
+        double itemAttackPowerValue = GameManager.instance.player.item[getItemIdx].attackPowerValue;
+        double itemAttackSpeedValue = GameManager.instance.player.item[getItemIdx].attackSpeedValue;
+        double itemAttackRangeValue = GameManager.instance.player.item[getItemIdx].attackRangeValue;
+
+        if (powerC)
+        {
+            getString = getString.Replace("#at#", (powerP * itemAttackPowerValue).ToString());
+        }
+        if (speedC)
+        {
+            getString = getString.Replace("#as#", (speedP * itemAttackSpeedValue).ToString());
+        }
+        if (rangeC)
+        {
+            getString = getString.Replace("#ar#", (rangeP * itemAttackRangeValue).ToString());
+        }
+
+        return getString;
+    }
+
+    void SetItemError()
+    {
+        if (GameManager.instance.player.item.Count > GameManager.instance.player.itemSlot)
+        {
+            for(int i= GameManager.instance.player.itemSlot; i< GameManager.instance.player.item.Count; i++)
+                GameManager.instance.player.item.RemoveAt(i);
+        }
     }
 }

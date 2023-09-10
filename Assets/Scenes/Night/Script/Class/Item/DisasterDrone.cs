@@ -38,21 +38,24 @@ public class DisasterDrone : MonoBehaviour
         {
             case 0:
                 detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
-                enemyDamageRate = 0.05f;
+                enemyDamageRate = 0.07f;
                 break;
             case 1:
                 detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
-                enemyDamageRate = 0.08f;
+                enemyDamageRate = 0.10f;
                 break;
             case 2:
                 detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
-                enemyDamageRate = 0.12f;
+                enemyDamageRate = 0.13f;
                 break;
             case 3:
                 detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
                 enemyDamageRate = 0.16f;
                 break;
         }
+        detectRadius += 1.95f;
+
+        this.transform.localScale = new Vector3(detectRadius / 3, detectRadius / 3, detectRadius / 3);
     }
 
     void DetectEnemy()

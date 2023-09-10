@@ -154,6 +154,9 @@ public class TraitManager : MonoBehaviour
         GameObject drugEnemyEffect = Instantiate(traitEffectArr[0]);
         drugEnemyEffect.transform.localPosition = character.transform.position;
         drugEnemyEffect.transform.SetParent(character.transform);
+        float maxRange = ((float)getTrait.effectValue2 / 100) / 3;
+        drugEnemyEffect.transform.localScale = 
+            new Vector3(maxRange, maxRange, maxRange);
         drugEnemyEffect.SetActive(false);
         Animator effectAnimator = drugEnemyEffect.GetComponent<Animator>();
 
@@ -167,13 +170,16 @@ public class TraitManager : MonoBehaviour
             Debug.Log("DrugEnemy");
             Collider2D[] getCols =
                 character.ReturnOverLapColliders((float)getTrait.effectValue3 / 100, (float)getTrait.effectValue2 / 100);
-
+            
             if (getCols.Length != 0)
                 //이제 당겨
                 for (int i =0; i< getCols.Length; i++)
                 {
                     if (getCols[i].tag == "Normal" || getCols[i].tag == "Elite")
+                    {
+                        Debug.Log(getCols[i].name);
                         getCols[i].GetComponent<EnemyParent>().DrugEnemy();
+                    }
                 }
 
             StartCoroutine(SetAnimatorParameter(effectAnimator, "DrugEnemyAnimation"));

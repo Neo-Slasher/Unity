@@ -216,6 +216,7 @@ public class EnemyParent : MonoBehaviour
 
             if (enemyData.hitPoint > getDamage)
             {
+                StartCoroutine(EnemyDamagedAlphaCoroutine());
                 enemyData.hitPoint -= getDamage;
             }
             else
@@ -237,13 +238,33 @@ public class EnemyParent : MonoBehaviour
     {
         if (getDamage > 0)
         {
+
             if (enemyData.hitPoint > getDamage)
+            {
+                StartCoroutine(EnemyDamagedAlphaCoroutine());
                 enemyData.hitPoint -= getDamage;
+            }
             else
             {
                 character.GetComponent<Character>().UpdateKillCount();
                 Destroy(this.gameObject);
             }
+        }
+    }
+
+    IEnumerator EnemyDamagedAlphaCoroutine()
+    {
+        Debug.Log(enemyRenderer.color.a + "@@@@@@@@@@@@@@@@@@@@@@@@@");
+        if(enemyRenderer.color.a == 1)
+        {
+            Color color = enemyRenderer.color;
+            color.a = 0.7f;
+            enemyRenderer.color = color;
+
+            yield return new WaitForSeconds(0.2f);
+
+            color.a = 1;
+            enemyRenderer.color = color;
         }
     }
 
@@ -269,7 +290,7 @@ public class EnemyParent : MonoBehaviour
         //    yield return null;
         //}
 
-        //본인 초기 위치 기준 128px 앞으로 당겨짐
+        //본인 초기 위치 기준 150px 앞으로 당겨짐
         while ((start - this.transform.position).magnitude <= 1.5f)
         {
             enemyRigid.AddForceAtPosition(moveDir, this.transform.position);

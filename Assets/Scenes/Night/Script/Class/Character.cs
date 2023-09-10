@@ -584,6 +584,11 @@ public class Character : MonoBehaviour
         characterData.healByHit += getHealByHit;
     }
 
+    public void SetItemAbsorbAttackData(float getHealByHit)
+    {
+        characterData.healByHit = getHealByHit;
+    }
+
     //아이템쪽
     public int ReturnCharacterItemSlot()
     {
