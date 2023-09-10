@@ -18,7 +18,10 @@ public class Repairment : MonoBehaviour
     {
         LoadItems();
     }
-
+    public void OnEnable()
+    {
+        LoadItems();
+    }
     public void LoadItems()
     {
         SortEquipment();
