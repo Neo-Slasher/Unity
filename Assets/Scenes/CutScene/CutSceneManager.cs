@@ -18,7 +18,14 @@ public class CutSceneManager : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         stories = DataManager.instance.storyList.stories[GameManager.instance.player.difficulty].story;
-        background.sprite = backgrounds[GameManager.instance.player.difficulty];
+
+        if (GameManager.instance.player.difficulty == 0) // intro
+            background.sprite = backgrounds[0];
+        else if (GameManager.instance.player.difficulty == 8) // bad ending
+            background.sprite = backgrounds[9];
+        else
+            background.sprite = backgrounds[8];
+
         StartStory();
     }
 
@@ -69,6 +76,9 @@ public class CutSceneManager : MonoBehaviour {
             storyNumber = 0;
             ChangeScene();
             return;
+        }
+        if (GameManager.instance.player.difficulty == 0) {
+            background.sprite = backgrounds[storyNumber];
         }
         StartCoroutine(Typing(typingText, stories[storyNumber], speed));
     }

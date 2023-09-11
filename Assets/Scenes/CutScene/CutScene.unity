@@ -1358,10 +1358,12 @@ MonoBehaviour:
   background: {fileID: 1302942145}
   backgrounds:
   - {fileID: 21300000, guid: 63ead9c00bec541e284e22ebf9d900af, type: 3}
+  - {fileID: 21300000, guid: 63ead9c00bec541e284e22ebf9d900af, type: 3}
   - {fileID: 21300000, guid: 481589cbf20be4ff2bc62e22c90febb1, type: 3}
   - {fileID: 21300000, guid: e4965268eb9554df19c023a15959edf5, type: 3}
   - {fileID: 21300000, guid: 66d9c03632dbf4b7f8207c817451031a, type: 3}
   - {fileID: 21300000, guid: c2faafd34a5d94d66a532f7108438974, type: 3}
+  - {fileID: 21300000, guid: c1533ea6bd4304617971530cb15dd552, type: 3}
   - {fileID: 21300000, guid: c1533ea6bd4304617971530cb15dd552, type: 3}
   - {fileID: 21300000, guid: 8c85c14e356aa40dfbcf5ff85a77189c, type: 3}
   - {fileID: 21300000, guid: cbf9ff6e947ff4df1aa9d851b7b96c56, type: 3}

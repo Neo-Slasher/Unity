@@ -179,7 +179,7 @@ public class PreparationManager : MonoBehaviour
     public void ActivateDifficultyButton()
     {
         difficultyLeftButton.interactable = (GameManager.instance.player.difficulty == 0) ? false : true;
-        difficultyRightButton.interactable = (GameManager.instance.player.difficulty == 6) ? false : true;
+        difficultyRightButton.interactable = (GameManager.instance.player.difficulty == 7) ? false : true;
     }
 
     private void LoadDifficulty()
@@ -188,11 +188,11 @@ public class PreparationManager : MonoBehaviour
         recommandLvText.text = "권장 Lv." + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].recommandLv.ToString();
         rewardExpText.text = "보상 EXP " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].rewardExp.ToString();
         goalMoneyText.text = "- 목표금액 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].goalMoney.ToString();
-        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyStatus.ToString() + "%";
+        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyStatus * 100f).ToString() + "%";
         normalEnhanceText.text = "- 일반 적이 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].normalEnhance * 100f).ToString() + "% 확률로 강화";
         eliteEnhanceText.text = "- 정예 적이 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].eliteEnhance * 100f).ToString() + "% 확률로 강화";
         dropRankText.text = "- 아이템 드롭률 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].dropRank * 100f).ToString() + "%";
-        enemyRespawnText.text = "- 적 개체수 +" + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyRespawn * 100f).ToString() + "%";
+        enemyRespawnText.text = "- 적 개체수 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyRespawn * 100f).ToString() + "%";
     }
 
 
