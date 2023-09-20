@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 9000554287139158811}
   - component: {fileID: 1975450430849206323}
   - component: {fileID: 2140621916757236782}
+  - component: {fileID: 4036914968291522139}
+  - component: {fileID: 939499805508563711}
   m_Layer: 8
   m_Name: Elite3
   m_TagString: Elite
@@ -100,34 +102,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b61b9bab3f32de4b93a1f6a3685bd36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyTrashData:
-    monIdx: 0
-    monWidth: 0
-    monLength: 0
-    hitPointMax: 0
-    hitPoint: 0
-    moveSpeed: 0
-    attackPower: 0
+  enemyData:
+    monIdx: 6
+    monWidth: 125
+    monLength: 348
+    hitPointMax: 100
+    hitPoint: 100
+    moveSpeed: 12
+    attackPower: 15
     dashAble: 0
     dashFreq: 0
     dashSpeed: 0
     dashDuration: 0
-    monElite: 0
+    monElite: 1
     monEnforce: 0
     monResist: 0
     monKnockback: 0
-    monProj: 0
-  levelTrashData:
-    diff: 0
-    diffRecLvl: 0
-    diffExp: 0
-    diffGoal: 0
-    diffStat: 0
-    diffPop: 0
-    diffNormalEnforce: 0
-    diffEliteEnforce: 0
-    diffDropRank: 0
-    diffRecCP: 0
+    monProj: 1
   nowHp: 0
   character: {fileID: 0}
   isStageEnd: 0
@@ -187,6 +178,32 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5704455429035723747}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.4, y: 2.8}
+    newSize: {x: 3.4, y: 2.8}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3, y: 2.3}
+  m_EdgeRadius: 0
+--- !u!60 &4036914968291522139
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5704455429035723747}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -203,6 +220,120 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 3, y: 2.3}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.12, y: -0.68}
+      - {x: -0.03, y: -0.59}
+      - {x: 0.099999994, y: -0.38}
+      - {x: 0.19, y: -0.24}
+      - {x: 0.28, y: -0.19999999}
+      - {x: 0.65, y: 0.06}
+      - {x: 0.78999996, y: 0.17}
+      - {x: 0.88, y: 0.08}
+      - {x: 0.97999996, y: 0.01}
+      - {x: 1.12, y: 0.01}
+      - {x: 1.12, y: -0.17999999}
+      - {x: 1.0699999, y: -0.31}
+      - {x: 1.04, y: -0.45999998}
+      - {x: 1.15, y: -0.53}
+      - {x: 1.25, y: -0.52}
+      - {x: 1.41, y: -0.35999998}
+      - {x: 1.38, y: -0.06}
+      - {x: 1.41, y: 0.12}
+      - {x: 1.41, y: 0.22}
+      - {x: 1.38, y: 0.26}
+      - {x: 1.31, y: 0.32}
+      - {x: 1.15, y: 0.31}
+      - {x: 1.11, y: 0.42999998}
+      - {x: 1.02, y: 0.56}
+      - {x: 1.03, y: 0.77}
+      - {x: 0.96, y: 0.88}
+      - {x: 0.78999996, y: 0.97999996}
+      - {x: 0.72999996, y: 1.09}
+      - {x: 0.57, y: 1.16}
+      - {x: 0.14999999, y: 1.16}
+      - {x: -0.14999999, y: 1.1}
+      - {x: -0.24, y: 0.98999995}
+      - {x: -0.42, y: 0.90999997}
+      - {x: -0.71999997, y: 0.88}
+      - {x: -0.78, y: 0.78999996}
+      - {x: -0.79999995, y: 0.7}
+      - {x: -0.79999995, y: 0.59}
+      - {x: -0.96999997, y: 0.45}
+      - {x: -1.01, y: 0.32999998}
+      - {x: -0.98999995, y: 0.14999999}
+      - {x: -1.13, y: 0.03}
+      - {x: -1.1899999, y: 0.04}
+      - {x: -1.37, y: 0.04}
+      - {x: -1.4499999, y: -0.03}
+      - {x: -1.4699999, y: -0.08}
+      - {x: -1.53, y: -0.29999998}
+      - {x: -1.62, y: -0.55}
+      - {x: -1.62, y: -0.62}
+      - {x: -1.54, y: -0.69}
+      - {x: -1.38, y: -0.65}
+      - {x: -1.29, y: -0.59}
+      - {x: -1.26, y: -0.29999998}
+      - {x: -1.1899999, y: -0.32}
+      - {x: -1.06, y: -0.19}
+      - {x: -0.79999995, y: -0.099999994}
+      - {x: -0.69, y: -0.17999999}
+      - {x: -0.48999998, y: -0.19999999}
+      - {x: -0.26999998, y: -0.28}
+      - {x: -0.22, y: -0.29999998}
+      - {x: -0.26999998, y: -0.5}
+      - {x: -0.38, y: -0.5}
+      - {x: -0.5, y: -0.53999996}
+      - {x: -0.61, y: -0.63}
+      - {x: -0.63, y: -0.71999997}
+      - {x: -0.68, y: -0.90999997}
+      - {x: -0.81, y: -1.13}
+      - {x: -0.78999996, y: -1.24}
+      - {x: -0.7, y: -1.28}
+      - {x: -0.56, y: -1.28}
+      - {x: -0.45999998, y: -1.22}
+      - {x: -0.45, y: -1.02}
+      - {x: -0.22999999, y: -0.82}
+    - - {x: -0.35999998, y: -0.77}
+      - {x: -0.35, y: -0.76}
+      - {x: -0.34, y: -0.76}
+      - {x: -0.34, y: -0.77}
+      - {x: -0.35, y: -0.78}
+    - - {x: -1.23, y: -0.17999999}
+      - {x: -1.22, y: -0.19}
+      - {x: -1.22, y: -0.17999999}
+      - {x: -1.23, y: -0.19}
+--- !u!114 &939499805508563711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5704455429035723747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e1a763a49844278aa8f54c7cce7335, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AlphaTolerance: 20
+  DistanceThreshold: 8
+  Scale: 1
+  Decompose: 0
+  RunInPlayMode: 1
+  UseCache: 1
+  lastAlphaTolerance: 20
+  lastScale: 1
+  lastDistanceThreshold: 8
+  lastDecompose: 0
+  lastSprite: {fileID: 21300000, guid: fe4ad86b77e4e458fbf0c54fd1efedb1, type: 3}
+  lastRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 340
+    height: 280
+  lastOffset: {x: 170, y: 140}
+  lastPixelsPerUnit: 100
+  lastFlipX: 0
+  lastFlipY: 0
+  editorCache: []

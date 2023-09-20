@@ -208,13 +208,13 @@ public class PreparationManager : MonoBehaviour
     }
 
     public void LoadAddStatus() {
-        addMaxHpText.text = (traitManager.dummyPlayer.maxHp > 0 ? "+" : "") + traitManager.dummyPlayer.maxHp;
-        addMoveSpeedText.text = (traitManager.dummyPlayer.moveSpeed > 0 ? "+" : "") + traitManager.dummyPlayer.moveSpeed;
-        addAttackPowerText.text = (traitManager.dummyPlayer.attackPower > 0 ? "+" : "") + traitManager.dummyPlayer.attackPower;
-        addAttackSpeedText.text = (traitManager.dummyPlayer.attackSpeed > 0 ? "+" : "") + traitManager.dummyPlayer.attackSpeed;
-        addAttackRangeText.text = (traitManager.dummyPlayer.attackRange > 0 ? "+" : "") + traitManager.dummyPlayer.attackRange;
-        startMoneyText.text = (GameManager.instance.player.startMoney + traitManager.dummyPlayer.startMoney).ToString();
-        getMoneyText.text = (GameManager.instance.player.earnMoney + traitManager.dummyPlayer.earnMoney).ToString();
+        addMaxHpText.text = (traitManager.statusByTrait.maxHp > 0 ? "+" : "") + traitManager.statusByTrait.maxHp;
+        addMoveSpeedText.text = (traitManager.statusByTrait.moveSpeed > 0 ? "+" : "") + traitManager.statusByTrait.moveSpeed;
+        addAttackPowerText.text = (traitManager.statusByTrait.attackPower > 0 ? "+" : "") + traitManager.statusByTrait.attackPower;
+        addAttackSpeedText.text = (traitManager.statusByTrait.attackSpeed > 0 ? "+" : "") + traitManager.statusByTrait.attackSpeed;
+        addAttackRangeText.text = (traitManager.statusByTrait.attackRange > 0 ? "+" : "") + traitManager.statusByTrait.attackRange;
+        startMoneyText.text = (GameManager.instance.player.startMoney + traitManager.statusByTrait.startMoney).ToString();
+        getMoneyText.text = (GameManager.instance.player.earnMoney + traitManager.statusByTrait.earnMoney).ToString();
     }
 
 
@@ -274,6 +274,7 @@ public class PreparationManager : MonoBehaviour
         // activae trait
         traitManager.activeTrait(tempTrait);
         GameManager.instance.player.trait[traitNumber] = true;
+        button.transform.GetChild(2).gameObject.SetActive(true);
         button.GetComponent<Button>().interactable = false;
 
         traitName.text = tempTrait.name;
@@ -296,6 +297,7 @@ public class PreparationManager : MonoBehaviour
     void DisableTrait(int traitNumber) {
         traitManager.unactiveTrait(DataManager.instance.traitList.trait[traitNumber - 1]);
         traitButtons[traitNumber].interactable = true;
+        traitButtons[traitNumber].transform.GetChild(2).gameObject.SetActive(false);
         GameManager.instance.player.trait[traitNumber] = false;
         traitCount--;
     }

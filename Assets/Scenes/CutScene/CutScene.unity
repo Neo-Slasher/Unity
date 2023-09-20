@@ -800,6 +800,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SFX Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1078335032963288320, guid: 50765c32905304e47b639911336d01f6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -1274,8 +1278,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48
-  m_fontSizeBase: 48
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 16
@@ -1472,6 +1476,10 @@ PrefabInstance:
     - target: {fileID: 2522651249256675273, guid: 14bf5421ec80648a89cae503335df080, type: 3}
       propertyPath: m_Name
       value: BGM Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2522651249256675273, guid: 14bf5421ec80648a89cae503335df080, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
       propertyPath: m_RootOrder

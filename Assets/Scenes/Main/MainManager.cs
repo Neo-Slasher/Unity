@@ -32,11 +32,13 @@ public class MainManager : MonoBehaviour
 
     public void StartNewGame() {
         // 초기화
+        ResetPlayer();
         SceneManager.LoadScene("CutScene"); 
     }
 
     public void ResetPlayer() {
-        GameManager.instance.player.difficulty = 0;
+        GameManager.instance.player.day = 1;
+        GameManager.instance.player.difficulty = -1;
         GameManager.instance.player.money = 0;
         GameManager.instance.player.item = new List<Item>();
         GameManager.instance.player.equipment = new List<Equipment>();

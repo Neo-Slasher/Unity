@@ -8,7 +8,7 @@ public class MainCamara : MonoBehaviour
 
 
     Vector3 camaraPosition = new Vector3(0, 0, -10);
-    float camaraMoveSpeed = 1.0f;
+    float camaraMoveSpeed = 5.0f;
 
     void FixedUpdate()
     {
