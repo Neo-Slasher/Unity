@@ -55,14 +55,21 @@ public class FightingPower : MonoBehaviour
         
         money.text = Player.money.ToString() + "a / " + DataManager.instance.difficultyList.difficulty[Player.difficulty].goalMoney + "a";
         currentcp.text = currentCP.ToString();
+        int maxHP = (int)Player.maxHp;
+        int moveSpeed = (int)Player.moveSpeed;
+        int attackSpeed = (int)Player.attackPower;
+        int attackPower = (int)Player.attackPower;
+        int attackRange = (int)Player.attackRange;
+        int startMoney = (int)Player.startMoney;
+        int earnMoney = (int)Player.earnMoney;
 
-        stacks.text = Player.maxHp.ToString() + "\n";
-        stacks.text += Player.moveSpeed.ToString() + "\n";
-        stacks.text += Player.attackSpeed.ToString() + "\n";
-        stacks.text += Player.attackPower.ToString() + "\n";
-        stacks.text += Player.attackRange.ToString() + "\n";
-        stacks.text += "\n" + Player.startMoney.ToString() + "\n";
-        stacks.text += Player.earnMoney.ToString() + "\n";
+        stacks.text = maxHP.ToString() + "\n";
+        stacks.text += moveSpeed.ToString() + "\n";
+        stacks.text += attackSpeed.ToString() + "\n";
+        stacks.text += attackPower.ToString() + "\n";
+        stacks.text += attackRange.ToString() + "\n";
+        stacks.text += "\n" + startMoney.ToString() + "\n";
+        stacks.text += earnMoney.ToString() + "\n";
         
     }
     public void PrintingDiff()
