@@ -695,6 +695,8 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator BoosterCoroutine(int getRank)
     {
+        character.isBoosterOn = true;
+        character.SetCharacterBasicSpeedError();
         GameObject boosterParent = Instantiate(itemPrefabArr[13]);
         boosterParent.transform.SetParent(character.transform);
         boosterParent.transform.localPosition = character.transform.position + new Vector3(2.13f,0,0);
@@ -740,7 +742,9 @@ public class ItemManager : MonoBehaviour
             nightSFXManager.PlayAudioClip(AudioClipName.booster);
             character.SetMoveSpeed(speed);
             boosterParent.SetActive(true);
+            Debug.Log("AAAAAAAAAAAAAAAAAAAAAA");
             yield return new WaitForSeconds(duration);
+            Debug.Log("BBBBBBBBBBBBBBBBBBBBBBBB");
             character.SetMoveSpeed(getBasicSpeed);
             boosterParent.SetActive(false);
 
@@ -749,6 +753,7 @@ public class ItemManager : MonoBehaviour
             StartCoroutine(SetCooltimeCoroutine(iconIdx, timeCount));
             yield return new WaitForSeconds(timeCount);
         }
+        Debug.Log("CCCCCCCCCCCCCCCCCC");
     }
 
     void BioSnach(int getRank)

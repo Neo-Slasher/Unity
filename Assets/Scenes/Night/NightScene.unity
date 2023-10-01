@@ -1856,7 +1856,7 @@ MonoBehaviour:
   hitBox: {fileID: 1410340655}
   itemIdxArr: 000000000000000000000000
   itemRankArr: 000000000000000000000000
-  tempItemIdxArr: 0c000000
+  tempItemIdxArr: 0d0000000100000002000000
   itemPrefabArr:
   - {fileID: 0}
   - {fileID: 6435774007306126119, guid: 5e53ae801b6353d47b55e9e30bc26a36, type: 3}
