@@ -120,16 +120,16 @@ public class NightManager : MonoBehaviour
     {
         switch (GameManager.instance.player.assassinationCount)
         {
-            case 1:
+            case 0:
                 backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[0];
                 break;
-            case 2:
+            case 1:
                 backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[1];
                 break;
-            case 3:
+            case 2:
                 backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[2];
                 break;
-            case 4:
+            case 3:
                 backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[3];
                 break;
         }
@@ -330,6 +330,13 @@ public class NightManager : MonoBehaviour
 
         GetItem();
         GetMoney();
+
+        if(character.GetComponent<Character>().isBoosterOn)
+        {
+            double basicSpeed = character.GetComponent<Character>().basicSpeed;
+            character.GetComponent<Character>().SetMoveSpeed(basicSpeed);
+        }
+
         GameManager.instance.SavePlayerData();
     }
 
@@ -411,7 +418,7 @@ public class NightManager : MonoBehaviour
         
         float rate = (float)(normalRate + eliteRate);
         
-        float nowProb = (float)Random.Range(0, 100) / 100;
+        float nowProb = (float)Random.Range(0, 0) / 100;
         Debug.Log(rate + " / "+ nowProb);
         if (nowProb < rate)
         {

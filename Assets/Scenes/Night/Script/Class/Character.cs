@@ -56,6 +56,8 @@ public class Character : MonoBehaviour
     public bool isHologramAnimate = false;
     public bool isAntiPhenetOn = false;
     public bool isMoveBackOn = false;
+    public bool isBoosterOn = false;
+    public double basicSpeed;
 
     // 애니메이션
     private Animator animator;
@@ -699,5 +701,12 @@ public class Character : MonoBehaviour
     public void SetCharacterHpRegen(double getHpRegen)
     {
         characterData.hpRegen = getHpRegen;
+    }
+
+    //부스터관련 오류 고치기 위해 만든 함수
+    //부스터가 켜진 상태로 게임이 종료되면 해당 스피드가 다음까지 이어져서 해결하기 위해 만듬
+    public void SetCharacterBasicSpeedError()
+    {
+        basicSpeed = characterData.moveSpeed;
     }
 }
