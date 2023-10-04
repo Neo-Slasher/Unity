@@ -179,7 +179,7 @@ public class PreparationManager : MonoBehaviour
     public void ActivateDifficultyButton()
     {
         difficultyLeftButton.interactable = (GameManager.instance.player.difficulty == 0) ? false : true;
-        difficultyRightButton.interactable = (GameManager.instance.player.difficulty == 6) ? false : true;
+        difficultyRightButton.interactable = (GameManager.instance.player.difficulty == 7) ? false : true;
     }
 
     private void LoadDifficulty()
@@ -188,11 +188,11 @@ public class PreparationManager : MonoBehaviour
         recommandLvText.text = "권장 Lv." + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].recommandLv.ToString();
         rewardExpText.text = "보상 EXP " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].rewardExp.ToString();
         goalMoneyText.text = "- 목표금액 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].goalMoney.ToString();
-        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 " + DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyStatus.ToString() + "%";
+        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyStatus * 100f).ToString() + "%";
         normalEnhanceText.text = "- 일반 적이 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].normalEnhance * 100f).ToString() + "% 확률로 강화";
         eliteEnhanceText.text = "- 정예 적이 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].eliteEnhance * 100f).ToString() + "% 확률로 강화";
         dropRankText.text = "- 아이템 드롭률 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].dropRank * 100f).ToString() + "%";
-        enemyRespawnText.text = "- 적 개체수 +" + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyRespawn * 100f).ToString() + "%";
+        enemyRespawnText.text = "- 적 개체수 " + (DataManager.instance.difficultyList.difficulty[GameManager.instance.player.difficulty].enemyRespawn * 100f).ToString() + "%";
     }
 
 
@@ -208,13 +208,13 @@ public class PreparationManager : MonoBehaviour
     }
 
     public void LoadAddStatus() {
-        addMaxHpText.text = (traitManager.dummyPlayer.maxHp > 0 ? "+" : "") + traitManager.dummyPlayer.maxHp;
-        addMoveSpeedText.text = (traitManager.dummyPlayer.moveSpeed > 0 ? "+" : "") + traitManager.dummyPlayer.moveSpeed;
-        addAttackPowerText.text = (traitManager.dummyPlayer.attackPower > 0 ? "+" : "") + traitManager.dummyPlayer.attackPower;
-        addAttackSpeedText.text = (traitManager.dummyPlayer.attackSpeed > 0 ? "+" : "") + traitManager.dummyPlayer.attackSpeed;
-        addAttackRangeText.text = (traitManager.dummyPlayer.attackRange > 0 ? "+" : "") + traitManager.dummyPlayer.attackRange;
-        startMoneyText.text = (GameManager.instance.player.startMoney + traitManager.dummyPlayer.startMoney).ToString();
-        getMoneyText.text = (GameManager.instance.player.earnMoney + traitManager.dummyPlayer.earnMoney).ToString();
+        addMaxHpText.text = (traitManager.statusByTrait.maxHp > 0 ? "+" : "") + traitManager.statusByTrait.maxHp;
+        addMoveSpeedText.text = (traitManager.statusByTrait.moveSpeed > 0 ? "+" : "") + traitManager.statusByTrait.moveSpeed;
+        addAttackPowerText.text = (traitManager.statusByTrait.attackPower > 0 ? "+" : "") + traitManager.statusByTrait.attackPower;
+        addAttackSpeedText.text = (traitManager.statusByTrait.attackSpeed > 0 ? "+" : "") + traitManager.statusByTrait.attackSpeed;
+        addAttackRangeText.text = (traitManager.statusByTrait.attackRange > 0 ? "+" : "") + traitManager.statusByTrait.attackRange;
+        startMoneyText.text = (GameManager.instance.player.startMoney + traitManager.statusByTrait.startMoney).ToString();
+        getMoneyText.text = (GameManager.instance.player.earnMoney + traitManager.statusByTrait.earnMoney).ToString();
     }
 
 
@@ -274,6 +274,7 @@ public class PreparationManager : MonoBehaviour
         // activae trait
         traitManager.activeTrait(tempTrait);
         GameManager.instance.player.trait[traitNumber] = true;
+        button.transform.GetChild(2).gameObject.SetActive(true);
         button.GetComponent<Button>().interactable = false;
 
         traitName.text = tempTrait.name;
@@ -296,6 +297,7 @@ public class PreparationManager : MonoBehaviour
     void DisableTrait(int traitNumber) {
         traitManager.unactiveTrait(DataManager.instance.traitList.trait[traitNumber - 1]);
         traitButtons[traitNumber].interactable = true;
+        traitButtons[traitNumber].transform.GetChild(2).gameObject.SetActive(false);
         GameManager.instance.player.trait[traitNumber] = false;
         traitCount--;
     }

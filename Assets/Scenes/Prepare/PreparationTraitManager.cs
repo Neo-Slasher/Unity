@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PreparationTraitManager : MonoBehaviour
 {
-    public Player dummyPlayer;
-
+    public Player statusByTrait;
 
     public enum EffectType {
         none, hp, moveSpeed, attackPower, attackSpeed,
@@ -32,55 +31,55 @@ public class PreparationTraitManager : MonoBehaviour
 
     private void applyTrait(EffectType type, double value, bool multi) {
         if (type == EffectType.hp) {
-            dummyPlayer.maxHp += value;
+            statusByTrait.maxHp += value;
         }
         else if (type == EffectType.moveSpeed) {
-            dummyPlayer.moveSpeed += value;
+            statusByTrait.moveSpeed += value;
         }
         else if (type == EffectType.attackPower) {
-            dummyPlayer.attackPower += value;
+            statusByTrait.attackPower += value;
         }
         else if (type == EffectType.attackSpeed) {
-            dummyPlayer.attackSpeed += value;
+            statusByTrait.attackSpeed += value;
         }
         else if (type == EffectType.attackRange) {
-            dummyPlayer.attackRange += value;
+            statusByTrait.attackRange += value;
         }
         else if (type == EffectType.startMoney) {
-            dummyPlayer.startMoney += (int)value;
+            statusByTrait.startMoney += (int)value;
         }
         else if (type == EffectType.earnMoney) {
-            dummyPlayer.earnMoney += (float)value;
+            statusByTrait.earnMoney += (float)value;
         }
         else if (type == EffectType.shopSlot) {
-            dummyPlayer.shopSlot += (int)value;
+            statusByTrait.shopSlot += (int)value;
         }
         else if (type == EffectType.itemSlot) {
-            dummyPlayer.itemSlot += (int)value;
+            statusByTrait.itemSlot += (int)value;
         }
         else if (type == EffectType.shopMinRank) {
-            dummyPlayer.shopMinRank += (int)value;
+            statusByTrait.shopMinRank += (int)value;
         }
         else if (type == EffectType.shopMaxRank) {
-            dummyPlayer.shopMaxRank += (int)value;
+            statusByTrait.shopMaxRank += (int)value;
         }
         else if (type == EffectType.dropRank) {
-            dummyPlayer.dropRank += (int)value;
+            statusByTrait.dropRank += (int)value;
         }
         else if (type == EffectType.dropRate) {
-            dummyPlayer.dropRate += value;
+            statusByTrait.dropRate += value;
         }
         else if (type == EffectType.healByHit) {
-            dummyPlayer.healByHit += value;
+            statusByTrait.healByHit += value;
         }
         else if (type == EffectType.hpRegen) {
-            dummyPlayer.hpRegen += value;
+            statusByTrait.hpRegen += value;
         }
         else if (type == EffectType.dealOnMax) {
-            dummyPlayer.dealOnMaxHp += value;
+            statusByTrait.dealOnMaxHp += value;
         }
         else if (type == EffectType.dealOnHp) {
-            dummyPlayer.dealOnCurHp += value;
+            statusByTrait.dealOnCurHp += value;
         }
     }
 
@@ -105,22 +104,22 @@ public class PreparationTraitManager : MonoBehaviour
     }
 
     public void SaveTrait() {
-        GameManager.instance.player.maxHp += dummyPlayer.maxHp;
-        GameManager.instance.player.moveSpeed += dummyPlayer.moveSpeed;
-        GameManager.instance.player.attackPower += dummyPlayer.attackPower;
-        GameManager.instance.player.attackSpeed += dummyPlayer.attackSpeed;
-        GameManager.instance.player.attackRange += dummyPlayer.attackRange;
-        GameManager.instance.player.startMoney += dummyPlayer.startMoney;
-        GameManager.instance.player.earnMoney += dummyPlayer.earnMoney;
-        GameManager.instance.player.shopSlot += dummyPlayer.shopSlot;
-        GameManager.instance.player.itemSlot += dummyPlayer.itemSlot;
-        GameManager.instance.player.shopMinRank += dummyPlayer.shopMinRank;
-        GameManager.instance.player.shopMaxRank += dummyPlayer.shopMaxRank;
-        GameManager.instance.player.dropRank += dummyPlayer.dropRank;
-        GameManager.instance.player.dropRate += dummyPlayer.dropRate;
-        GameManager.instance.player.healByHit += dummyPlayer.healByHit;
-        GameManager.instance.player.hpRegen += dummyPlayer.hpRegen;
-        GameManager.instance.player.dealOnMaxHp += dummyPlayer.dealOnMaxHp;
-        GameManager.instance.player.dealOnCurHp += dummyPlayer.dealOnCurHp;
+        GameManager.instance.player.maxHp += statusByTrait.maxHp;
+        GameManager.instance.player.moveSpeed += statusByTrait.moveSpeed;
+        GameManager.instance.player.attackPower += statusByTrait.attackPower;
+        GameManager.instance.player.attackSpeed += statusByTrait.attackSpeed;
+        GameManager.instance.player.attackRange += statusByTrait.attackRange;
+        GameManager.instance.player.startMoney += statusByTrait.startMoney;
+        GameManager.instance.player.earnMoney += statusByTrait.earnMoney;
+        GameManager.instance.player.shopSlot += statusByTrait.shopSlot;
+        GameManager.instance.player.itemSlot += statusByTrait.itemSlot;
+        GameManager.instance.player.shopMinRank += statusByTrait.shopMinRank;
+        GameManager.instance.player.shopMaxRank += statusByTrait.shopMaxRank;
+        GameManager.instance.player.dropRank += statusByTrait.dropRank;
+        GameManager.instance.player.dropRate += statusByTrait.dropRate;
+        GameManager.instance.player.healByHit += statusByTrait.healByHit;
+        GameManager.instance.player.hpRegen += statusByTrait.hpRegen;
+        GameManager.instance.player.dealOnMaxHp += statusByTrait.dealOnMaxHp;
+        GameManager.instance.player.dealOnCurHp += statusByTrait.dealOnCurHp;
     }
 }

@@ -567,6 +567,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sfx Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1078335032963288320, guid: 50765c32905304e47b639911336d01f6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -1272,8 +1276,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.385, y: -135.062}
-  m_SizeDelta: {x: 233.467, y: 24.268}
+  m_AnchoredPosition: {x: -0.385, y: -100}
+  m_SizeDelta: {x: 155, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &233021013
 MonoBehaviour:
@@ -1338,7 +1342,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: e06bad42248b444f3bf65b4fdd5fb13f, type: 3}
     - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5139,20 +5143,8 @@ PrefabInstance:
       value: WhiteSuitMan
       objectReference: {fileID: 0}
     - target: {fileID: 24583802718368516, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 24583802718368516, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3342996884340654076, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3885701808866450685, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.000024914742
       objectReference: {fileID: 0}
     - target: {fileID: 8480674720018607250, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
       propertyPath: m_Pivot.x
@@ -6235,20 +6227,8 @@ PrefabInstance:
       value: MachineArmorSoldier
       objectReference: {fileID: 0}
     - target: {fileID: 24583802718368516, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 24583802718368516, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3342996884340654076, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3885701808866450685, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.000024914742
       objectReference: {fileID: 0}
     - target: {fileID: 8480674720018607250, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
       propertyPath: m_Pivot.x
@@ -6663,8 +6643,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 233.08, y: -135.06}
-  m_SizeDelta: {x: 233.467, y: 24.27}
+  m_AnchoredPosition: {x: 155, y: -100}
+  m_SizeDelta: {x: 155, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1406309405
 MonoBehaviour:
@@ -7438,7 +7418,7 @@ Transform:
   - {fileID: 403044716}
   - {fileID: 1657796861}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1506699015
 GameObject:
@@ -10274,8 +10254,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -135}
-  m_SizeDelta: {x: 240, y: 30}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2057946955
 MonoBehaviour:
@@ -10703,6 +10683,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2166775663638206736, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      propertyPath: UseCache
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2166775663638206736, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2166775663638206736, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      propertyPath: RunInPlayMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3514429689775917769, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -10842,6 +10834,10 @@ PrefabInstance:
     - target: {fileID: 3514429690357883045, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
       propertyPath: m_Name
       value: Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 7002469911704031161, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
@@ -11235,20 +11231,8 @@ PrefabInstance:
       value: BlackSuitMan
       objectReference: {fileID: 0}
     - target: {fileID: 24583802718368516, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 24583802718368516, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3342996884340654076, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3885701808866450685, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.000024914742
       objectReference: {fileID: 0}
     - target: {fileID: 8480674720018607250, guid: 0e032e221bf94234e8f4b6cd6afc8c98, type: 3}
       propertyPath: m_Pivot.x

@@ -11,28 +11,35 @@ public class CutSceneManager : MonoBehaviour {
     public Image background;
     public List<Sprite> backgrounds;
     public int storyNumber;
-    public float speed = 0.21f;
+    public float speed = 0.3f;
     public bool autoStory = false;
     public bool touchScreen = false;
 
     // Start is called before the first frame update
     void Start() {
-        stories = DataManager.instance.storyList.stories[GameManager.instance.player.difficulty].story;
-        background.sprite = backgrounds[GameManager.instance.player.difficulty];
+        if (GameManager.instance.player.difficulty == -1)
+            stories = DataManager.instance.storyList.stories[0].story;
+        else 
+            stories = DataManager.instance.storyList.stories[GameManager.instance.player.difficulty + 1].story;
+
+        if (GameManager.instance.player.difficulty == -1) // intro
+            background.sprite = backgrounds[0];
+        else if (GameManager.instance.player.difficulty == 8) // bad ending
+            background.sprite = backgrounds[9];
+        else
+            background.sprite = backgrounds[8];
+
         StartStory();
     }
 
     public void OnClickSkipButton() {
+        if (GameManager.instance.player.difficulty == -1)
+            GameManager.instance.player.difficulty = 0;
         ChangeScene();   
     }
 
     public void ChangeScene() {
-        if (GameManager.instance.player.difficulty == 0) {
-            SceneManager.LoadScene("PreparationScene");
-        }
-        else {
-            SceneManager.LoadScene("MainScene");
-        }
+        SceneManager.LoadScene("PreparationScene");
     }
 
     public void OnClickAutoButton() {
@@ -69,6 +76,9 @@ public class CutSceneManager : MonoBehaviour {
             storyNumber = 0;
             ChangeScene();
             return;
+        }
+        if (GameManager.instance.player.difficulty == 0) {
+            background.sprite = backgrounds[storyNumber];
         }
         StartCoroutine(Typing(typingText, stories[storyNumber], speed));
     }
