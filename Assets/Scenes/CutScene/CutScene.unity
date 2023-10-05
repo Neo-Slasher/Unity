@@ -1044,7 +1044,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6674970160995906164, guid: 74dfe155df71148eeb85317a6c978277, type: 3}
       propertyPath: player.day
-      value: 2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674970160995906164, guid: 74dfe155df71148eeb85317a6c978277, type: 3}
+      propertyPath: player.difficulty
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6674970160995906165, guid: 74dfe155df71148eeb85317a6c978277, type: 3}
       propertyPath: m_Name

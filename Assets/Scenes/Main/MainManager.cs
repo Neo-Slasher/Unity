@@ -9,9 +9,7 @@ public class MainManager : MonoBehaviour
 {
     public GameObject startPopup;
     public GameObject exitPopup;
-
     public Button continueButton;
-
     public GameObject setting;
 
 
@@ -25,23 +23,22 @@ public class MainManager : MonoBehaviour
         if (GameManager.instance.player.day == 1) {
             continueButton.interactable = false;
         }
-
+        
         startPopup.SetActive(false);
         exitPopup.SetActive(false);
     }
 
     public void StartNewGame() {
-        // 초기화
         ResetPlayer();
         SceneManager.LoadScene("CutScene"); 
     }
 
     public void ResetPlayer() {
-        GameManager.instance.player.day = 1;
-        GameManager.instance.player.difficulty = -1;
-        GameManager.instance.player.money = 0;
-        GameManager.instance.player.item = new List<Item>();
-        GameManager.instance.player.equipment = new List<Equipment>();
+        int prevLevel = GameManager.instance.player.level;
+        int prevExp = GameManager.instance.player.curExp;
+        GameManager.instance.InitPlayerData();
+        GameManager.instance.player.level = prevLevel;
+        GameManager.instance.player.curExp = prevExp;
     }
 
     public void OnClickStartButton() {
@@ -61,7 +58,6 @@ public class MainManager : MonoBehaviour
     }
 
     public void OnClickContinueButton() {
-        GameManager.instance.LoadPlayerData();
         SceneManager.LoadScene("DayScene");
     }
 

@@ -33,12 +33,12 @@ public class CutSceneManager : MonoBehaviour {
     }
 
     public void OnClickSkipButton() {
-        if (GameManager.instance.player.difficulty == -1)
-            GameManager.instance.player.difficulty = 0;
         ChangeScene();   
     }
 
     public void ChangeScene() {
+        if (GameManager.instance.player.difficulty == -1)
+            GameManager.instance.player.difficulty = 0;
         SceneManager.LoadScene("PreparationScene");
     }
 
@@ -72,12 +72,12 @@ public class CutSceneManager : MonoBehaviour {
     }
 
     public void NextStory() {
-        if (storyNumber == stories.Count) { // debug
+        if (storyNumber == stories.Count) {
             storyNumber = 0;
             ChangeScene();
             return;
         }
-        if (GameManager.instance.player.difficulty == 0) {
+        if (GameManager.instance.player.difficulty == -1) {
             background.sprite = backgrounds[storyNumber];
         }
         StartCoroutine(Typing(typingText, stories[storyNumber], speed));
