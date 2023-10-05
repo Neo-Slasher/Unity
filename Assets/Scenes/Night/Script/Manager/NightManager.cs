@@ -418,7 +418,7 @@ public class NightManager : MonoBehaviour
         
         float rate = (float)(normalRate + eliteRate);
         
-        float nowProb = (float)Random.Range(0, 0) / 100;
+        float nowProb = (float)Random.Range(0, 100) / 100;
         Debug.Log(rate + " / "+ nowProb);
         if (nowProb < rate)
         {
@@ -647,6 +647,7 @@ public class NightManager : MonoBehaviour
 
     void SetItemError()
     {
+        Debug.Log("SETITEMERROR");
         if (GameManager.instance.player.item.Count > GameManager.instance.player.itemSlot)
         {
             for(int i= GameManager.instance.player.itemSlot; i< GameManager.instance.player.item.Count; i++)

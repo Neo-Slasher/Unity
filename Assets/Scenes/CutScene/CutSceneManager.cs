@@ -11,7 +11,7 @@ public class CutSceneManager : MonoBehaviour {
     public Image background;
     public List<Sprite> backgrounds;
     public int storyNumber;
-    public float speed = 0.3f;
+    public float speed = 0.05f;
     public bool autoStory = false;
     public bool touchScreen = false;
 

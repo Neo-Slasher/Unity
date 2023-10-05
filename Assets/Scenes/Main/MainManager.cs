@@ -39,6 +39,7 @@ public class MainManager : MonoBehaviour
         GameManager.instance.InitPlayerData();
         GameManager.instance.player.level = prevLevel;
         GameManager.instance.player.curExp = prevExp;
+        GameManager.instance.player.difficulty = -1;
     }
 
     public void OnClickStartButton() {
