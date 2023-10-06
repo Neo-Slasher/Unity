@@ -466,6 +466,8 @@ public class Character : MonoBehaviour
                 characterData.curHp = 0;
                 hpBarImage.fillAmount = 0;
 
+                this.GetComponent<BoxCollider2D>().enabled = false;
+
                 nightManager.SetStageEnd();
             }
         }

@@ -309,8 +309,11 @@ public class NightManager : MonoBehaviour
             }
         }
 
-        SetEndPopUp();
-        endPopup.SetActive(true);
+        if (endPopup.activeSelf == false)
+        {
+            SetEndPopUp();
+            endPopup.SetActive(true);
+        }
     }
 
     //팝업창 데이터 설정
