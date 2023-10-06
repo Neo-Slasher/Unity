@@ -31,9 +31,13 @@ public class MainManager : MonoBehaviour
     public void ResetPlayer() {
         int prevLevel = GameManager.instance.player.level;
         int prevExp = GameManager.instance.player.curExp;
+        float bgmVolume = GameManager.instance.player.bgm_volume;
+        float sfxVolume = GameManager.instance.player.sfx_volume;
         GameManager.instance.InitPlayerData();
         GameManager.instance.player.level = prevLevel;
         GameManager.instance.player.curExp = prevExp;
+        GameManager.instance.player.bgm_volume = bgmVolume;
+        GameManager.instance.player.sfx_volume = sfxVolume;
         GameManager.instance.player.difficulty = -1;
     }
 
