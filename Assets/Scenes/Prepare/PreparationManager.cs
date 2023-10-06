@@ -290,7 +290,7 @@ public class PreparationManager : MonoBehaviour
     }
 
     void CheckStartButton() {
-        startButton.interactable = (traitCount == GameManager.instance.player.level) ? true : false;
+        startButton.interactable = (traitCount == GameManager.instance.player.level && GameManager.instance.player.difficulty != 8) ? true : false;
     }
 
 

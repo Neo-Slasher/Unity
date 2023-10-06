@@ -11,7 +11,7 @@ public class CutSceneManager : MonoBehaviour {
     public Image background;
     public List<Sprite> backgrounds;
     public int storyNumber;
-    public float speed = 0.3f;
+    public float speed = 0.05f;
     public bool autoStory = false;
     public bool touchScreen = false;
 
@@ -33,12 +33,11 @@ public class CutSceneManager : MonoBehaviour {
     }
 
     public void OnClickSkipButton() {
-        if (GameManager.instance.player.difficulty == -1)
-            GameManager.instance.player.difficulty = 0;
         ChangeScene();   
     }
 
     public void ChangeScene() {
+        GameManager.instance.player.difficulty = 0;
         SceneManager.LoadScene("PreparationScene");
     }
 
@@ -72,12 +71,12 @@ public class CutSceneManager : MonoBehaviour {
     }
 
     public void NextStory() {
-        if (storyNumber == stories.Count) { // debug
+        if (storyNumber == stories.Count) {
             storyNumber = 0;
             ChangeScene();
             return;
         }
-        if (GameManager.instance.player.difficulty == 0) {
+        if (GameManager.instance.player.difficulty == -1) {
             background.sprite = backgrounds[storyNumber];
         }
         StartCoroutine(Typing(typingText, stories[storyNumber], speed));

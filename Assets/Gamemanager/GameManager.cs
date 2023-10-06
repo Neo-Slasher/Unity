@@ -18,45 +18,47 @@ public class GameManager : MonoBehaviour
         if (instance == null)  
             instance = this;
         else if (instance != this)
-            Destroy(this.gameObject);
+            Destroy(gameObject);
 
-        DontDestroyOnLoad(this.gameObject);
-
+        DontDestroyOnLoad(gameObject);
 
         if (!File.Exists(Application.persistentDataPath + "/UserData.json")) {
             hasSavedData = false;
+            InitPlayerData();
         } else {
             hasSavedData = true;
+            LoadPlayerData();
         }
     }
 
 
     public void InitPlayerData() {
         // init player
-        this.player = new Player();
-        GameManager.instance.player.item.Add(DataManager.instance.itemList.item[6]);
+        player = new Player();
+        //player.item.Add(DataManager.instance.itemList.item[6]);
 #if UNITY_EDITOR
         string initData = File.ReadAllText(Application.dataPath + "/Data/Json/InitPlayer.json");
-        this.player = JsonUtility.FromJson<Player>(initData);
+        player = JsonUtility.FromJson<Player>(initData);
 #endif
 #if UNITY_ANDROID
-        this.player = ResourceDataLoad<Player>("InitPlayer");
+        player = ResourceDataLoad<Player>("InitPlayer");
 #endif
         SavePlayerData();
     }
 
     public void SavePlayerData() {
         player.playingGame = true;
-        string json = JsonUtility.ToJson(this.player);
+        string json = JsonUtility.ToJson(player);
 
         File.WriteAllText(Application.persistentDataPath + "/UserData.json", json);
 
     }
 
     public void LoadPlayerData() {
+        Debug.Log("LoadPlayerData");
         string savedData = File.ReadAllText(Application.persistentDataPath + "/UserData.json");
-
-        this.player = JsonUtility.FromJson<Player>(savedData);
+        Debug.Log(savedData);
+        player = JsonUtility.FromJson<Player>(savedData);
     }
 
     void Cheat()
@@ -68,7 +70,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void ChangeJoyStickSize(float value) {
-        GameManager.instance.player.joyStickSize = value;
+        player.joyStickSize = value;
     }
 
     public T ResourceDataLoad<T>(string name) {

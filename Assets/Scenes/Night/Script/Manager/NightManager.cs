@@ -316,6 +316,7 @@ public class NightManager : MonoBehaviour
     //팝업창 데이터 설정
     void SetEndPopUp()
     {
+        Debug.Log("SetEndPopup Called");
         if (timerManager.timerCount == 0)
             aliveOrDieText.text = "생존";
         else
@@ -363,7 +364,12 @@ public class NightManager : MonoBehaviour
             if (nowDifficulty != 7)
             {
                 Player player = GameManager.instance.player;
-                GameManager.instance.player.curExp += DataManager.instance.difficultyList.difficulty[nowDifficulty].rewardExp;
+                if (GameManager.instance.player.money >= DataManager.instance.difficultyList.difficulty[nowDifficulty].goalMoney) {
+                    GameManager.instance.player.curExp += DataManager.instance.difficultyList.difficulty[nowDifficulty].rewardExp;
+                }
+                else {
+                    GameManager.instance.player.difficulty = 8;
+                }
                 GameManager.instance.player.day = 1;
                 GameManager.instance.player.playingGame = false;
 
@@ -418,7 +424,7 @@ public class NightManager : MonoBehaviour
         
         float rate = (float)(normalRate + eliteRate);
         
-        float nowProb = (float)Random.Range(0, 0) / 100;
+        float nowProb = (float)Random.Range(0, 100) / 100;
         Debug.Log(rate + " / "+ nowProb);
         if (nowProb < rate)
         {
@@ -506,6 +512,7 @@ public class NightManager : MonoBehaviour
     {
         //씬 이동  
         settingParent.SetActive(false);
+        Time.timeScale = 1;
         SetEndPopUp();
         endPopup.SetActive(true);
     }
@@ -647,6 +654,7 @@ public class NightManager : MonoBehaviour
 
     void SetItemError()
     {
+        Debug.Log("SETITEMERROR");
         if (GameManager.instance.player.item.Count > GameManager.instance.player.itemSlot)
         {
             for(int i= GameManager.instance.player.itemSlot; i< GameManager.instance.player.item.Count; i++)
