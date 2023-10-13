@@ -376,13 +376,11 @@ public class NightManager : MonoBehaviour
                 GameManager.instance.player.day = 1;
                 GameManager.instance.player.playingGame = false;
 
-                while (player.reqExp < player.curExp)
+                while (player.level < 20 && player.reqExp < player.curExp)
                 {
                     GameManager.instance.player.curExp -= GameManager.instance.player.reqExp;
                     GameManager.instance.player.level++;
-
-                    if(GameManager.instance.player.level < 20)
-                        GameManager.instance.player.reqExp = DataManager.instance.expList.exp[GameManager.instance.player.level - 1].reqExp;
+                    GameManager.instance.player.reqExp = DataManager.instance.expList.exp[GameManager.instance.player.level - 1].reqExp;
                 }
                 
             }

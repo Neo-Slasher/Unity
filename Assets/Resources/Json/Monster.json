@@ -16,9 +16,7 @@
             "isEnforce": 0,
             "isResist": 0,
             "canKnockback": 0,
-            "canProj": 0,
-            "imageIndex": 1,
-            "soundIndex": 1
+            "canProj": 0
         },
         {
             "index": 2,
@@ -36,9 +34,7 @@
             "isEnforce": 0,
             "isResist": 0,
             "canKnockback": 0,
-            "canProj": 0,
-            "imageIndex": 2,
-            "soundIndex": 2
+            "canProj": 0
         },
         {
             "index": 3,
@@ -56,16 +52,14 @@
             "isEnforce": 0,
             "isResist": 1,
             "canKnockback": 1,
-            "canProj": 0,
-            "imageIndex": 3,
-            "soundIndex": 3
+            "canProj": 0
         },
         {
             "index": 4,
             "width": 210,
             "length": 174,
-            "maxHp": 14,
-            "curHp": 14,
+            "maxHp": 15,
+            "curHp": 15,
             "moveSpeed": 8,
             "attackPower": 3,
             "dashAble": 1,
@@ -76,9 +70,7 @@
             "isEnforce": 0,
             "isResist": 0,
             "canKnockback": 0,
-            "canProj": 0,
-            "imageIndex": 4,
-            "soundIndex": 4
+            "canProj": 0
         },
         {
             "index": 5,
@@ -96,9 +88,7 @@
             "isEnforce": 0,
             "isResist": 0,
             "canKnockback": 0,
-            "canProj": 1,
-            "imageIndex": 5,
-            "soundIndex": 5
+            "canProj": 1
         },
         {
             "index": 6,
@@ -116,9 +106,7 @@
             "isEnforce": 0,
             "isResist": 0,
             "canKnockback": 0,
-            "canProj": 1,
-            "imageIndex": 6,
-            "soundIndex": 6
+            "canProj": 1
         }
     ]
 }

@@ -37,6 +37,7 @@ public class CutSceneManager : MonoBehaviour {
     }
 
     public void ChangeScene() {
+        GameManager.instance.ResetPlayer();
         GameManager.instance.player.difficulty = 0;
         SceneManager.LoadScene("PreparationScene");
     }
