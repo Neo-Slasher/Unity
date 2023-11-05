@@ -180,7 +180,7 @@ public class SelectItem : MonoBehaviour
         Rank.text = "";
         Part.text = "";
         Info.text = "";
-        checkMarks[buttonNum].SetActive(false);
+        //checkMarks[buttonNum].SetActive(false);
     }
     public void CompareInfo()
     {
